@@ -49,6 +49,9 @@ public class MainActivity extends BaseGameActivity {
     private float switchSpeed = 0.8f;
     //todo create enum of 6 colours and switch to respond
 
+    private static int correctCount = 0;
+    private static int wrongCount = 0;
+
     @Override
     public EngineOptions onCreateEngineOptions() {
         Camera camera = new Camera(0, 0, WIDTH, HEIGHT);
@@ -57,6 +60,18 @@ public class MainActivity extends BaseGameActivity {
         engineOptions.getAudioOptions().setNeedsSound(true);
         engineOptions.getAudioOptions().setNeedsMusic(true);
         return engineOptions;
+    }
+
+    @Override
+    public synchronized void onPauseGame() {
+        gameSound.pause();
+        super.onPauseGame();
+    }
+
+    @Override
+    public synchronized void onResumeGame() {
+        gameSound.resume();
+        super.onResumeGame();
     }
 
     @Override
@@ -241,10 +256,19 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void checkTileColor(Rectangle rectangle) {
-        if (rectangle.getColor().getBlue() == 1.0)
-            rightTileSound.play();
-        else
+        if (rectangle.getColor().getBlue() == 1.0) {
+            correctCount++;
+            Log.d(TAG, "checkTileColor: CORRECT COUNT "+correctCount);
+            if (correctCount == 3) {
+                correctCount = 0;
+                lifeUpSound.play();
+            } else {
+                rightTileSound.play();
+            }
+        } else{
             wrongTileSound.play();
+            correctCount = 0;
+        }
     }
 
     private void changeTileColor() {
