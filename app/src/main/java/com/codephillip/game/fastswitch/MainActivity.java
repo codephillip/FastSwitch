@@ -51,6 +51,8 @@ public class MainActivity extends BaseGameActivity {
 
     private static int correctCount = 0;
     private static int wrongCount = 0;
+    private boolean hasGainedLife = false;
+    private int life = 5;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -235,6 +237,8 @@ public class MainActivity extends BaseGameActivity {
             public void onTimePassed(TimerHandler pTimerHandler) {
                 count--;
                 try {
+                    Log.d(TAG, "onTimePassed: Seconds#"+(count%5 == 0));
+                    if (secondsPassed()) loseLife();
                     changeTileColor();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
@@ -259,6 +263,7 @@ public class MainActivity extends BaseGameActivity {
     private void checkTileColor(Rectangle rectangle) {
         /*hit correct tile 3 times to gain life
         * hitting wrong time erases your correctCount
+        * failure to gain life in 5 seconds, penalty is to lose a life
         * hit the wrong tile 3 time, penalty is to lose a life
         * */
         if (rectangle.getColor().getBlue() == 1.0) {
@@ -267,6 +272,7 @@ public class MainActivity extends BaseGameActivity {
             if (correctCount == 3) {
                 correctCount = 0;
                 lifeUpSound.play();
+                gainLife();
             } else {
                 rightTileSound.play();
             }
@@ -275,11 +281,33 @@ public class MainActivity extends BaseGameActivity {
             if (wrongCount == 3){
                 wrongCount = 0;
                 lifeDownSound.play();
+                loseLife();
             } else {
                 wrongTileSound.play();
             }
             correctCount = 0;
         }
+    }
+
+    private void gainLife() {
+        life++;
+        hasGainedLife = !secondsPassed();
+    }
+
+    private void loseLife() {
+        if (hasGainedLife){
+            hasGainedLife = false;
+        }
+        else {
+            life--;
+            lifeDownSound.play();
+//            hasGainedLife = false;
+        }
+    }
+
+    private boolean secondsPassed(){
+        if (hasGainedLife) hasGainedLife = !(count % 10 == 0);
+        return count % 10 == 0;
     }
 
     private void changeTileColor() {
