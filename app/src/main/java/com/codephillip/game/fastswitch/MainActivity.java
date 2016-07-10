@@ -44,7 +44,7 @@ public class MainActivity extends BaseGameActivity {
     };
     private Music gameSound;
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound;
-    private int count=120;
+    private int count = 120;
     private double colourNumber = 1.0;
     private float switchSpeed = 0.8f;
     //todo create enum of 6 colours and switch to respond
@@ -237,14 +237,13 @@ public class MainActivity extends BaseGameActivity {
             public void onTimePassed(TimerHandler pTimerHandler) {
                 count--;
                 try {
-                    Log.d(TAG, "onTimePassed: Seconds#"+(count%5 == 0));
-                    if (secondsPassed()) loseLife();
+                    Log.d(TAG, "onTimePassed: Seconds#" + (count % 5 == 0));
                     changeTileColor();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
 
-                if(count==0){
+                if (count == 0) {
                     pScene.unregisterUpdateHandler(pTimerHandler);
                     Log.d(TAG, "onTimePassed: FINISHED");
                     GameOver();
@@ -268,7 +267,7 @@ public class MainActivity extends BaseGameActivity {
         * */
         if (rectangle.getColor().getBlue() == 1.0) {
             correctCount++;
-            Log.d(TAG, "checkTileColor: CORRECT COUNT "+correctCount);
+            Log.d(TAG, "checkTileColor: CORRECT COUNT " + correctCount);
             if (correctCount == 3) {
                 correctCount = 0;
                 lifeUpSound.play();
@@ -276,9 +275,9 @@ public class MainActivity extends BaseGameActivity {
             } else {
                 rightTileSound.play();
             }
-        } else{
+        } else {
             wrongCount++;
-            if (wrongCount == 3){
+            if (wrongCount == 3) {
                 wrongCount = 0;
                 lifeDownSound.play();
                 loseLife();
@@ -291,23 +290,12 @@ public class MainActivity extends BaseGameActivity {
 
     private void gainLife() {
         life++;
-        hasGainedLife = !secondsPassed();
+        Log.d(TAG, "gainLife: "+life);
     }
 
     private void loseLife() {
-        if (hasGainedLife){
-            hasGainedLife = false;
-        }
-        else {
-            life--;
-            lifeDownSound.play();
-//            hasGainedLife = false;
-        }
-    }
-
-    private boolean secondsPassed(){
-        if (hasGainedLife) hasGainedLife = !(count % 10 == 0);
-        return count % 10 == 0;
+        life--;
+        Log.d(TAG, "loseLife: "+life);
     }
 
     private void changeTileColor() {
