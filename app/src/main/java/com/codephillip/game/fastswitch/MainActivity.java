@@ -246,7 +246,7 @@ public class MainActivity extends BaseGameActivity {
                 if (count == 0) {
                     pScene.unregisterUpdateHandler(pTimerHandler);
                     Log.d(TAG, "onTimePassed: FINISHED");
-                    GameOver();
+                    gameOver();
                 }
                 pTimerHandler.reset();
             }
@@ -255,7 +255,7 @@ public class MainActivity extends BaseGameActivity {
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 
-    private void GameOver() {
+    private void gameOver() {
         gameSound.stop();
     }
 
@@ -295,6 +295,7 @@ public class MainActivity extends BaseGameActivity {
 
     private void loseLife() {
         life--;
+        if (life <= 0) gameOver();
         Log.d(TAG, "loseLife: "+life);
     }
 
