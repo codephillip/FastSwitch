@@ -43,7 +43,7 @@ public class MainActivity extends BaseGameActivity {
             Color.GREEN, Color.BLACK, Color.BLUE, Color.YELLOW, Color.RED, Color.CYAN
     };
     private Music gameSound;
-    private Sound wrongTileSound;
+    private Sound wrongTileSound, rightTileSound, lifeUpSound;
     private int count=120;
     private double colourNumber = 1.0;
     //todo create enum of 6 colours and switch to respond
@@ -66,8 +66,10 @@ public class MainActivity extends BaseGameActivity {
         backgroundTextureAtlas.load();
 
         try {
-            gameSound = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/game_music.ogg");
+            gameSound = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/game_music.mp3");
             wrongTileSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/wrong_tile.ogg");
+            rightTileSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/right_tile.ogg");
+            lifeUpSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/life_up.ogg");
             gameSound.setLooping(true);
         } catch (IOException e) {
             e.printStackTrace();
@@ -100,16 +102,12 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         Log.d(TAG, "onAreaTouched: " + this.getColor());
                         Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
-                        if (this.getColor().getBlue() == 1.0)
-                            wrongTileSound.play();
-
+                        checkTileColor(this);
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
         };
-
-
 
         rectangle2 = new Rectangle(initialX + RECTANGLE_DIMENSIONS + 20, initialY, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager()) {
             @Override
@@ -120,9 +118,7 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         Log.d(TAG, "onAreaTouched: " + this.getColor());
                         Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
-                        if (this.getColor().getBlue() == 1.0)
-                            wrongTileSound.play();
-
+                        checkTileColor(this);
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -138,14 +134,13 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         Log.d(TAG, "onAreaTouched: " + this.getColor());
                         Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
-                        if (this.getColor().getBlue() == 1.0)
-                            wrongTileSound.play();
-
+                        checkTileColor(this);
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
         };
+
 
         //top 3 boxes
         rectangle4 = new Rectangle(initialX, initialY + RECTANGLE_DIMENSIONS + 20, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager()) {
@@ -157,9 +152,7 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         Log.d(TAG, "onAreaTouched: " + this.getColor());
                         Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
-                        if (this.getColor().getBlue() == 1.0)
-                            wrongTileSound.play();
-
+                        checkTileColor(this);
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -175,9 +168,7 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         Log.d(TAG, "onAreaTouched: " + this.getColor());
                         Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
-                        if (this.getColor().getBlue() == 1.0)
-                            wrongTileSound.play();
-
+                        checkTileColor(this);
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -193,9 +184,7 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         Log.d(TAG, "onAreaTouched: " + this.getColor());
                         Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
-                        if (this.getColor().getBlue() == 1.0)
-                            wrongTileSound.play();
-
+                        checkTileColor(this);
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -229,7 +218,7 @@ public class MainActivity extends BaseGameActivity {
             public void onTimePassed(TimerHandler pTimerHandler) {
                 count--;
                 try {
-                    changeShapeColor();
+                    changeTileColor();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
@@ -246,13 +235,20 @@ public class MainActivity extends BaseGameActivity {
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 
-    private void changeShapeColor() {
-        rectangle1.setColor(COLOUR[randInt(0, 6)]);
-        rectangle2.setColor(COLOUR[randInt(0, 6)]);
-        rectangle3.setColor(COLOUR[randInt(0, 6)]);
-        rectangle4.setColor(COLOUR[randInt(0, 6)]);
-        rectangle5.setColor(COLOUR[randInt(0, 6)]);
-        rectangle6.setColor(COLOUR[randInt(0, 6)]);
+    private void checkTileColor(Rectangle rectangle) {
+        if (rectangle.getColor().getBlue() == 1.0)
+            rightTileSound.play();
+        else
+            wrongTileSound.play();
+    }
+
+    private void changeTileColor() {
+        rectangle1.setColor(COLOUR[randInt(0, 5)]);
+        rectangle2.setColor(COLOUR[randInt(0, 5)]);
+        rectangle3.setColor(COLOUR[randInt(0, 5)]);
+        rectangle4.setColor(COLOUR[randInt(0, 5)]);
+        rectangle5.setColor(COLOUR[randInt(0, 5)]);
+        rectangle6.setColor(COLOUR[randInt(0, 5)]);
     }
 
     public static int randInt(int min, int max) {
