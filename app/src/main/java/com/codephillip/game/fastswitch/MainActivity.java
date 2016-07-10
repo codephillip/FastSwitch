@@ -227,13 +227,17 @@ public class MainActivity extends BaseGameActivity {
                 if(count==0){
                     pScene.unregisterUpdateHandler(pTimerHandler);
                     Log.d(TAG, "onTimePassed: FINISHED");
-                    //GameOver();
+                    GameOver();
                 }
                 pTimerHandler.reset();
             }
         }));
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    private void GameOver() {
+        gameSound.stop();
     }
 
     private void checkTileColor(Rectangle rectangle) {
