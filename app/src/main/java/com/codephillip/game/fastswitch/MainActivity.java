@@ -7,7 +7,8 @@ import org.andengine.audio.music.MusicFactory;
 import org.andengine.audio.sound.Sound;
 import org.andengine.audio.sound.SoundFactory;
 import org.andengine.engine.camera.Camera;
-import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
@@ -23,7 +24,6 @@ import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.adt.color.Color;
 
 import java.io.IOException;
-import java.util.Random;
 
 public class MainActivity extends BaseGameActivity {
 //        implements IOnSceneTouchListener {
@@ -41,13 +41,15 @@ public class MainActivity extends BaseGameActivity {
     private ITextureRegion backgroundTextureRegion;
     private Sprite backgroundSprite;
     private static final Color[] COLOUR = {
-            Color.GREEN, Color.BLACK,Color.BLUE,Color.YELLOW,Color.RED, Color.CYAN
+            Color.GREEN, Color.BLACK, Color.BLUE, Color.YELLOW, Color.RED, Color.CYAN
     };
     private static float timeElapsed = 0.036324397f;
     private static int myRandomNumber = 0;
     private Music gameSound;
     private Sound wrongTileSound;
     private static int x = 0;
+    private int count=60;
+
 
 
     @Override
@@ -81,7 +83,7 @@ public class MainActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException {
         Scene scene = new Scene();
-//        gameSound.play();
+        gameSound.play();
         pOnCreateSceneCallback.onCreateSceneFinished(scene);
     }
 
@@ -93,18 +95,15 @@ public class MainActivity extends BaseGameActivity {
         backgroundSprite = new Sprite(positionX, positionY, backgroundTextureRegion, mEngine.getVertexBufferObjectManager());
         pScene.attachChild(backgroundSprite);
 
-        final int rectangleDimension = 80;
-        final int initialPosition = (int) (rectangleDimension * 0.5f);
-
-        rectangle1 = new Rectangle(initialX, initialY, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager()){
+        rectangle1 = new Rectangle(initialX, initialY, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                switch(pSceneTouchEvent.getAction()){
+                switch (pSceneTouchEvent.getAction()) {
                     case TouchEvent.ACTION_DOWN:
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.d(TAG, "onAreaTouched: "+ this.getColor());
-                        Log.d(TAG, "onAreaTouched: "+ this.getColor().getBlue());
+                        Log.d(TAG, "onAreaTouched: " + this.getColor());
+                        Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
                         if (this.getColor().getBlue() == 1.0)
                             wrongTileSound.play();
 
@@ -117,21 +116,21 @@ public class MainActivity extends BaseGameActivity {
         rectangle1.setColor(Color.BLUE);
 
 
-        rectangle2 = new Rectangle(initialX+RECTANGLE_DIMENSIONS+20, initialY, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager());
+        rectangle2 = new Rectangle(initialX + RECTANGLE_DIMENSIONS + 20, initialY, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager());
         rectangle2.setColor(Color.RED);
 
-        rectangle3 = new Rectangle(initialX+(RECTANGLE_DIMENSIONS*2)+(20*2), initialY, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager());
+        rectangle3 = new Rectangle(initialX + (RECTANGLE_DIMENSIONS * 2) + (20 * 2), initialY, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager());
         rectangle3.setColor(Color.GREEN);
 
 
         //BOTTOM=============================================================
-        rectangle4 = new Rectangle(initialX, initialY+RECTANGLE_DIMENSIONS+20, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager());
+        rectangle4 = new Rectangle(initialX, initialY + RECTANGLE_DIMENSIONS + 20, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager());
         rectangle4.setColor(Color.BLACK);
 
-        rectangle5 = new Rectangle(initialX+RECTANGLE_DIMENSIONS+20, initialY+RECTANGLE_DIMENSIONS+20, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager());
+        rectangle5 = new Rectangle(initialX + RECTANGLE_DIMENSIONS + 20, initialY + RECTANGLE_DIMENSIONS + 20, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager());
         rectangle5.setColor(Color.YELLOW);
 
-        rectangle6 = new Rectangle(initialX+(RECTANGLE_DIMENSIONS*2)+(20*2), initialY+RECTANGLE_DIMENSIONS+20, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager());
+        rectangle6 = new Rectangle(initialX + (RECTANGLE_DIMENSIONS * 2) + (20 * 2), initialY + RECTANGLE_DIMENSIONS + 20, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager());
         rectangle6.setColor(Color.CYAN);
 
 
@@ -149,59 +148,49 @@ public class MainActivity extends BaseGameActivity {
         pScene.registerTouchArea(rectangle6);
         pScene.registerTouchArea(backgroundSprite);
 
-        pScene.registerUpdateHandler(new IUpdateHandler() {
+        pScene.registerUpdateHandler(new TimerHandler(1f, true, new ITimerCallback() {
             @Override
-            public void onUpdate(float pSecondsElapsed) {
-                Random random = new Random();
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                count--;
+                Log.d(TAG, "onTimePassed: COUNT "+pTimerHandler);
                 x = randInt(0, 6);
 //                int x = myRandomNumber;
-                Log.d(TAG, "onUpdate: " + pSecondsElapsed + " random " + x);
+                Log.d(TAG, "onUpdate: Randon Number" + x);
+                try {
 
-                Log.d(TAG, "onUpdate: Changing colour" + x);
-                    try {
+                    if (x == 6) x = 0;
+                    rectangle1.setColor(COLOUR[x]);
+                    x++;
+                    rectangle2.setColor(COLOUR[x]);
+                    if (x == 6) x = 0;
+                    else x++;
+//                    x = (x == 6) ? 0 : x++;
+                    rectangle3.setColor(COLOUR[x]);
+                    x++;
+                    Log.d(TAG, "onUpdate: Changing colour" + (x));
+                    rectangle4.setColor(COLOUR[x]);
+                    x++;
+                    rectangle5.setColor(COLOUR[x]);
+                    x++;
+                    rectangle6.setColor(COLOUR[x]);
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
 
-                        if (pSecondsElapsed > 0.055f){
-                            rectangle1.setColor(COLOUR[x]);
-                            x++;
-                            rectangle2.setColor(COLOUR[x]);
-                            if (x == 3)x = 0;
-                            x++;
-                            rectangle3.setColor(COLOUR[x]);
-                            x++;
-                            Log.d(TAG, "onUpdate: Changing colour" + (x));
-                            rectangle4.setColor(COLOUR[x]);
-                            x++;
-                            rectangle5.setColor(COLOUR[x]);
-                            x++;
-                            rectangle6.setColor(COLOUR[x]);
-                        }
-                    } catch (ArrayIndexOutOfBoundsException e) {
-                        e.printStackTrace();
-                    }
-
+                if(count==0){
+                    pScene.unregisterUpdateHandler(pTimerHandler);
+                    Log.d(TAG, "onTimePassed: FINISHED");
+                    //GameOver();
+                }
+                pTimerHandler.reset();
             }
-
-            @Override
-            public void reset() {
-                Log.d(TAG, "reset: ###RESETTING");
-            }
-        });
+        }));
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 
-//    @Override
-//    public boolean onSceneTouchEvent(Scene pScene, TouchEvent pSceneTouchEvent) {
-//        if (pSceneTouchEvent.getAction() == MotionEvent.ACTION_DOWN)
-//            pScene.detachChild(this.rectangle1);
-//            Toast.makeText(getBaseContext(), "Touch ", Toast.LENGTH_SHORT).show();
-//        if (pSceneTouchEvent.getAction() == MotionEvent.ACTION_UP)
-//            Toast.makeText(getBaseContext(), "Touch  up", Toast.LENGTH_SHORT).show();
-//        return false;
-//    }
-
     public static int randInt(int min, int max) {
-        int randomNum = min + (int)(Math.random() * ((max - min) + 1));
+        int randomNum = min + (int) (Math.random() * ((max - min) + 1));
         Log.d("RANDOM", String.valueOf(randomNum));
         return randomNum;
     }
