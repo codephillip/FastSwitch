@@ -46,6 +46,7 @@ public class MainActivity extends BaseGameActivity {
     private Sound wrongTileSound, rightTileSound, lifeUpSound;
     private int count=120;
     private double colourNumber = 1.0;
+    private float switchSpeed = 0.8f;
     //todo create enum of 6 colours and switch to respond
 
     @Override
@@ -213,7 +214,7 @@ public class MainActivity extends BaseGameActivity {
         pScene.registerTouchArea(rectangle6);
         pScene.registerTouchArea(backgroundSprite);
 
-        pScene.registerUpdateHandler(new TimerHandler(0.5f, true, new ITimerCallback() {
+        pScene.registerUpdateHandler(new TimerHandler(switchSpeed, true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
                 count--;
