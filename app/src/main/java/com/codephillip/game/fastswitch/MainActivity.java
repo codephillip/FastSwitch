@@ -43,7 +43,7 @@ public class MainActivity extends BaseGameActivity {
             Color.GREEN, Color.BLACK, Color.BLUE, Color.YELLOW, Color.RED, Color.CYAN
     };
     private Music gameSound;
-    private Sound wrongTileSound, rightTileSound, lifeUpSound;
+    private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound;
     private int count=120;
     private double colourNumber = 1.0;
     private float switchSpeed = 0.8f;
@@ -86,6 +86,7 @@ public class MainActivity extends BaseGameActivity {
             wrongTileSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/wrong_tile.ogg");
             rightTileSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/right_tile.ogg");
             lifeUpSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/life_up.ogg");
+            lifeDownSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/life_down.ogg");
             gameSound.setLooping(true);
         } catch (IOException e) {
             e.printStackTrace();
@@ -256,6 +257,10 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void checkTileColor(Rectangle rectangle) {
+        /*hit correct tile 3 times to gain life
+        * hitting wrong time erases your correctCount
+        * hit the wrong tile 3 time, penalty is to lose a life
+        * */
         if (rectangle.getColor().getBlue() == 1.0) {
             correctCount++;
             Log.d(TAG, "checkTileColor: CORRECT COUNT "+correctCount);
@@ -266,7 +271,13 @@ public class MainActivity extends BaseGameActivity {
                 rightTileSound.play();
             }
         } else{
-            wrongTileSound.play();
+            wrongCount++;
+            if (wrongCount == 3){
+                wrongCount = 0;
+                lifeDownSound.play();
+            } else {
+                wrongTileSound.play();
+            }
             correctCount = 0;
         }
     }
