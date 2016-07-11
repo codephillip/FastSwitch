@@ -46,7 +46,7 @@ public class MainActivity extends BaseGameActivity {
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound;
     private int count = 120;
     private double colourNumber = 1.0;
-    private float switchSpeed = 0.8f;
+    private float switchSpeed = 1.1f;
     //todo create enum of 6 colours and switch to respond
 
     private static int correctCount = 0;
@@ -79,8 +79,8 @@ public class MainActivity extends BaseGameActivity {
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws IOException {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
-        backgroundTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 1024, 1024, TextureOptions.DEFAULT);
-        backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, this, "parallax_background_layer_back.png", 0, 0);
+        backgroundTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 1024, 512, TextureOptions.DEFAULT);
+        backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, this, "background.png", 0, 0);
         backgroundTextureAtlas.load();
 
         try {
@@ -100,6 +100,7 @@ public class MainActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException {
         Scene scene = new Scene();
+//        scene.setBackground(new Background(Color.WHITE));
         gameSound.play();
         pOnCreateSceneCallback.onCreateSceneFinished(scene);
     }
@@ -230,7 +231,6 @@ public class MainActivity extends BaseGameActivity {
         pScene.registerTouchArea(rectangle4);
         pScene.registerTouchArea(rectangle5);
         pScene.registerTouchArea(rectangle6);
-        pScene.registerTouchArea(backgroundSprite);
 
         pScene.registerUpdateHandler(new TimerHandler(switchSpeed, true, new ITimerCallback() {
             @Override
@@ -268,7 +268,7 @@ public class MainActivity extends BaseGameActivity {
         if (rectangle.getColor().getBlue() == 1.0) {
             correctCount++;
             Log.d(TAG, "checkTileColor: CORRECT COUNT " + correctCount);
-            if (correctCount == 3) {
+            if (correctCount == 2) {
                 correctCount = 0;
                 lifeUpSound.play();
                 gainLife();
