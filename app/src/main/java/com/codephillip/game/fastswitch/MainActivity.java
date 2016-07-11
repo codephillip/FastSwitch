@@ -15,7 +15,10 @@ import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -42,6 +45,13 @@ public class MainActivity extends BaseGameActivity {
     private BitmapTextureAtlas fruitTextureAtlas;
     private ITiledTextureRegion fruitTiledTextureRegion;
     private AnimatedSprite animatedSprite1, animatedSprite2, animatedSprite3, animatedSprite4, animatedSprite5, animatedSprite6;
+
+    private BitmapTextureAtlas heartTextureAtlas;
+    private ITextureRegion heartITextureRegion;
+    private Sprite heartSprite;
+
+    private Font font;
+    private Text timeLeftText;
 
     private static final int[] tileNumbers = {0, 1, 2, 3, 4, 5};
     private Music gameSound;
@@ -73,7 +83,7 @@ public class MainActivity extends BaseGameActivity {
 
     @Override
     public synchronized void onResumeGame() {
-        gameSound.resume();
+//        gameSound.resume();
         super.onResumeGame();
     }
 
@@ -87,6 +97,14 @@ public class MainActivity extends BaseGameActivity {
         fruitTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 414, 276, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         fruitTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(fruitTextureAtlas,this, "spritesheet.png", 0, 0, 3, 2);
         fruitTextureAtlas.load();
+
+        heartTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 32, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        heartITextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(heartTextureAtlas,this, "heart.png", 0, 0);
+        heartTextureAtlas.load();
+
+        font = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
+                "fnt/game_font_7.ttf", 46, true, android.graphics.Color.BLACK);
+        font.load();
 
         try {
             gameSound = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/game_music.mp3");
@@ -106,7 +124,7 @@ public class MainActivity extends BaseGameActivity {
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException {
         Scene scene = new Scene();
 //        scene.setBackground(new Background(Color.WHITE));
-        gameSound.play();
+//        gameSound.play();
         pOnCreateSceneCallback.onCreateSceneFinished(scene);
     }
 
@@ -117,6 +135,9 @@ public class MainActivity extends BaseGameActivity {
         final float positionY = HEIGHT * 0.5f;
         backgroundSprite = new Sprite(positionX, positionY, backgroundTextureRegion, mEngine.getVertexBufferObjectManager());
         pScene.attachChild(backgroundSprite);
+
+        heartSprite = new Sprite(positionX, positionY+215, heartITextureRegion, mEngine.getVertexBufferObjectManager());
+        pScene.attachChild(heartSprite);
 
         animatedSprite1 = new AnimatedSprite(initialX, initialY, fruitTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
@@ -207,6 +228,10 @@ public class MainActivity extends BaseGameActivity {
             }
         };
 
+        timeLeftText = new Text(0, 0, font, "TIME: 00", 50, this.getVertexBufferObjectManager());
+        pScene.attachChild(timeLeftText);
+        timeLeftText.setPosition(WIDTH/2 - (timeLeftText.getWidth()/2) - 90, HEIGHT/2 - (timeLeftText.getHeight()/2) +240);
+
         pScene.attachChild(animatedSprite1);
         pScene.attachChild(animatedSprite2);
         pScene.attachChild(animatedSprite3);
@@ -228,6 +253,7 @@ public class MainActivity extends BaseGameActivity {
                 try {
                     Log.d(TAG, "onTimePassed: Seconds#" + (count % 5 == 0));
                     changeSpriteTile();
+                    changeTimeLeft();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
@@ -242,6 +268,10 @@ public class MainActivity extends BaseGameActivity {
         }));
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    private void changeTimeLeft() {
+        timeLeftText.setText("TIME: "+count);
     }
 
     private void gameOver() {
