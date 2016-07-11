@@ -68,7 +68,7 @@ public class MainActivity extends BaseGameActivity {
     private static int correctCount = 0;
     private static int wrongCount = 0;
     private int lives = 5;
-    private int points = 1;
+    private int points = 2;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -248,7 +248,7 @@ public class MainActivity extends BaseGameActivity {
         livesText.setPosition(WIDTH/2 - (livesText.getWidth()/2)+70, HEIGHT/2 - (livesText.getHeight()/2) +240);
         livesText.setText(""+ lives);
 
-        pointsText = new Text(0, 0, font, "1", 5, this.getVertexBufferObjectManager());
+        pointsText = new Text(0, 0, font, "2", 10, this.getVertexBufferObjectManager());
         pScene.attachChild(pointsText);
         pointsText.setPosition(WIDTH/2 - (livesText.getWidth()/2)+230, HEIGHT/2 - (livesText.getHeight()/2) +240);
         pointsText.setText(""+points);
@@ -330,7 +330,9 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void gainPoints() {
-        
+        points += lives*2;
+        pointsText.setText(""+ points);
+//        if ()
     }
 
     private void gainLife() {
