@@ -60,6 +60,7 @@ public class MainActivity extends BaseGameActivity {
     private static final int[] tileNumbers = {0, 1, 2, 3, 4, 5};
     private Music gameSound;
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound;
+    //TODO [REMOVE ON RELEASE]
     private int count = 10;
 //    private int count = 120;
     private float switchSpeed = 1.1f;
@@ -91,7 +92,7 @@ public class MainActivity extends BaseGameActivity {
 
     @Override
     public synchronized void onResumeGame() {
-//        gameSound.resume();
+        gameSound.resume();
         super.onResumeGame();
     }
 
@@ -135,7 +136,7 @@ public class MainActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException {
         Scene scene = new Scene();
-//        gameSound.play();
+        gameSound.play();
         pOnCreateSceneCallback.onCreateSceneFinished(scene);
     }
 
@@ -158,10 +159,10 @@ public class MainActivity extends BaseGameActivity {
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
                     case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.d(TAG, "onAreaTouched: " + this.getColor());
-                        Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
+                        this.setAlpha(1.0f);
                         checkTileColor(this);
                         break;
                 }
@@ -174,10 +175,10 @@ public class MainActivity extends BaseGameActivity {
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
                     case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.d(TAG, "onAreaTouched: " + this.getColor());
-                        Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
+                        this.setAlpha(1.0f);
                         checkTileColor(this);
                         break;
                 }
@@ -190,8 +191,10 @@ public class MainActivity extends BaseGameActivity {
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
                     case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
                         break;
                     case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
                         checkTileColor(this);
                         break;
                 }
@@ -205,8 +208,10 @@ public class MainActivity extends BaseGameActivity {
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
                     case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
                         break;
                     case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
                         checkTileColor(this);
                         break;
                 }
@@ -219,8 +224,10 @@ public class MainActivity extends BaseGameActivity {
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
                     case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
                         break;
                     case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
                         checkTileColor(this);
                         break;
                 }
@@ -233,8 +240,10 @@ public class MainActivity extends BaseGameActivity {
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
                     case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
                         break;
                     case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
                         checkTileColor(this);
                         break;
                 }
