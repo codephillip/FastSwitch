@@ -14,12 +14,14 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
+import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
+import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
 import org.andengine.util.adt.color.Color;
 
@@ -39,6 +41,11 @@ public class MainActivity extends BaseGameActivity {
     private BitmapTextureAtlas backgroundTextureAtlas;
     private ITextureRegion backgroundTextureRegion;
     private Sprite backgroundSprite;
+
+    private BitmapTextureAtlas fruitTextureAtlas;
+    private ITiledTextureRegion fruitTiledTextureRegion;
+    private AnimatedSprite animatedSprite1, animatedSprite2, animatedSprite3, animatedSprite4, animatedSprite5, animatedSprite6;
+
     private static final Color[] COLOUR = {
             Color.GREEN, Color.BLACK, Color.BLUE, Color.YELLOW, Color.RED, Color.CYAN
     };
@@ -51,7 +58,6 @@ public class MainActivity extends BaseGameActivity {
 
     private static int correctCount = 0;
     private static int wrongCount = 0;
-    private boolean hasGainedLife = false;
     private int life = 5;
 
     @Override
@@ -83,6 +89,10 @@ public class MainActivity extends BaseGameActivity {
         backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, this, "background.png", 0, 0);
         backgroundTextureAtlas.load();
 
+        fruitTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 414, 276, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        fruitTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(fruitTextureAtlas,this, "spritesheet.png", 0, 0, 3, 2);
+        fruitTextureAtlas.load();
+
         try {
             gameSound = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/game_music.mp3");
             wrongTileSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/wrong_tile.ogg");
@@ -113,7 +123,7 @@ public class MainActivity extends BaseGameActivity {
         backgroundSprite = new Sprite(positionX, positionY, backgroundTextureRegion, mEngine.getVertexBufferObjectManager());
         pScene.attachChild(backgroundSprite);
 
-        rectangle1 = new Rectangle(initialX, initialY, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager()) {
+        animatedSprite1 = new AnimatedSprite(initialX, initialY, fruitTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
@@ -129,7 +139,7 @@ public class MainActivity extends BaseGameActivity {
             }
         };
 
-        rectangle2 = new Rectangle(initialX + RECTANGLE_DIMENSIONS + 20, initialY, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager()) {
+        animatedSprite2 = new AnimatedSprite(initialX + RECTANGLE_DIMENSIONS + 20, initialY, fruitTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
@@ -145,7 +155,7 @@ public class MainActivity extends BaseGameActivity {
             }
         };
 
-        rectangle3 = new Rectangle(initialX + (RECTANGLE_DIMENSIONS * 2) + (20 * 2), initialY, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager()) {
+        animatedSprite3 = new AnimatedSprite(initialX + (RECTANGLE_DIMENSIONS * 2) + (20 * 2), initialY, fruitTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
@@ -161,9 +171,8 @@ public class MainActivity extends BaseGameActivity {
             }
         };
 
-
-        //top 3 boxes
-        rectangle4 = new Rectangle(initialX, initialY + RECTANGLE_DIMENSIONS + 20, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager()) {
+        //top sprites
+        animatedSprite4 = new AnimatedSprite(initialX, initialY + RECTANGLE_DIMENSIONS + 20, fruitTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
@@ -179,7 +188,7 @@ public class MainActivity extends BaseGameActivity {
             }
         };
 
-        rectangle5 = new Rectangle(initialX + RECTANGLE_DIMENSIONS + 20, initialY + RECTANGLE_DIMENSIONS + 20, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager()) {
+        animatedSprite5 = new AnimatedSprite(initialX + RECTANGLE_DIMENSIONS + 20, initialY + RECTANGLE_DIMENSIONS + 20, fruitTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
@@ -195,7 +204,7 @@ public class MainActivity extends BaseGameActivity {
             }
         };
 
-        rectangle6 = new Rectangle(initialX + (RECTANGLE_DIMENSIONS * 2) + (20 * 2), initialY + RECTANGLE_DIMENSIONS + 20, RECTANGLE_DIMENSIONS, RECTANGLE_DIMENSIONS, mEngine.getVertexBufferObjectManager()) {
+        animatedSprite6 = new AnimatedSprite(initialX + (RECTANGLE_DIMENSIONS * 2) + (20 * 2), initialY + RECTANGLE_DIMENSIONS + 20, fruitTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
@@ -211,26 +220,19 @@ public class MainActivity extends BaseGameActivity {
             }
         };
 
-        rectangle1.setColor(Color.BLUE);
-        rectangle2.setColor(Color.RED);
-        rectangle3.setColor(Color.GREEN);
-        rectangle4.setColor(Color.BLACK);
-        rectangle5.setColor(Color.YELLOW);
-        rectangle6.setColor(Color.CYAN);
+        pScene.attachChild(animatedSprite1);
+        pScene.attachChild(animatedSprite2);
+        pScene.attachChild(animatedSprite3);
+        pScene.attachChild(animatedSprite4);
+        pScene.attachChild(animatedSprite5);
+        pScene.attachChild(animatedSprite6);
 
-        pScene.attachChild(rectangle1);
-        pScene.attachChild(rectangle2);
-        pScene.attachChild(rectangle3);
-        pScene.attachChild(rectangle4);
-        pScene.attachChild(rectangle5);
-        pScene.attachChild(rectangle6);
-
-        pScene.registerTouchArea(rectangle1);
-        pScene.registerTouchArea(rectangle2);
-        pScene.registerTouchArea(rectangle3);
-        pScene.registerTouchArea(rectangle4);
-        pScene.registerTouchArea(rectangle5);
-        pScene.registerTouchArea(rectangle6);
+        pScene.registerTouchArea(animatedSprite1);
+        pScene.registerTouchArea(animatedSprite2);
+        pScene.registerTouchArea(animatedSprite3);
+        pScene.registerTouchArea(animatedSprite4);
+        pScene.registerTouchArea(animatedSprite5);
+        pScene.registerTouchArea(animatedSprite6);
 
         pScene.registerUpdateHandler(new TimerHandler(switchSpeed, true, new ITimerCallback() {
             @Override
@@ -259,7 +261,7 @@ public class MainActivity extends BaseGameActivity {
         gameSound.stop();
     }
 
-    private void checkTileColor(Rectangle rectangle) {
+    private void checkTileColor(AnimatedSprite rectangle) {
         /*hit correct tile 3 times to gain life
         * hitting wrong time erases your correctCount
         * failure to gain life in 5 seconds, penalty is to lose a life
@@ -300,12 +302,12 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void changeTileColor() {
-        rectangle1.setColor(COLOUR[randInt(0, 5)]);
-        rectangle2.setColor(COLOUR[randInt(0, 5)]);
-        rectangle3.setColor(COLOUR[randInt(0, 5)]);
-        rectangle4.setColor(COLOUR[randInt(0, 5)]);
-        rectangle5.setColor(COLOUR[randInt(0, 5)]);
-        rectangle6.setColor(COLOUR[randInt(0, 5)]);
+        animatedSprite1.setCurrentTileIndex(randInt(0, 5));
+        animatedSprite2.setCurrentTileIndex(randInt(0, 5));
+        animatedSprite3.setCurrentTileIndex(randInt(0, 5));
+        animatedSprite4.setCurrentTileIndex(randInt(0, 5));
+        animatedSprite5.setCurrentTileIndex(randInt(0, 5));
+        animatedSprite6.setCurrentTileIndex(randInt(0, 5));
     }
 
     public static int randInt(int min, int max) {
