@@ -50,8 +50,12 @@ public class MainActivity extends BaseGameActivity {
     private ITextureRegion heartITextureRegion;
     private Sprite heartSprite;
 
+    private BitmapTextureAtlas coinTextureAtlas;
+    private ITextureRegion coinITextureRegion;
+    private Sprite coinSprite;
+
     private Font font;
-    private Text timeLeftText, livesText;
+    private Text timeLeftText, livesText, pointsText;
 
     private static final int[] tileNumbers = {0, 1, 2, 3, 4, 5};
     private Music gameSound;
@@ -63,7 +67,8 @@ public class MainActivity extends BaseGameActivity {
 
     private static int correctCount = 0;
     private static int wrongCount = 0;
-    private int life = 5;
+    private int lives = 5;
+    private int points = 1;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -102,6 +107,10 @@ public class MainActivity extends BaseGameActivity {
         heartITextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(heartTextureAtlas,this, "heart.png", 0, 0);
         heartTextureAtlas.load();
 
+        coinTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 32, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        coinITextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(coinTextureAtlas,this, "coin.png", 0, 0);
+        coinTextureAtlas.load();
+
         font = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
                 "fnt/game_font_7.ttf", 46, true, android.graphics.Color.BLACK);
         font.load();
@@ -123,7 +132,6 @@ public class MainActivity extends BaseGameActivity {
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException {
         Scene scene = new Scene();
-//        scene.setBackground(new Background(Color.WHITE));
 //        gameSound.play();
         pOnCreateSceneCallback.onCreateSceneFinished(scene);
     }
@@ -138,6 +146,9 @@ public class MainActivity extends BaseGameActivity {
 
         heartSprite = new Sprite(positionX, positionY+215, heartITextureRegion, mEngine.getVertexBufferObjectManager());
         pScene.attachChild(heartSprite);
+
+        coinSprite = new Sprite(positionX+170, positionY+215, coinITextureRegion, mEngine.getVertexBufferObjectManager());
+        pScene.attachChild(coinSprite);
 
         animatedSprite1 = new AnimatedSprite(initialX, initialY, fruitTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
@@ -235,7 +246,12 @@ public class MainActivity extends BaseGameActivity {
         livesText = new Text(0, 0, font, "3", 5, this.getVertexBufferObjectManager());
         pScene.attachChild(livesText);
         livesText.setPosition(WIDTH/2 - (livesText.getWidth()/2)+70, HEIGHT/2 - (livesText.getHeight()/2) +240);
-        livesText.setText(""+life);
+        livesText.setText(""+ lives);
+
+        pointsText = new Text(0, 0, font, "1", 5, this.getVertexBufferObjectManager());
+        pScene.attachChild(pointsText);
+        pointsText.setPosition(WIDTH/2 - (livesText.getWidth()/2)+230, HEIGHT/2 - (livesText.getHeight()/2) +240);
+        pointsText.setText(""+points);
 
         pScene.attachChild(animatedSprite1);
         pScene.attachChild(animatedSprite2);
@@ -284,10 +300,10 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void checkTileColor(AnimatedSprite animatedSprite) {
-        /*hit correct tile 3 times to gain life
+        /*hit correct tile 3 times to gain lives
         * hitting wrong time erases your correctCount
-        * failure to gain life in 5 seconds, penalty is to lose a life
-        * hit the wrong tile 3 time, penalty is to lose a life
+        * failure to gain lives in 5 seconds, penalty is to lose a lives
+        * hit the wrong tile 3 time, penalty is to lose a lives
         * */
         if (animatedSprite.getCurrentTileIndex() == correctTileNumber) {
             correctCount++;
@@ -296,6 +312,7 @@ public class MainActivity extends BaseGameActivity {
                 correctCount = 0;
                 lifeUpSound.play();
                 gainLife();
+                gainPoints();
             } else {
                 rightTileSound.play();
             }
@@ -312,17 +329,21 @@ public class MainActivity extends BaseGameActivity {
         }
     }
 
+    private void gainPoints() {
+        
+    }
+
     private void gainLife() {
-        life++;
-        livesText.setText(""+life);
-        Log.d(TAG, "gainLife: "+life);
+        lives++;
+        livesText.setText(""+ lives);
+        Log.d(TAG, "gainLife: "+ lives);
     }
 
     private void loseLife() {
-        life--;
-        livesText.setText(""+life);
-        if (life <= 0) gameOver();
-        Log.d(TAG, "loseLife: "+life);
+        lives--;
+        livesText.setText(""+ lives);
+        if (lives <= 0) gameOver();
+        Log.d(TAG, "loseLife: "+ lives);
     }
 
     private void changeSpriteTile() {
