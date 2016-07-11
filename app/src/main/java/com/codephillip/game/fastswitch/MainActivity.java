@@ -60,7 +60,8 @@ public class MainActivity extends BaseGameActivity {
     private static final int[] tileNumbers = {0, 1, 2, 3, 4, 5};
     private Music gameSound;
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound;
-    private int count = 120;
+    private int count = 10;
+//    private int count = 120;
     private float switchSpeed = 1.1f;
     private int correctTileNumber = 0;
     //todo create enum of 6 colours and switch to respond
@@ -69,6 +70,8 @@ public class MainActivity extends BaseGameActivity {
     private static int wrongCount = 0;
     private int lives = 5;
     private int points = 2;
+    private int textCount = 2;
+    private int pointsTextYIncrement = 20;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -250,7 +253,7 @@ public class MainActivity extends BaseGameActivity {
 
         pointsText = new Text(0, 0, font, "2", 10, this.getVertexBufferObjectManager());
         pScene.attachChild(pointsText);
-        pointsText.setPosition(WIDTH/2 - (livesText.getWidth()/2)+230, HEIGHT/2 - (livesText.getHeight()/2) +240);
+        pointsText.setPosition(WIDTH/2 - (livesText.getWidth()/2)+240, HEIGHT/2 - (livesText.getHeight()/2) +240);
         pointsText.setText(""+points);
 
         pScene.attachChild(animatedSprite1);
@@ -332,7 +335,12 @@ public class MainActivity extends BaseGameActivity {
     private void gainPoints() {
         points += lives*2;
         pointsText.setText(""+ points);
-//        if ()
+        if (pointsText.getText().toString().length() > textCount){
+            pointsText.setX(WIDTH/2 - (livesText.getWidth()/2)+230+pointsTextYIncrement);
+            pointsTextYIncrement += 35;
+            textCount += 1;
+        }
+        Log.d(TAG, "gainPoints: count"+pointsText.getText().toString().length());
     }
 
     private void gainLife() {
