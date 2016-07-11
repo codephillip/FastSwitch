@@ -51,7 +51,7 @@ public class MainActivity extends BaseGameActivity {
     private Sprite heartSprite;
 
     private Font font;
-    private Text timeLeftText;
+    private Text timeLeftText, livesText;
 
     private static final int[] tileNumbers = {0, 1, 2, 3, 4, 5};
     private Music gameSound;
@@ -228,9 +228,14 @@ public class MainActivity extends BaseGameActivity {
             }
         };
 
-        timeLeftText = new Text(0, 0, font, "TIME: 00", 50, this.getVertexBufferObjectManager());
+        timeLeftText = new Text(0, 0, font, "TIME: 00", 15, this.getVertexBufferObjectManager());
         pScene.attachChild(timeLeftText);
         timeLeftText.setPosition(WIDTH/2 - (timeLeftText.getWidth()/2) - 90, HEIGHT/2 - (timeLeftText.getHeight()/2) +240);
+
+        livesText = new Text(0, 0, font, "3", 5, this.getVertexBufferObjectManager());
+        pScene.attachChild(livesText);
+        livesText.setPosition(WIDTH/2 - (livesText.getWidth()/2)+70, HEIGHT/2 - (livesText.getHeight()/2) +240);
+        livesText.setText(""+life);
 
         pScene.attachChild(animatedSprite1);
         pScene.attachChild(animatedSprite2);
@@ -309,11 +314,13 @@ public class MainActivity extends BaseGameActivity {
 
     private void gainLife() {
         life++;
+        livesText.setText(""+life);
         Log.d(TAG, "gainLife: "+life);
     }
 
     private void loseLife() {
         life--;
+        livesText.setText(""+life);
         if (life <= 0) gameOver();
         Log.d(TAG, "loseLife: "+life);
     }
