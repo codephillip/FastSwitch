@@ -12,7 +12,6 @@ import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
-import org.andengine.entity.primitive.Rectangle;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
@@ -23,7 +22,6 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegion
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
 import org.andengine.ui.activity.BaseGameActivity;
-import org.andengine.util.adt.color.Color;
 
 import java.io.IOException;
 
@@ -36,7 +34,6 @@ public class MainActivity extends BaseGameActivity {
     private float initialX = 165;
     private float initialY = 120;
     private final int RECTANGLE_DIMENSIONS = 200;
-    private static Rectangle rectangle1, rectangle2, rectangle3, rectangle4, rectangle5, rectangle6;
 
     private BitmapTextureAtlas backgroundTextureAtlas;
     private ITextureRegion backgroundTextureRegion;
@@ -46,14 +43,12 @@ public class MainActivity extends BaseGameActivity {
     private ITiledTextureRegion fruitTiledTextureRegion;
     private AnimatedSprite animatedSprite1, animatedSprite2, animatedSprite3, animatedSprite4, animatedSprite5, animatedSprite6;
 
-    private static final Color[] COLOUR = {
-            Color.GREEN, Color.BLACK, Color.BLUE, Color.YELLOW, Color.RED, Color.CYAN
-    };
+    private static final int[] tileNumbers = {0, 1, 2, 3, 4, 5};
     private Music gameSound;
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound;
     private int count = 120;
-    private double colourNumber = 1.0;
     private float switchSpeed = 1.1f;
+    private int correctTileNumber = 0;
     //todo create enum of 6 colours and switch to respond
 
     private static int correctCount = 0;
@@ -162,8 +157,6 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_DOWN:
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.d(TAG, "onAreaTouched: " + this.getColor());
-                        Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
                         checkTileColor(this);
                         break;
                 }
@@ -179,8 +172,6 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_DOWN:
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.d(TAG, "onAreaTouched: " + this.getColor());
-                        Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
                         checkTileColor(this);
                         break;
                 }
@@ -195,8 +186,6 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_DOWN:
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.d(TAG, "onAreaTouched: " + this.getColor());
-                        Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
                         checkTileColor(this);
                         break;
                 }
@@ -211,8 +200,6 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_DOWN:
                         break;
                     case TouchEvent.ACTION_UP:
-                        Log.d(TAG, "onAreaTouched: " + this.getColor());
-                        Log.d(TAG, "onAreaTouched: " + this.getColor().getBlue());
                         checkTileColor(this);
                         break;
                 }
@@ -240,7 +227,7 @@ public class MainActivity extends BaseGameActivity {
                 count--;
                 try {
                     Log.d(TAG, "onTimePassed: Seconds#" + (count % 5 == 0));
-                    changeTileColor();
+                    changeSpriteTile();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
@@ -261,13 +248,13 @@ public class MainActivity extends BaseGameActivity {
         gameSound.stop();
     }
 
-    private void checkTileColor(AnimatedSprite rectangle) {
+    private void checkTileColor(AnimatedSprite animatedSprite) {
         /*hit correct tile 3 times to gain life
         * hitting wrong time erases your correctCount
         * failure to gain life in 5 seconds, penalty is to lose a life
         * hit the wrong tile 3 time, penalty is to lose a life
         * */
-        if (rectangle.getColor().getBlue() == 1.0) {
+        if (animatedSprite.getCurrentTileIndex() == correctTileNumber) {
             correctCount++;
             Log.d(TAG, "checkTileColor: CORRECT COUNT " + correctCount);
             if (correctCount == 2) {
@@ -301,7 +288,7 @@ public class MainActivity extends BaseGameActivity {
         Log.d(TAG, "loseLife: "+life);
     }
 
-    private void changeTileColor() {
+    private void changeSpriteTile() {
         animatedSprite1.setCurrentTileIndex(randInt(0, 5));
         animatedSprite2.setCurrentTileIndex(randInt(0, 5));
         animatedSprite3.setCurrentTileIndex(randInt(0, 5));
