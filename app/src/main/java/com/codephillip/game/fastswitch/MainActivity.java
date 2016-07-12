@@ -177,7 +177,7 @@ public class MainActivity extends BaseGameActivity {
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
         };
-        explosionAnimatedSprite.animate(100);
+//        explosionAnimatedSprite.animate(100);
 
         animatedSprite1 = new AnimatedSprite(initialX, initialY, fruitTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
@@ -189,6 +189,7 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
+                        animateExplosion();
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -327,6 +328,10 @@ public class MainActivity extends BaseGameActivity {
         }));
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    private void animateExplosion() {
+        explosionAnimatedSprite.animate(100, false);
     }
 
     private void changeTimeLeft() {
