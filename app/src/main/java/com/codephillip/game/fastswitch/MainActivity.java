@@ -189,6 +189,7 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
+                        attachExplosionAnimation();
                         animateExplosion();
                         break;
                 }
@@ -328,6 +329,17 @@ public class MainActivity extends BaseGameActivity {
         }));
 
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    private void attachExplosionAnimation() {
+        // Get the scene coordinates of the apple as an array.
+        float[] coodinates = {explosionAnimatedSprite.getX(), explosionAnimatedSprite.getY()};
+// Convert the the scene coordinates of the apple to the local corrdinates of the plate.
+        float[] localCoordinates = animatedSprite1.convertSceneCoordinatesToLocalCoordinates(coodinates);
+// Attach and set position of apple
+        explosionAnimatedSprite.setPosition(localCoordinates[0], localCoordinates[1]);
+        explosionAnimatedSprite.detachSelf();
+        animatedSprite1.attachChild(explosionAnimatedSprite);
     }
 
     private void animateExplosion() {
