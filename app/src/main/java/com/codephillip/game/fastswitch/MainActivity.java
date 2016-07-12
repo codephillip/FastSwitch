@@ -61,8 +61,8 @@ public class MainActivity extends BaseGameActivity {
     private Music gameSound;
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound;
     //TODO [REMOVE ON RELEASE]
-    private int count = 10;
-//    private int count = 120;
+//    private int count = 10;
+    private int count = 120;
     private float switchSpeed = 1.1f;
     private int correctTileNumber = 0;
     //todo create enum of 6 colours and switch to respond
@@ -314,30 +314,29 @@ public class MainActivity extends BaseGameActivity {
     private void checkTileColor(AnimatedSprite animatedSprite) {
         /*hit correct tile 3 times to gain lives
         * hitting wrong time erases your correctCount
-        * failure to gain lives in 5 seconds, penalty is to lose a lives
         * hit the wrong tile 3 time, penalty is to lose a lives
         * */
         if (animatedSprite.getCurrentTileIndex() == correctTileNumber) {
             correctCount++;
             Log.d(TAG, "checkTileColor: CORRECT COUNT " + correctCount);
-            if (correctCount == 2) {
+            if (correctCount == 5) {
                 correctCount = 0;
                 lifeUpSound.play();
                 gainLife();
-                gainPoints();
             } else {
+                gainPoints();
                 rightTileSound.play();
             }
         } else {
             wrongCount++;
             if (wrongCount == 3) {
                 wrongCount = 0;
+                correctCount = 0;
                 lifeDownSound.play();
                 loseLife();
             } else {
                 wrongTileSound.play();
             }
-            correctCount = 0;
         }
     }
 
