@@ -189,7 +189,7 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
-                        attachExplosionAnimation();
+                        attachExplosionAnimation(this);
                         animateExplosion();
                         break;
                 }
@@ -207,6 +207,8 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
+                        attachExplosionAnimation(this);
+                        animateExplosion();
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -331,15 +333,15 @@ public class MainActivity extends BaseGameActivity {
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 
-    private void attachExplosionAnimation() {
-        // Get the scene coordinates of the apple as an array.
-        float[] coodinates = {animatedSprite1.getX(), animatedSprite1.getY()};
-// Convert the the scene coordinates of the apple to the local corrdinates of the plate.
-        float[] localCoordinates = animatedSprite1.convertSceneCoordinatesToLocalCoordinates(coodinates);
-// Attach and set position of apple
+    private void attachExplosionAnimation(AnimatedSprite animatedSprite) {
+        // Get the scene coordinates of the animatedSprite as an array.
+        float[] coodinates = {animatedSprite.getX(), animatedSprite.getY()};
+        // Convert the the scene coordinates of the animatedSprite to the local corrdinates of the explosionAnimatedSprite.
+        float[] localCoordinates = animatedSprite.convertSceneCoordinatesToLocalCoordinates(coodinates);
+        // Attach and set position of explosionAnimatedSprite
         explosionAnimatedSprite.setPosition(localCoordinates[0], localCoordinates[1]);
         explosionAnimatedSprite.detachSelf();
-        animatedSprite1.attachChild(explosionAnimatedSprite);
+        animatedSprite.attachChild(explosionAnimatedSprite);
     }
 
     private void animateExplosion() {
