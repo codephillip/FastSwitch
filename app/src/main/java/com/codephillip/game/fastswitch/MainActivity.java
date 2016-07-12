@@ -112,7 +112,7 @@ public class MainActivity extends BaseGameActivity {
         fruitTextureAtlas.load();
 
         explosionTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 768, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        explosionTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionTextureAtlas,this, "explosion.png", 0, 0, 3, 4);
+        explosionTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionTextureAtlas,this, "good_explosion.png", 0, 0, 3, 4);
         explosionTextureAtlas.load();
 
         heartTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 32, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -162,21 +162,8 @@ public class MainActivity extends BaseGameActivity {
         coinSprite = new Sprite(positionX+170, positionY+215, coinITextureRegion, mEngine.getVertexBufferObjectManager());
         pScene.attachChild(coinSprite);
 
-        explosionAnimatedSprite = new AnimatedSprite(0, 0, explosionTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
-            @Override
-            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                switch (pSceneTouchEvent.getAction()) {
-                    case TouchEvent.ACTION_DOWN:
-                        this.setAlpha(0.5f);
-                        break;
-                    case TouchEvent.ACTION_UP:
-                        this.setAlpha(1.0f);
-                        checkTileColor(this);
-                        break;
-                }
-                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-            }
-        };
+        explosionAnimatedSprite = new AnimatedSprite(0, 0, explosionTiledTextureRegion, mEngine.getVertexBufferObjectManager());
+        explosionAnimatedSprite.setAlpha(0.5f);
 //        explosionAnimatedSprite.animate(100);
 
         animatedSprite1 = new AnimatedSprite(initialX, initialY, fruitTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
@@ -225,6 +212,8 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
+                        attachExplosionAnimation(this);
+                        animateExplosion();
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -242,6 +231,8 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
+                        attachExplosionAnimation(this);
+                        animateExplosion();
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -258,6 +249,8 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
+                        attachExplosionAnimation(this);
+                        animateExplosion();
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -274,6 +267,8 @@ public class MainActivity extends BaseGameActivity {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
+                        attachExplosionAnimation(this);
+                        animateExplosion();
                         break;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
