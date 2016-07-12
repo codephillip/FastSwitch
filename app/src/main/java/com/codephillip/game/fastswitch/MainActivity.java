@@ -124,7 +124,7 @@ public class MainActivity extends BaseGameActivity {
         coinTextureAtlas.load();
 
         font = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
-                "fnt/game_font_7.ttf", 46, true, android.graphics.Color.BLACK);
+                "fnt/pipedream.ttf", 46, true, android.graphics.Color.BLACK);
         font.load();
 
         try {
@@ -162,7 +162,7 @@ public class MainActivity extends BaseGameActivity {
         coinSprite = new Sprite(positionX+170, positionY+215, coinITextureRegion, mEngine.getVertexBufferObjectManager());
         pScene.attachChild(coinSprite);
 
-        explosionAnimatedSprite = new AnimatedSprite(initialX, initialY+20, explosionTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
+        explosionAnimatedSprite = new AnimatedSprite(0, 0, explosionTiledTextureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
@@ -333,7 +333,7 @@ public class MainActivity extends BaseGameActivity {
 
     private void attachExplosionAnimation() {
         // Get the scene coordinates of the apple as an array.
-        float[] coodinates = {explosionAnimatedSprite.getX(), explosionAnimatedSprite.getY()};
+        float[] coodinates = {animatedSprite1.getX(), animatedSprite1.getY()};
 // Convert the the scene coordinates of the apple to the local corrdinates of the plate.
         float[] localCoordinates = animatedSprite1.convertSceneCoordinatesToLocalCoordinates(coodinates);
 // Attach and set position of apple
@@ -343,8 +343,32 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void animateExplosion() {
-        explosionAnimatedSprite.animate(100, false);
+        explosionAnimatedSprite.animate(30, false,
+                new AnimatedSprite.IAnimationListener() {
+                    @Override
+                    public void onAnimationStarted(AnimatedSprite pAnimatedSprite, int pInitialLoopCount) {
+
+                    }
+
+                    @Override
+                    public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite, int pOldFrameIndex, int pNewFrameIndex) {
+
+                    }
+
+                    @Override
+                    public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite, int pRemainingLoopCount, int pInitialLoopCount) {
+
+                    }
+
+                    @Override
+                    public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+                        Log.d(TAG, "onAnimationFinished: TRUE");
+                        explosionAnimatedSprite.detachSelf();
+                    }
+                });
     }
+
+
 
     private void changeTimeLeft() {
         timeLeftText.setText("TIME: "+count);
