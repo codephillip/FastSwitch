@@ -1,5 +1,6 @@
 package com.codephillip.game.fastswitch;
 
+import android.graphics.Color;
 import android.util.Log;
 
 import org.andengine.audio.music.Music;
@@ -58,12 +59,11 @@ public class MainActivity extends BaseGameActivity {
     private ITextureRegion coinITextureRegion;
     private Sprite coinSprite;
 
-    private Font font;
-    private Text timeLeftText, livesText, pointsText;
+    private Font font, bountyFont;
+    private Text timeLeftText, livesText, pointsText, bountyText;
 
-    private static final int[] tileNumbers = {0, 1, 2, 3, 4, 5};
     private Music gameSound;
-    private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound;
+    private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound, deathSound, bountySound;
     //TODO [REMOVE ON RELEASE]
 //    private int timeLength = 10;
     private int timeLength = 30;
@@ -122,15 +122,21 @@ public class MainActivity extends BaseGameActivity {
         coinTextureAtlas.load();
 
         font = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
-                "fnt/pipedream.ttf", 46, true, android.graphics.Color.BLACK);
+                "fnt/pipedream.ttf", 46, true, Color.BLACK);
         font.load();
+
+        bountyFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
+                "fnt/pipedream.ttf", 80, true, Color.GREEN);
+        bountyFont.load();
 
         try {
             gameSound = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/game_music.mp3");
             wrongTileSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/wrong_tile.ogg");
             rightTileSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/right_tile.ogg");
             lifeUpSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/life_up.ogg");
-            lifeDownSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/life_down.ogg");
+            bountySound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/bounty.ogg");
+            lifeDownSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/death.ogg");
+            deathSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/death.ogg");
             gameSound.setLooping(true);
         } catch (IOException e) {
             e.printStackTrace();
@@ -287,6 +293,10 @@ public class MainActivity extends BaseGameActivity {
         pointsText.setPosition(WIDTH/2 - (livesText.getWidth()/2)+240, HEIGHT/2 - (livesText.getHeight()/2) +240);
         pointsText.setText(""+points);
 
+        bountyText = new Text(0, 0, bountyFont, "+100", 10, this.getVertexBufferObjectManager());
+        pScene.attachChild(bountyText);
+        bountyText.setPosition(WIDTH/2, HEIGHT/2);
+
         pScene.attachChild(explosionAnimatedSprite);
         pScene.attachChild(animatedSprite1);
         pScene.attachChild(animatedSprite2);
@@ -383,8 +393,11 @@ public class MainActivity extends BaseGameActivity {
                 || animatedSprite.getCurrentTileIndex() == correctTileNumbers[5]) {
             correctCount++;
             Log.d(TAG, "checkTileColor: CORRECT COUNT " + correctCount);
-            if (correctCount == 5) {
-                correctCount = 0;
+            Log.d(TAG, "checkTileColor: CORRECT ");
+
+            if (correctCount%10 == 0) giveBounty(100);
+
+            if (correctCount%5 == 0) {
                 lifeUpSound.play();
                 gainLife();
                 gainPoints();
@@ -422,10 +435,23 @@ public class MainActivity extends BaseGameActivity {
         Log.d(TAG, "gainLife: "+ lives);
     }
 
+    private void giveBounty(int points) {
+        resetCorrectCount();
+        bountySound.play();
+        this.points+=points;
+    }
+
+    private void resetCorrectCount() {
+        correctCount = 0;
+    }
+
     private void loseLife() {
         lives--;
         livesText.setText(""+ lives);
-        if (lives <= 0) gameOver();
+        if (lives <= 0) {
+            deathSound.play();
+            gameOver();
+        }
         Log.d(TAG, "loseLife: "+ lives);
     }
 
