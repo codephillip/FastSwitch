@@ -68,8 +68,7 @@ public class MainActivity extends BaseGameActivity {
 //    private int timeLength = 10;
     private int timeLength = 30;
     private float switchSpeed = 1.1f;
-    private int correctTileNumber = 0;
-
+    private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
     private static int wrongCount = 0;
     private int lives = 5;
@@ -376,7 +375,12 @@ public class MainActivity extends BaseGameActivity {
         * hitting wrong time erases your correctCount
         * hit the wrong tile 3 time, penalty is to lose a lives
         * */
-        if (animatedSprite.getCurrentTileIndex() == correctTileNumber) {
+        if (animatedSprite.getCurrentTileIndex() == correctTileNumbers[0]
+                || animatedSprite.getCurrentTileIndex() == correctTileNumbers[1]
+                || animatedSprite.getCurrentTileIndex() == correctTileNumbers[2]
+                || animatedSprite.getCurrentTileIndex() == correctTileNumbers[3]
+                || animatedSprite.getCurrentTileIndex() == correctTileNumbers[4]
+                || animatedSprite.getCurrentTileIndex() == correctTileNumbers[5]) {
             correctCount++;
             Log.d(TAG, "checkTileColor: CORRECT COUNT " + correctCount);
             if (correctCount == 5) {
