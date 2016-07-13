@@ -65,11 +65,10 @@ public class MainActivity extends BaseGameActivity {
     private Music gameSound;
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound;
     //TODO [REMOVE ON RELEASE]
-//    private int count = 10;
-    private int count = 120;
+//    private int timeLength = 10;
+    private int timeLength = 30;
     private float switchSpeed = 1.1f;
     private int correctTileNumber = 0;
-    //todo create enum of 6 colours and switch to respond
 
     private static int correctCount = 0;
     private static int wrongCount = 0;
@@ -307,16 +306,15 @@ public class MainActivity extends BaseGameActivity {
         pScene.registerUpdateHandler(new TimerHandler(switchSpeed, true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
-                count--;
+                timeLength--;
                 try {
-                    Log.d(TAG, "onTimePassed: Seconds#" + (count % 5 == 0));
                     changeSpriteTile();
                     changeTimeLeft();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
 
-                if (count == 0) {
+                if (timeLength == 0) {
                     pScene.unregisterUpdateHandler(pTimerHandler);
                     Log.d(TAG, "onTimePassed: FINISHED");
                     gameOver();
@@ -368,7 +366,7 @@ public class MainActivity extends BaseGameActivity {
 
 
     private void changeTimeLeft() {
-        timeLeftText.setText("TIME: "+count);
+        timeLeftText.setText("TIME: "+ timeLength);
     }
 
     private void gameOver() {
@@ -387,6 +385,7 @@ public class MainActivity extends BaseGameActivity {
                 correctCount = 0;
                 lifeUpSound.play();
                 gainLife();
+                gainPoints();
             } else {
                 gainPoints();
                 rightTileSound.play();
@@ -412,7 +411,7 @@ public class MainActivity extends BaseGameActivity {
             pointsTextYIncrement += 35;
             textCount += 1;
         }
-        Log.d(TAG, "gainPoints: count"+pointsText.getText().toString().length());
+        Log.d(TAG, "gainPoints: timeLength"+pointsText.getText().toString().length());
     }
 
     private void gainLife() {
