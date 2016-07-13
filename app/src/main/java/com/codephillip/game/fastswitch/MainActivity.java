@@ -106,8 +106,8 @@ public class MainActivity extends BaseGameActivity {
         backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, this, "background.png", 0, 0);
         backgroundTextureAtlas.load();
 
-        fruitTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 414, 276, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        fruitTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(fruitTextureAtlas,this, "spritesheet.png", 0, 0, 3, 2);
+        fruitTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 552, 414, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
+        fruitTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(fruitTextureAtlas,this, "spritesheet1.png", 0, 0, 4, 3);
         fruitTextureAtlas.load();
 
         explosionTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 768, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
@@ -363,8 +363,6 @@ public class MainActivity extends BaseGameActivity {
                 });
     }
 
-
-
     private void changeTimeLeft() {
         timeLeftText.setText("TIME: "+ timeLength);
     }
@@ -428,12 +426,12 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void changeSpriteTile() {
-        animatedSprite1.setCurrentTileIndex(randInt(0, 5));
-        animatedSprite2.setCurrentTileIndex(randInt(0, 5));
-        animatedSprite3.setCurrentTileIndex(randInt(0, 5));
-        animatedSprite4.setCurrentTileIndex(randInt(0, 5));
-        animatedSprite5.setCurrentTileIndex(randInt(0, 5));
-        animatedSprite6.setCurrentTileIndex(randInt(0, 5));
+        animatedSprite1.setCurrentTileIndex(randInt(0, 11));
+        animatedSprite2.setCurrentTileIndex(randInt(0, 11));
+        animatedSprite3.setCurrentTileIndex(randInt(0, 11));
+        animatedSprite4.setCurrentTileIndex(randInt(0, 11));
+        animatedSprite5.setCurrentTileIndex(randInt(0, 11));
+        animatedSprite6.setCurrentTileIndex(randInt(0, 11));
     }
 
     public static int randInt(int min, int max) {
