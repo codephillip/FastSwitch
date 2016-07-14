@@ -86,6 +86,7 @@ public class MainActivity extends BaseGameActivity {
     private int pointsTextYIncrement = 20;
     private Scene scene;
     private Text winOrLoseText;
+    private Sprite nextOrRestartSprite;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -153,10 +154,6 @@ public class MainActivity extends BaseGameActivity {
                 "fnt/pipedream.ttf", 60, true, Color.BLACK);
         menuFont.load();
 
-        winOrLoseFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
-                "fnt/sanchez.ttf", 100, true, Color.YELLOW);
-        winOrLoseFont.load();
-
         try {
             gameSound = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/game_music.mp3");
             wrongTileSound = SoundFactory.createSoundFromAsset(getEngine().getSoundManager(), this, "mfx/wrong_tile.ogg");
@@ -211,6 +208,8 @@ public class MainActivity extends BaseGameActivity {
                         attachExplosionAnimation(this);
                         animateExplosion();
                         break;
+                    default:
+                        return true;
                 }
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
@@ -354,7 +353,7 @@ public class MainActivity extends BaseGameActivity {
                 if (timeLength == 0) {
                     pScene.unregisterUpdateHandler(pTimerHandler);
                     Log.d(TAG, "onTimePassed: FINISHED");
-                    gameOver();
+                    if (lives >= 1) gameOver(true);
                 }
                 pTimerHandler.reset();
             }
@@ -405,11 +404,11 @@ public class MainActivity extends BaseGameActivity {
     }
 
     ///
-    private void gameOver() {
+    private void gameOver(boolean hasWonGame) {
         gameSound.stop();
         resetScene();
         storeStatistics();
-        showStatistics();
+        showStatistics(hasWonGame);
         attachChildrenToPauseScreen();
     }
 
@@ -424,23 +423,21 @@ public class MainActivity extends BaseGameActivity {
         editor.apply();
     }
 
-    private void showStatistics() {
+    private void showStatistics(boolean hasWonGame) {
         backgroundSprite.detachSelf();
-        scene.attachChild(backgroundSprite);
+
+        setWinOrLoseFontColor(hasWonGame);
 
         winOrLoseText = new Text(0, 0, winOrLoseFont, "YOU WIN", 25, this.getVertexBufferObjectManager());
-        scene.attachChild(winOrLoseText);
         winOrLoseText.setPosition(WIDTH/2, HEIGHT/2+150);
 
         pointsText = new Text(0, 0, menuFont, "Points: 500", 25, this.getVertexBufferObjectManager());
-        scene.attachChild(pointsText);
         pointsText.setPosition(WIDTH/2, HEIGHT/2+60);
 
         highPointsText = new Text(0, 0, font, "Hi-Points: 1000", 25, this.getVertexBufferObjectManager());
-        scene.attachChild(highPointsText);
         highPointsText.setPosition(WIDTH/2, HEIGHT/2);
 
-        Sprite nextOrRestartSprite = new Sprite(WIDTH/2, HEIGHT/2-90, resumeITextureRegion, mEngine.getVertexBufferObjectManager()){
+        nextOrRestartSprite = new Sprite(WIDTH/2, HEIGHT/2-90, resumeITextureRegion, mEngine.getVertexBufferObjectManager()){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
@@ -455,12 +452,27 @@ public class MainActivity extends BaseGameActivity {
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
         };
-        scene.attachChild(nextOrRestartSprite);
-        scene.registerTouchArea(nextOrRestartSprite);
+
+    }
+
+    private void setWinOrLoseFontColor(boolean hasWonGame) {
+        if (hasWonGame){
+            winOrLoseFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
+                    "fnt/sanchez.ttf", 100, true, Color.YELLOW);
+        } else {
+            winOrLoseFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
+                    "fnt/sanchez.ttf", 100, true, Color.RED);
+        }
+        winOrLoseFont.load();
     }
 
     private void attachChildrenToPauseScreen() {
-
+        scene.attachChild(backgroundSprite);
+        scene.attachChild(winOrLoseText);
+        scene.attachChild(pointsText);
+        scene.attachChild(highPointsText);
+        scene.attachChild(nextOrRestartSprite);
+        scene.registerTouchArea(nextOrRestartSprite);
     }
     ///
 
@@ -539,7 +551,7 @@ public class MainActivity extends BaseGameActivity {
         livesText.setText(""+ lives);
         if (lives <= 0) {
             deathSound.play();
-            gameOver();
+            gameOver(false);
         }
         Log.d(TAG, "loseLife: "+ lives);
     }
