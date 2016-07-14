@@ -75,8 +75,8 @@ public class MainActivity extends BaseGameActivity {
     private Music gameSound;
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound, deathSound, bountySound;
     //TODO [REMOVE ON RELEASE]
-    private int timeLength = 2;
-    //    private int timeLength = 30;
+//    private int timeLength = 2;
+        private int timeLength = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
@@ -362,6 +362,8 @@ public class MainActivity extends BaseGameActivity {
             }
         }));
 
+        pScene.reset();
+
         pOnPopulateSceneCallback.onPopulateSceneFinished();
     }
 
@@ -417,7 +419,7 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void storeStatistics() {
-        storePref(POINTS, points);
+        if (points > getHiScore()) storePref(POINTS, points);
     }
 
     private void storePref(String prefString, int value) {
