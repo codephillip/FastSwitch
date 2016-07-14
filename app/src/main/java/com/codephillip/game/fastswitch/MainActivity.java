@@ -1,6 +1,8 @@
 package com.codephillip.game.fastswitch;
 
+import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.andengine.audio.music.Music;
@@ -25,6 +27,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TextureRegionFactory;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import java.io.IOException;
@@ -59,14 +62,19 @@ public class MainActivity extends BaseGameActivity {
     private ITextureRegion coinITextureRegion;
     private Sprite coinSprite;
 
+    private BitmapTextureAtlas menuButtonsTextureAtlas;
+    private ITextureRegion playITextureRegion;
+    private ITextureRegion restartITextureRegion;
+    private ITextureRegion resumeITextureRegion;
+
     private Font font, bountyFont;
     private Text timeLeftText, livesText, pointsText, bountyText;
 
     private Music gameSound;
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound, deathSound, bountySound;
     //TODO [REMOVE ON RELEASE]
-//    private int timeLength = 10;
-    private int timeLength = 30;
+    private int timeLength = 2;
+//    private int timeLength = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
@@ -75,6 +83,7 @@ public class MainActivity extends BaseGameActivity {
     private int points = 2;
     private int textCount = 2;
     private int pointsTextYIncrement = 20;
+    private Scene scene;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -101,6 +110,13 @@ public class MainActivity extends BaseGameActivity {
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws IOException {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+
+        menuButtonsTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 665, 210, TextureOptions.BILINEAR);
+        menuButtonsTextureAtlas.load();
+
+        BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuButtonsTextureAtlas, this, "buttons_spritesheet.png", 0, 0);
+        playITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 70, 221, 60);
+
         backgroundTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 1024, 512, TextureOptions.DEFAULT);
         backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, this, "background.png", 0, 0);
         backgroundTextureAtlas.load();
@@ -147,7 +163,7 @@ public class MainActivity extends BaseGameActivity {
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException {
-        Scene scene = new Scene();
+        scene = new Scene();
         gameSound.play();
         pOnCreateSceneCallback.onCreateSceneFinished(scene);
     }
@@ -376,8 +392,59 @@ public class MainActivity extends BaseGameActivity {
         timeLeftText.setText("TIME: "+ timeLength);
     }
 
+    ///
     private void gameOver() {
         gameSound.stop();
+        resetScene();
+        storeStatistics();
+        showStatistics();
+        attachChildrenToPauseScreen();
+    }
+
+    private void storeStatistics() {
+        prefStorage("points", points);
+    }
+
+    private void prefStorage(String prefString, int value) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(prefString, value);
+        editor.apply();
+    }
+
+    private void showStatistics() {
+        backgroundSprite.detachSelf();
+        scene.attachChild(backgroundSprite);
+        pointsText = new Text(0, 0, bountyFont, "1000", 10, this.getVertexBufferObjectManager());
+        scene.attachChild(pointsText);
+        pointsText.setPosition(WIDTH/2, HEIGHT/2);
+        Sprite nextOrRestartSprite = new Sprite(WIDTH/2, HEIGHT/2-50, playITextureRegion, mEngine.getVertexBufferObjectManager()){
+            @Override
+            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                switch (pSceneTouchEvent.getAction()) {
+                    case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
+                        Log.d(TAG, "onAreaTouched: clicked");
+                        break;
+                }
+                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+            }
+        };
+        scene.attachChild(nextOrRestartSprite);
+        scene.registerTouchArea(nextOrRestartSprite);
+    }
+
+    private void attachChildrenToPauseScreen() {
+
+    }
+    ///
+
+    private void resetScene() {
+        scene.clearChildScene();
+        scene.clearTouchAreas();
     }
 
     private void checkTileColor(AnimatedSprite animatedSprite) {
