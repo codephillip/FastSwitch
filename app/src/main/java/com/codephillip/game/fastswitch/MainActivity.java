@@ -37,6 +37,7 @@ public class MainActivity extends BaseGameActivity {
     public static final int WIDTH = 800;
     public static final int HEIGHT = 480;
     private static final String TAG = "MAIN";
+    private static final String POINTS = "points";
 
     private float initialX = 165;
     private float initialY = 120;
@@ -75,7 +76,7 @@ public class MainActivity extends BaseGameActivity {
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound, deathSound, bountySound;
     //TODO [REMOVE ON RELEASE]
     private int timeLength = 2;
-//    private int timeLength = 30;
+    //    private int timeLength = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
@@ -87,6 +88,7 @@ public class MainActivity extends BaseGameActivity {
     private Scene scene;
     private Text winOrLoseText;
     private Sprite nextOrRestartSprite;
+    private int targetPoints = 500;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -127,19 +129,19 @@ public class MainActivity extends BaseGameActivity {
         backgroundTextureAtlas.load();
 
         fruitTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 552, 414, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        fruitTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(fruitTextureAtlas,this, "spritesheet1.png", 0, 0, 4, 3);
+        fruitTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(fruitTextureAtlas, this, "spritesheet1.png", 0, 0, 4, 3);
         fruitTextureAtlas.load();
 
         explosionTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 768, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        explosionTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionTextureAtlas,this, "good_explosion.png", 0, 0, 3, 4);
+        explosionTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionTextureAtlas, this, "good_explosion.png", 0, 0, 3, 4);
         explosionTextureAtlas.load();
 
         heartTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 32, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        heartITextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(heartTextureAtlas,this, "heart.png", 0, 0);
+        heartITextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(heartTextureAtlas, this, "heart.png", 0, 0);
         heartTextureAtlas.load();
 
         coinTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 32, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        coinITextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(coinTextureAtlas,this, "coin.png", 0, 0);
+        coinITextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(coinTextureAtlas, this, "coin.png", 0, 0);
         coinTextureAtlas.load();
 
         font = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
@@ -185,10 +187,10 @@ public class MainActivity extends BaseGameActivity {
         backgroundSprite = new Sprite(positionX, positionY, backgroundTextureRegion, mEngine.getVertexBufferObjectManager());
         pScene.attachChild(backgroundSprite);
 
-        heartSprite = new Sprite(positionX, positionY+215, heartITextureRegion, mEngine.getVertexBufferObjectManager());
+        heartSprite = new Sprite(positionX, positionY + 215, heartITextureRegion, mEngine.getVertexBufferObjectManager());
         pScene.attachChild(heartSprite);
 
-        coinSprite = new Sprite(positionX+170, positionY+215, coinITextureRegion, mEngine.getVertexBufferObjectManager());
+        coinSprite = new Sprite(positionX + 170, positionY + 215, coinITextureRegion, mEngine.getVertexBufferObjectManager());
         pScene.attachChild(coinSprite);
 
         explosionAnimatedSprite = new AnimatedSprite(0, 0, explosionTiledTextureRegion, mEngine.getVertexBufferObjectManager());
@@ -308,21 +310,21 @@ public class MainActivity extends BaseGameActivity {
 
         timeLeftText = new Text(0, 0, font, "TIME: 00", 15, this.getVertexBufferObjectManager());
         pScene.attachChild(timeLeftText);
-        timeLeftText.setPosition(WIDTH/2 - (timeLeftText.getWidth()/2) - 90, HEIGHT/2 - (timeLeftText.getHeight()/2) +240);
+        timeLeftText.setPosition(WIDTH / 2 - (timeLeftText.getWidth() / 2) - 90, HEIGHT / 2 - (timeLeftText.getHeight() / 2) + 240);
 
         livesText = new Text(0, 0, font, "3", 5, this.getVertexBufferObjectManager());
         pScene.attachChild(livesText);
-        livesText.setPosition(WIDTH/2 - (livesText.getWidth()/2)+70, HEIGHT/2 - (livesText.getHeight()/2) +240);
-        livesText.setText(""+ lives);
+        livesText.setPosition(WIDTH / 2 - (livesText.getWidth() / 2) + 70, HEIGHT / 2 - (livesText.getHeight() / 2) + 240);
+        livesText.setText("" + lives);
 
         pointsText = new Text(0, 0, font, "2", 10, this.getVertexBufferObjectManager());
         pScene.attachChild(pointsText);
-        pointsText.setPosition(WIDTH/2 - (livesText.getWidth()/2)+240, HEIGHT/2 - (livesText.getHeight()/2) +240);
-        pointsText.setText(""+points);
+        pointsText.setPosition(WIDTH / 2 - (livesText.getWidth() / 2) + 240, HEIGHT / 2 - (livesText.getHeight() / 2) + 240);
+        pointsText.setText("" + points);
 
         bountyText = new Text(0, 0, bountyFont, "+100", 10, this.getVertexBufferObjectManager());
         pScene.attachChild(bountyText);
-        bountyText.setPosition(WIDTH/2, HEIGHT/2);
+        bountyText.setPosition(WIDTH / 2, HEIGHT / 2);
 
         pScene.attachChild(explosionAnimatedSprite);
         pScene.attachChild(animatedSprite1);
@@ -353,7 +355,8 @@ public class MainActivity extends BaseGameActivity {
                 if (timeLength == 0) {
                     pScene.unregisterUpdateHandler(pTimerHandler);
                     Log.d(TAG, "onTimePassed: FINISHED");
-                    if (lives >= 1) gameOver(true);
+                    if (lives >= 1 && points >= targetPoints) gameOver(true);
+                    else gameOver(false);
                 }
                 pTimerHandler.reset();
             }
@@ -400,12 +403,13 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void changeTimeLeft() {
-        timeLeftText.setText("TIME: "+ timeLength);
+        timeLeftText.setText("TIME: " + timeLength);
     }
 
     ///
     private void gameOver(boolean hasWonGame) {
         gameSound.stop();
+        if (points > getHiScore()) storePref(POINTS, points);
         resetScene();
         storeStatistics();
         showStatistics(hasWonGame);
@@ -413,14 +417,20 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void storeStatistics() {
-        prefStorage("points", points);
+        storePref(POINTS, points);
     }
 
-    private void prefStorage(String prefString, int value) {
+    private void storePref(String prefString, int value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt(prefString, value);
         editor.apply();
+    }
+
+    private int getHiScore() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        int hiScore = prefs.getInt(POINTS, 0);
+        return hiScore;
     }
 
     private void showStatistics(boolean hasWonGame) {
@@ -429,15 +439,33 @@ public class MainActivity extends BaseGameActivity {
         setWinOrLoseFontColor(hasWonGame);
 
         winOrLoseText = new Text(0, 0, winOrLoseFont, "YOU WIN", 25, this.getVertexBufferObjectManager());
-        winOrLoseText.setPosition(WIDTH/2, HEIGHT/2+150);
+        winOrLoseText.setPosition(WIDTH / 2, HEIGHT / 2 + 150);
+        if (hasWonGame) {
+            winOrLoseText.setText("YOU WIN");
+        } else {
+            winOrLoseText.setText("YOU LOSE");
+        }
 
-        pointsText = new Text(0, 0, menuFont, "Points: 500", 25, this.getVertexBufferObjectManager());
-        pointsText.setPosition(WIDTH/2, HEIGHT/2+60);
+        pointsText = new Text(0, 0, menuFont, "Score: 500", 25, this.getVertexBufferObjectManager());
+        pointsText.setPosition(WIDTH / 2, HEIGHT / 2 + 60);
+        pointsText.setText("Score: " + points);
 
-        highPointsText = new Text(0, 0, font, "Hi-Points: 1000", 25, this.getVertexBufferObjectManager());
-        highPointsText.setPosition(WIDTH/2, HEIGHT/2);
+        highPointsText = new Text(0, 0, font, "Hi-Score: 1000", 25, this.getVertexBufferObjectManager());
+        highPointsText.setPosition(WIDTH / 2, HEIGHT / 2);
+        highPointsText.setText("Hi-Score: " + getHiScore());
 
-        nextOrRestartSprite = new Sprite(WIDTH/2, HEIGHT/2-90, resumeITextureRegion, mEngine.getVertexBufferObjectManager()){
+        setNextorRestartSprite(hasWonGame);
+    }
+
+    private void setNextorRestartSprite(boolean hasWonGame) {
+        ITextureRegion textureRegion;
+        if (hasWonGame) {
+            textureRegion = resumeITextureRegion;
+        } else {
+            textureRegion = restartITextureRegion;
+        }
+
+        nextOrRestartSprite = new Sprite(WIDTH / 2, HEIGHT / 2 - 90, textureRegion, mEngine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
@@ -452,11 +480,10 @@ public class MainActivity extends BaseGameActivity {
                 return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
         };
-
     }
 
     private void setWinOrLoseFontColor(boolean hasWonGame) {
-        if (hasWonGame){
+        if (hasWonGame) {
             winOrLoseFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
                     "fnt/sanchez.ttf", 100, true, Color.YELLOW);
         } else {
@@ -496,9 +523,9 @@ public class MainActivity extends BaseGameActivity {
             Log.d(TAG, "checkTileColor: CORRECT COUNT " + correctCount);
             Log.d(TAG, "checkTileColor: CORRECT ");
 
-            if (correctCount%10 == 0) giveBounty(100);
+            if (correctCount % 10 == 0) giveBounty(100);
 
-            if (correctCount%5 == 0) {
+            if (correctCount % 5 == 0) {
                 lifeUpSound.play();
                 gainLife();
                 gainPoints();
@@ -520,26 +547,26 @@ public class MainActivity extends BaseGameActivity {
     }
 
     private void gainPoints() {
-        points += lives*2;
-        pointsText.setText(""+ points);
-        if (pointsText.getText().toString().length() > textCount){
-            pointsText.setX(WIDTH/2 - (livesText.getWidth()/2)+230+pointsTextYIncrement);
+        points += lives * 2;
+        pointsText.setText("" + points);
+        if (pointsText.getText().toString().length() > textCount) {
+            pointsText.setX(WIDTH / 2 - (livesText.getWidth() / 2) + 230 + pointsTextYIncrement);
             pointsTextYIncrement += 35;
             textCount += 1;
         }
-        Log.d(TAG, "gainPoints: timeLength"+pointsText.getText().toString().length());
+        Log.d(TAG, "gainPoints: timeLength" + pointsText.getText().toString().length());
     }
 
     private void gainLife() {
         lives++;
-        livesText.setText(""+ lives);
-        Log.d(TAG, "gainLife: "+ lives);
+        livesText.setText("" + lives);
+        Log.d(TAG, "gainLife: " + lives);
     }
 
     private void giveBounty(int points) {
         resetCorrectCount();
         bountySound.play();
-        this.points+=points;
+        this.points += points;
     }
 
     private void resetCorrectCount() {
@@ -548,12 +575,12 @@ public class MainActivity extends BaseGameActivity {
 
     private void loseLife() {
         lives--;
-        livesText.setText(""+ lives);
+        livesText.setText("" + lives);
         if (lives <= 0) {
             deathSound.play();
             gameOver(false);
         }
-        Log.d(TAG, "loseLife: "+ lives);
+        Log.d(TAG, "loseLife: " + lives);
     }
 
     private void changeSpriteTile() {
