@@ -68,7 +68,8 @@ public class MainActivity extends BaseGameActivity {
     private ITextureRegion resumeITextureRegion;
 
     private Font font, bountyFont;
-    private Text timeLeftText, livesText, pointsText, bountyText;
+    private Font menuFont, winOrLoseFont;
+    private Text timeLeftText, livesText, pointsText, highPointsText, bountyText;
 
     private Music gameSound;
     private Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound, deathSound, bountySound;
@@ -84,6 +85,7 @@ public class MainActivity extends BaseGameActivity {
     private int textCount = 2;
     private int pointsTextYIncrement = 20;
     private Scene scene;
+    private Text winOrLoseText;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -116,6 +118,8 @@ public class MainActivity extends BaseGameActivity {
 
         BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuButtonsTextureAtlas, this, "buttons_spritesheet.png", 0, 0);
         playITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 70, 221, 60);
+        restartITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 223, 70, 221, 60);
+        resumeITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 444, 70, 221, 60);
 
         backgroundTextureAtlas = new BitmapTextureAtlas(mEngine.getTextureManager(), 1024, 512, TextureOptions.DEFAULT);
         backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, this, "background.png", 0, 0);
@@ -144,6 +148,14 @@ public class MainActivity extends BaseGameActivity {
         bountyFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
                 "fnt/pipedream.ttf", 80, true, Color.GREEN);
         bountyFont.load();
+
+        menuFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
+                "fnt/pipedream.ttf", 60, true, Color.BLACK);
+        menuFont.load();
+
+        winOrLoseFont = FontFactory.createFromAsset(this.getFontManager(), this.getTextureManager(), 256, 256, this.getAssets(),
+                "fnt/sanchez.ttf", 100, true, Color.YELLOW);
+        winOrLoseFont.load();
 
         try {
             gameSound = MusicFactory.createMusicFromAsset(mEngine.getMusicManager(), this, "mfx/game_music.mp3");
@@ -415,10 +427,20 @@ public class MainActivity extends BaseGameActivity {
     private void showStatistics() {
         backgroundSprite.detachSelf();
         scene.attachChild(backgroundSprite);
-        pointsText = new Text(0, 0, bountyFont, "1000", 10, this.getVertexBufferObjectManager());
+
+        winOrLoseText = new Text(0, 0, winOrLoseFont, "YOU WIN", 25, this.getVertexBufferObjectManager());
+        scene.attachChild(winOrLoseText);
+        winOrLoseText.setPosition(WIDTH/2, HEIGHT/2+150);
+
+        pointsText = new Text(0, 0, menuFont, "Points: 500", 25, this.getVertexBufferObjectManager());
         scene.attachChild(pointsText);
-        pointsText.setPosition(WIDTH/2, HEIGHT/2);
-        Sprite nextOrRestartSprite = new Sprite(WIDTH/2, HEIGHT/2-50, playITextureRegion, mEngine.getVertexBufferObjectManager()){
+        pointsText.setPosition(WIDTH/2, HEIGHT/2+60);
+
+        highPointsText = new Text(0, 0, font, "Hi-Points: 1000", 25, this.getVertexBufferObjectManager());
+        scene.attachChild(highPointsText);
+        highPointsText.setPosition(WIDTH/2, HEIGHT/2);
+
+        Sprite nextOrRestartSprite = new Sprite(WIDTH/2, HEIGHT/2-90, resumeITextureRegion, mEngine.getVertexBufferObjectManager()){
             @Override
             public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (pSceneTouchEvent.getAction()) {
