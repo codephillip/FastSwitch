@@ -23,11 +23,8 @@ public class GameOverScene extends Scene {  private static final String TAG = Ga
     Context context;
     private Sprite backgroundSprite;
     private Sprite nextOrRestartSprite;
-    private Text timeLeftText, livesText, pointsText, highPointsText, bountyText;
+    private Text pointsText, highPointsText;
     private Text winOrLoseText;
-    private int lives = 5;
-    private int points = 2;
-    private int textCount = 2;
     final float positionX = Utils.CAMERA_WIDTH * 0.5f;
     final float positionY = Utils.CAMERA_HEIGHT * 0.5f;
 
@@ -55,6 +52,8 @@ public class GameOverScene extends Scene {  private static final String TAG = Ga
                         break;
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
+                        clearChildScene();
+                        SceneManager.setCurrentScene(AllScenes.GAME, SceneManager.createGameScene());
                         Log.d(TAG, "onAreaTouched: clicked");
                         break;
                 }

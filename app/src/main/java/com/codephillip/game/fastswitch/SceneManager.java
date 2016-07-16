@@ -27,6 +27,7 @@ public class SceneManager {
     }
 
     public static void loadGameResources() {
+        //used by both the GameScene and GameOverScene
         ResourceManager.loadGameScreenResources();
     }
 
