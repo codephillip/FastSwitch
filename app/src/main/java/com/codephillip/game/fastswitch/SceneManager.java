@@ -17,6 +17,7 @@ public class SceneManager {
         return INSTANCE;
     }
 
+
     public AllScenes getCurrentScene() {
         return currentScene;
     }
@@ -51,8 +52,8 @@ public class SceneManager {
     public static Scene createGameScene() {
         ResourceManager.getInstance();
         GameScene gameScene = new GameScene(ResourceManager.getInstance().context, ResourceManager.engine);
-        gameScene.attachChild(null);
-        gameScene.registerTouchArea(null);
+//        gameScene.attachChild(null);
+//        gameScene.registerTouchArea(null);
         Log.d(TAG, "createMenuScene: finished");
         return gameScene;
     }

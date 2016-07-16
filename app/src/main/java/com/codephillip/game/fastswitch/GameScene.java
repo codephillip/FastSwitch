@@ -26,9 +26,7 @@ import org.andengine.opengl.texture.region.ITextureRegion;
 public class GameScene extends Scene {
     private static final String TAG = GameScene.class.getSimpleName();
     Engine engine;
-    Sprite sprite;
     Context context;
-    private Sprite sprite2;
     private Text timeLeftText, livesText, pointsText, highPointsText, bountyText;
     private Sprite backgroundSprite;
     private AnimatedSprite explosionAnimatedSprite;
@@ -53,7 +51,6 @@ public class GameScene extends Scene {
     private int points = 2;
     private int textCount = 2;
     private int pointsTextYIncrement = 20;
-    private Scene scene;
     private Text winOrLoseText;
     private Sprite nextOrRestartSprite;
     private int targetPoints = 500;
@@ -61,6 +58,9 @@ public class GameScene extends Scene {
     public GameScene(Context context, Engine engine) {
         this.context = context;
         this.engine = engine;
+        attachChild(null);
+        registerTouchArea(null);
+        registerUpdateHandler(null);
     }
 
     @Override
@@ -79,25 +79,24 @@ public class GameScene extends Scene {
         super.attachChild(coinSprite);
 
         explosionAnimatedSprite = new AnimatedSprite(0, 0, ResourceManager.explosionTiledTextureRegion, engine.getVertexBufferObjectManager());
-        explosionAnimatedSprite.setAlpha(0.5f);
 //        explosionAnimatedSprite.animate(100);
 
         animatedSprite1 = new AnimatedSprite(initialX, initialY, ResourceManager.fruitTiledTextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-//                switch (superTouchEvent.getAction()) {
-//                    case TouchEvent.ACTION_DOWN:
-//                        this.setAlpha(0.5f);
-//                        break;
-//                    case TouchEvent.ACTION_UP:
-//                        this.setAlpha(1.0f);
-//                        checkTileColor(this);
-//                        attachExplosionAnimation(this);
-//                        animateExplosion();
-//                        break;
-//                    default:
-//                        return true;
-//                }
+                switch (superTouchEvent.getAction()) {
+                    case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
+                        checkTileColor(this);
+                        attachExplosionAnimation(this);
+                        animateExplosion();
+                        break;
+                    default:
+                        return true;
+                }
                 Log.d(TAG, "onAreaTouched: clicked");
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
@@ -219,30 +218,24 @@ public class GameScene extends Scene {
         super.attachChild(animatedSprite4);
         super.attachChild(animatedSprite5);
         super.attachChild(animatedSprite6);
+    }
 
+    @Override
+    public void registerTouchArea(ITouchArea pTouchArea) {
+        Log.d(TAG, "registerTouchArea: menu");
         super.registerTouchArea(animatedSprite1);
         super.registerTouchArea(animatedSprite2);
         super.registerTouchArea(animatedSprite3);
         super.registerTouchArea(animatedSprite4);
         super.registerTouchArea(animatedSprite5);
         super.registerTouchArea(animatedSprite6);
-    }
-
-    @Override
-    public void registerTouchArea(ITouchArea pTouchArea) {
-        Log.d(TAG, "registerTouchArea: menu");
-        super.registerTouchArea(sprite);
-        updateUI();
+        //initialise timer
+//        registerUpdateHandler(null);
     }
 
     @Override
     public void registerUpdateHandler(IUpdateHandler pUpdateHandler) {
-        super.registerUpdateHandler(pUpdateHandler);
-    }
-
-    public void updateUI(){
-        //5f is 5 seconds
-        this.registerUpdateHandler(new TimerHandler(switchSpeed, true, new ITimerCallback() {
+        super.registerUpdateHandler(new TimerHandler(switchSpeed, true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
                 timeLength--;
@@ -311,7 +304,7 @@ public class GameScene extends Scene {
         if (points > getHiScore()) storePref(POINTS, points);
         storeStatistics();
         showStatistics(hasWonGame);
-        attachChildrenToPauseScreen();
+//        attachChildrenToPauseScreen();
     }
 
     private void storeStatistics() {
@@ -391,14 +384,14 @@ public class GameScene extends Scene {
         ResourceManager.winOrLoseFont.load();
     }
 
-    private void attachChildrenToPauseScreen() {
-        scene.attachChild(backgroundSprite);
-        scene.attachChild(winOrLoseText);
-        scene.attachChild(pointsText);
-        scene.attachChild(highPointsText);
-        scene.attachChild(nextOrRestartSprite);
-        scene.registerTouchArea(nextOrRestartSprite);
-    }
+//    private void attachChildrenToPauseScreen() {
+//        scene.attachChild(backgroundSprite);
+//        scene.attachChild(winOrLoseText);
+//        scene.attachChild(pointsText);
+//        scene.attachChild(highPointsText);
+//        scene.attachChild(nextOrRestartSprite);
+//        scene.registerTouchArea(nextOrRestartSprite);
+//    }
     ///
 
     private void checkTileColor(AnimatedSprite animatedSprite) {
