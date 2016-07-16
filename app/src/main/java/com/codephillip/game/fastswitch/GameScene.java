@@ -43,6 +43,7 @@ public class GameScene extends Scene {
     private int points = 2;
     private int textCount = 2;
     private int pointsTextYIncrement = 20;
+    //todo make this value change per level
     private int targetPoints = 500;
 
     public GameScene(Context context, Engine engine) {
@@ -234,11 +235,11 @@ public class GameScene extends Scene {
                     Log.d(TAG, "onTimePassed: FINISHED");
                     if (lives >= 1 && points >= targetPoints) {
                         Utils.saveHasWonGame(Utils.HAS_WON_GAME, true);
-                        gameOver(true);
+                        gameOver();
                     }
                     else {
                         Utils.saveHasWonGame(Utils.HAS_WON_GAME, false);
-                        gameOver(false);
+                        gameOver();
                     }
                 }
                 pTimerHandler.reset();
@@ -287,7 +288,7 @@ public class GameScene extends Scene {
         timeLeftText.setText("TIME: " + timeLength);
     }
 
-    private void gameOver(boolean hasWonGame) {
+    private void gameOver() {
         ResourceManager.gameSound.stop();
         storeStatistics();
         this.clearChildScene();
@@ -371,7 +372,7 @@ public class GameScene extends Scene {
         if (lives <= 0) {
             ResourceManager.deathSound.play();
             Utils.saveHasWonGame(Utils.HAS_WON_GAME, false);
-            gameOver(false);
+            gameOver();
         }
         Log.d(TAG, "loseLife: " + lives);
     }

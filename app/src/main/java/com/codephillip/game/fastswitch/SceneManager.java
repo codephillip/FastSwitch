@@ -9,7 +9,6 @@ import org.andengine.entity.scene.Scene;
  */
 public class SceneManager {
     private static final String TAG = SceneManager.class.getSimpleName();
-    private AllScenes currentScene;
     private SceneManager INSTANCE = null;
 
     public SceneManager getInstance(){
@@ -17,13 +16,8 @@ public class SceneManager {
         return INSTANCE;
     }
 
-
-    public AllScenes getCurrentScene() {
-        return currentScene;
-    }
-
     public static void loadSplashResources() {
-        ResourceManager.loadSplashScreenResources();
+//        ResourceManager.loadSplashScreenResources();
     }
 
     public static void loadGameResources() {
@@ -32,32 +26,28 @@ public class SceneManager {
     }
 
     public static void loadMenuResources() {
-        ResourceManager.loadSplashScreenResources();
+//        ResourceManager.loadSplashScreenResources();
     }
 
-//    public static Scene createSplashScene() {
-//        SplashScene splashScene = new SplashScene(ResourceManager.getInstance().context, ResourceManager.engine);
-//        splashScene.attachChild(null);
-//        splashScene.registerTouchArea(null);
-//        return splashScene;
-//    }
-//
+    public static Scene createSplashScene() {
+        SplashScene splashScene = new SplashScene(ResourceManager.context, ResourceManager.engine);
+        return splashScene;
+    }
+
     public static Scene createMenuScene() {
-        MenuScene menuScene = new MenuScene(ResourceManager.getInstance().context, ResourceManager.engine);
-        menuScene.attachChild(null);
-        menuScene.registerTouchArea(null);
+        MenuScene menuScene = new MenuScene(ResourceManager.context, ResourceManager.engine);
         Log.d(TAG, "createMenuScene: finished");
         return menuScene;
     }
 
     public static Scene createGameOverScene() {
-        GameOverScene gameOverScene = new GameOverScene(ResourceManager.getInstance().context, ResourceManager.engine);
+        GameOverScene gameOverScene = new GameOverScene(ResourceManager.context, ResourceManager.engine);
         Log.d(TAG, "createMenuScene: finished");
         return gameOverScene;
     }
 
     public static Scene createGameScene() {
-        GameScene gameScene = new GameScene(ResourceManager.getInstance().context, ResourceManager.engine);
+        GameScene gameScene = new GameScene(ResourceManager.context, ResourceManager.engine);
         Log.d(TAG, "createMenuScene: finished");
         return gameScene;
     }

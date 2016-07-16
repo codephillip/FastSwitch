@@ -43,7 +43,7 @@ public class MainActivity extends BaseGameActivity {
 
     @Override
     public void onCreateScene(OnCreateSceneCallback pOnCreateSceneCallback) throws IOException {
-        pOnCreateSceneCallback.onCreateSceneFinished(SceneManager.createGameScene());
+        pOnCreateSceneCallback.onCreateSceneFinished(SceneManager.createSplashScene());
     }
 
     @Override
