@@ -25,6 +25,7 @@ public class GameScene extends Scene {
     private Text timeLeftText, livesText, pointsText, bountyText;
     private Sprite backgroundSprite;
     private AnimatedSprite explosionAnimatedSprite;
+    private Sprite pauseSprite;
     private AnimatedSprite animatedSprite1, animatedSprite2, animatedSprite3, animatedSprite4, animatedSprite5, animatedSprite6;
     private Sprite heartSprite;
     private Sprite coinSprite;
@@ -33,7 +34,7 @@ public class GameScene extends Scene {
     private final int RECTANGLE_DIMENSIONS = 200;
 
     //TODO [REMOVE ON RELEASE]
-//    private int timeLength = 2;
+//    private int timeLength = 5;
     private int timeLength = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
@@ -175,6 +176,23 @@ public class GameScene extends Scene {
             }
         };
 
+        pauseSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2, ResourceManager.playITextureRegion, engine.getVertexBufferObjectManager()) {
+            @Override
+            public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                switch (superTouchEvent.getAction()) {
+                    case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
+                        SceneManager.setCurrentScene(AllScenes.PAUSE, SceneManager.createMenuScene());
+                        break;
+                }
+                return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+            }
+        };
+
+
         timeLeftText = new Text(0, 0, ResourceManager.font, "TIME: 00", 15, engine.getVertexBufferObjectManager());
         timeLeftText.setPosition(Utils.CAMERA_WIDTH / 2 - (timeLeftText.getWidth() / 2) - 90, Utils.CAMERA_HEIGHT / 2 - (timeLeftText.getHeight() / 2) + 240);
 
@@ -204,11 +222,14 @@ public class GameScene extends Scene {
         super.attachChild(animatedSprite4);
         super.attachChild(animatedSprite5);
         super.attachChild(animatedSprite6);
+        super.attachChild(pauseSprite);
+
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         Log.d(TAG, "registerTouchArea: menu");
+        super.registerTouchArea(pauseSprite);
         super.registerTouchArea(animatedSprite1);
         super.registerTouchArea(animatedSprite2);
         super.registerTouchArea(animatedSprite3);

@@ -7,5 +7,6 @@ public enum AllScenes {
     SPLASH,
     MENU,
     GAME,
-    GAME0VER
+    GAME0VER,
+    PAUSE
 }

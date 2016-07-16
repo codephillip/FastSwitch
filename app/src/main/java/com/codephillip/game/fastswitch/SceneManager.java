@@ -72,6 +72,10 @@ public class SceneManager {
                 Log.d(TAG, "setCurrentScene: GAMEOVER");
                 ResourceManager.engine.setScene(scene);
                 break;
+            case PAUSE:
+                Log.d(TAG, "setCurrentScene: GAMEOVER");
+                ResourceManager.engine.setScene(scene);
+                break;
 
             default:
                 throw new UnsupportedOperationException("Unknown sceen");
