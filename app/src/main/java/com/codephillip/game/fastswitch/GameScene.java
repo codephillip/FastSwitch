@@ -8,6 +8,8 @@ import android.util.Log;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.IUpdateHandler;
+import org.andengine.engine.handler.timer.ITimerCallback;
+import org.andengine.engine.handler.timer.TimerHandler;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
@@ -83,19 +85,20 @@ public class GameScene extends Scene {
         animatedSprite1 = new AnimatedSprite(initialX, initialY, ResourceManager.fruitTiledTextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                switch (superTouchEvent.getAction()) {
-                    case TouchEvent.ACTION_DOWN:
-                        this.setAlpha(0.5f);
-                        break;
-                    case TouchEvent.ACTION_UP:
-                        this.setAlpha(1.0f);
-                        checkTileColor(this);
-                        attachExplosionAnimation(this);
-                        animateExplosion();
-                        break;
-                    default:
-                        return true;
-                }
+//                switch (superTouchEvent.getAction()) {
+//                    case TouchEvent.ACTION_DOWN:
+//                        this.setAlpha(0.5f);
+//                        break;
+//                    case TouchEvent.ACTION_UP:
+//                        this.setAlpha(1.0f);
+//                        checkTileColor(this);
+//                        attachExplosionAnimation(this);
+//                        animateExplosion();
+//                        break;
+//                    default:
+//                        return true;
+//                }
+                Log.d(TAG, "onAreaTouched: clicked");
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
             }
         };
@@ -229,6 +232,7 @@ public class GameScene extends Scene {
     public void registerTouchArea(ITouchArea pTouchArea) {
         Log.d(TAG, "registerTouchArea: menu");
         super.registerTouchArea(sprite);
+        updateUI();
     }
 
     @Override
@@ -236,17 +240,29 @@ public class GameScene extends Scene {
         super.registerUpdateHandler(pUpdateHandler);
     }
 
-//    public void updateUI(){
-//        //5f is 5 seconds
-//        this.registerUpdateHandler(new TimerHandler(5f, true, new ITimerCallback() {
-//            @Override
-//            public void onTimePassed(TimerHandler pTimerHandler) {
-//                unregisterUpdateHandler(pTimerHandler);
-//                SceneManager.loadSplashResources();
-//                SceneManager.setCurrentScene(AllScenes.SPLASH, SceneManager.createSplashScene());
-//            }
-//        }));
-//    }
+    public void updateUI(){
+        //5f is 5 seconds
+        this.registerUpdateHandler(new TimerHandler(switchSpeed, true, new ITimerCallback() {
+            @Override
+            public void onTimePassed(TimerHandler pTimerHandler) {
+                timeLength--;
+                try {
+                    changeSpriteTile();
+                    changeTimeLeft();
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    e.printStackTrace();
+                }
+
+                if (timeLength == 0) {
+                    unregisterUpdateHandler(pTimerHandler);
+                    Log.d(TAG, "onTimePassed: FINISHED");
+                    if (lives >= 1 && points >= targetPoints) gameOver(true);
+                    else gameOver(false);
+                }
+                pTimerHandler.reset();
+            }
+        }));
+    }
 
     private void attachExplosionAnimation(AnimatedSprite animatedSprite) {
         // Get the scene coordinates of the animatedSprite as an array.

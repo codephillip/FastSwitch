@@ -76,7 +76,7 @@ public class ResourceManager extends Object {
 	public static void loadSplashScreenResources(){
 //		getInstance().loadSplashTextures();
 //		getInstance().loadSharedResources();
-		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
+//		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 	}
 	
 	// Loads all game resources.
@@ -235,7 +235,6 @@ public class ResourceManager extends Object {
 	
 	// =========================== LOAD SOUNDS ======================== //
 	private void loadSounds(){
-		SoundFactory.setAssetBasePath("sounds/");
 		if(gameSound==null) {
 			try {
 				gameSound = MusicFactory.createMusicFromAsset(engine.getMusicManager(), context, "mfx/game_music.mp3");
