@@ -6,5 +6,6 @@ package com.codephillip.game.fastswitch;
 public enum AllScenes {
     SPLASH,
     MENU,
-    GAME
+    GAME,
+    GAME0VER
 }

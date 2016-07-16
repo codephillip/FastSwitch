@@ -41,8 +41,8 @@ public class GameScene extends Scene {
     private static final String POINTS = "points";
 
     //TODO [REMOVE ON RELEASE]
-//    private int timeLength = 2;
-    private int timeLength = 30;
+    private int timeLength = 2;
+//    private int timeLength = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
@@ -298,13 +298,18 @@ public class GameScene extends Scene {
         timeLeftText.setText("TIME: " + timeLength);
     }
 
+
     ///
     private void gameOver(boolean hasWonGame) {
-        ResourceManager.gameSound.stop();
-        if (points > getHiScore()) storePref(POINTS, points);
-        storeStatistics();
-        showStatistics(hasWonGame);
+//        ResourceManager.gameSound.stop();
+//        if (points > getHiScore()) storePref(POINTS, points);
+//        storeStatistics();
+//        showStatistics(hasWonGame);
 //        attachChildrenToPauseScreen();
+        this.clearChildScene();
+        this.clearUpdateHandlers();
+        SceneManager.loadGameResources();
+        SceneManager.setCurrentScene(AllScenes.GAME0VER, SceneManager.createGameOverScene());
     }
 
     private void storeStatistics() {

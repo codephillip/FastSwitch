@@ -49,11 +49,14 @@ public class SceneManager {
 //        return menuScene;
 //    }
 
+    public static Scene createGameOverScene() {
+        GameOverScene gameOverScene = new GameOverScene(ResourceManager.getInstance().context, ResourceManager.engine);
+        Log.d(TAG, "createMenuScene: finished");
+        return gameOverScene;
+    }
+
     public static Scene createGameScene() {
-        ResourceManager.getInstance();
         GameScene gameScene = new GameScene(ResourceManager.getInstance().context, ResourceManager.engine);
-//        gameScene.attachChild(null);
-//        gameScene.registerTouchArea(null);
         Log.d(TAG, "createMenuScene: finished");
         return gameScene;
     }
@@ -66,19 +69,19 @@ public class SceneManager {
             case SPLASH:
                 Log.d(TAG, "setCurrentScene: SPLASH SCENE");
                 ResourceManager.engine.setScene(scene);
-                //this case we don't really have to worry about
                 break;
             case MENU:
                 Log.d(TAG, "setCurrentScene: MENU SCENE");
-                //once we setup the engine we'll tell it
-                //to load the menu scene
                 ResourceManager.engine.setScene(scene);
                 break;
             case GAME:
-                //once we setup the engine we'll tell it
-                //to load the game scene
                 ResourceManager.engine.setScene(scene);
                 break;
+            case GAME0VER:
+                Log.d(TAG, "setCurrentScene: GAMEOVER");
+                ResourceManager.engine.setScene(scene);
+                break;
+
             default:
                 throw new UnsupportedOperationException("Unknown sceen");
         }
