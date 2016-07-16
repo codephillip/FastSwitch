@@ -50,7 +50,7 @@ public class PauseScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         clearChildScene();
-//                        SceneManager.setCurrentScene(AllScenes.GAME, SceneManager.createGameScene());
+                        SceneManager.setCurrentScene(AllScenes.GAME, SceneManager.createGameScene());
                         Log.d(TAG, "onAreaTouched: clicked");
                         break;
                 }
@@ -97,7 +97,8 @@ public class PauseScene extends Scene {
         backgroundSprite.detachSelf();
 
         ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
-                "fnt/sanchez.ttf", 100, true, android.graphics.Color.YELLOW);
+                "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
+        ResourceManager.winOrLoseFont.load();
 
         gamePausedText = new Text(0, 0, ResourceManager.winOrLoseFont, "GAME PAUSED", 25, engine.getVertexBufferObjectManager());
         gamePausedText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);

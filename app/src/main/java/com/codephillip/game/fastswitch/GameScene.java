@@ -58,12 +58,13 @@ public class GameScene extends Scene {
             gameTimeLeft = Utils.getGameTimeLeft();
             lives = Utils.getLives();
             points = Utils.getPoints();
+            updateTimeLeftText();
+            updateLivesText();
+            updatePointsText();
             Utils.savePausedGame(Utils.HAS_PAUSED_GAME, false);
         }
         registerUpdateHandler(null);
     }
-
-
 
     @Override
     public void attachChild(IEntity pEntity) {
@@ -193,7 +194,7 @@ public class GameScene extends Scene {
                         Utils.saveIntPref(Utils.GAME_TIME_LEFT, gameTimeLeft);
                         Utils.saveIntPref(Utils.LIVES, lives);
                         Utils.saveIntPref(Utils.POINTS, points);
-                        SceneManager.setCurrentScene(AllScenes.PAUSE, SceneManager.createMenuScene());
+                        SceneManager.setCurrentScene(AllScenes.PAUSE, SceneManager.createPauseScene());
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -268,7 +269,7 @@ public class GameScene extends Scene {
                 gameTimeLeft--;
                 try {
                     updateSpriteTile();
-                    updateTimeLeft();
+                    updateTimeLeftText();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
@@ -329,7 +330,7 @@ public class GameScene extends Scene {
                 });
     }
 
-    private void updateTimeLeft() {
+    private void updateTimeLeftText() {
         timeLeftText.setText("TIME: " + gameTimeLeft);
     }
 
@@ -386,6 +387,7 @@ public class GameScene extends Scene {
             wrongCount = 0;
             correctCount = 0;
             ResourceManager.lifeDownSound.play();
+            ResourceManager.wrongTileSound.play();
             loseLife();
         } else {
             ResourceManager.wrongTileSound.play();
@@ -394,13 +396,17 @@ public class GameScene extends Scene {
 
     private void gainPoints() {
         points += lives * 2;
-        pointsText.setText("" + points);
+        updatePointsText();
         if (pointsText.getText().toString().length() > textSpaceCount) {
             pointsText.setX(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 230 + pointsTextYIncrement);
             pointsTextYIncrement += 35;
             textSpaceCount += 1;
         }
         Log.d(TAG, "gainPoints: gameTimeLeft" + pointsText.getText().toString().length());
+    }
+
+    private void updatePointsText() {
+        pointsText.setText("" + points);
     }
 
     private void gainLife() {
@@ -421,13 +427,17 @@ public class GameScene extends Scene {
 
     private void loseLife() {
         lives--;
-        livesText.setText("" + lives);
+        updateLivesText();
         if (lives <= 0) {
             ResourceManager.deathSound.play();
             Utils.saveHasWonGame(Utils.HAS_WON_GAME, false);
             gameOver();
         }
         Log.d(TAG, "loseLife: " + lives);
+    }
+
+    private void updateLivesText() {
+        livesText.setText("" + lives);
     }
 
     private void updateSpriteTile() {
