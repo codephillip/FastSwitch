@@ -84,8 +84,7 @@ public class GameScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
-                        attachExplosionAnimation(this);
-                        animateExplosion();
+                        initialiseExplosionAnimation(this);
                         break;
                     default:
                         return true;
@@ -105,8 +104,7 @@ public class GameScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
-                        attachExplosionAnimation(this);
-                        animateExplosion();
+                        initialiseExplosionAnimation(this);
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -123,8 +121,7 @@ public class GameScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
-                        attachExplosionAnimation(this);
-                        animateExplosion();
+                        initialiseExplosionAnimation(this);
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -142,8 +139,7 @@ public class GameScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
-                        attachExplosionAnimation(this);
-                        animateExplosion();
+                        initialiseExplosionAnimation(this);
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -160,8 +156,7 @@ public class GameScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
-                        attachExplosionAnimation(this);
-                        animateExplosion();
+                        initialiseExplosionAnimation(this);
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -178,8 +173,7 @@ public class GameScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         checkTileColor(this);
-                        attachExplosionAnimation(this);
-                        animateExplosion();
+                        initialiseExplosionAnimation(this);
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -239,6 +233,21 @@ public class GameScene extends Scene {
         ResourceManager.gameSound.play();
     }
 
+    private void initialiseExplosionAnimation(AnimatedSprite animatedSprite) {
+        //explosion only happen for bombs
+        if (animatedSprite.getCurrentTileIndex() == correctTileNumbers[0]
+                || animatedSprite.getCurrentTileIndex() == correctTileNumbers[1]
+                || animatedSprite.getCurrentTileIndex() == correctTileNumbers[2]
+                || animatedSprite.getCurrentTileIndex() == correctTileNumbers[3]
+                || animatedSprite.getCurrentTileIndex() == correctTileNumbers[4]
+                || animatedSprite.getCurrentTileIndex() == correctTileNumbers[5]) {
+            Log.d(TAG, "initialiseExplosionAnimation: NO EXPLOSION");
+        } else {
+            attachExplosionAnimation(animatedSprite);
+            animateExplosion();
+        }
+    }
+
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         Log.d(TAG, "registerTouchArea: menu");
@@ -282,14 +291,16 @@ public class GameScene extends Scene {
     }
 
     private void attachExplosionAnimation(AnimatedSprite animatedSprite) {
-        // Get the scene coordinates of the animatedSprite as an array.
-        float[] coodinates = {animatedSprite.getX(), animatedSprite.getY()};
-        // Convert the the scene coordinates of the animatedSprite to the local corrdinates of the explosionAnimatedSprite.
-        float[] localCoordinates = animatedSprite.convertSceneCoordinatesToLocalCoordinates(coodinates);
-        // Attach and set position of explosionAnimatedSprite
-        explosionAnimatedSprite.setPosition(localCoordinates[0], localCoordinates[1]);
-        explosionAnimatedSprite.detachSelf();
-        animatedSprite.attachChild(explosionAnimatedSprite);
+//        if (animatedSprite.getCurrentTileIndex() == correctTileNumbers[0]){
+            // Get the scene coordinates of the animatedSprite as an array.
+            float[] coodinates = {animatedSprite.getX(), animatedSprite.getY()};
+            // Convert the the scene coordinates of the animatedSprite to the local corrdinates of the explosionAnimatedSprite.
+            float[] localCoordinates = animatedSprite.convertSceneCoordinatesToLocalCoordinates(coodinates);
+            // Attach and set position of explosionAnimatedSprite
+            explosionAnimatedSprite.setPosition(localCoordinates[0], localCoordinates[1]);
+            explosionAnimatedSprite.detachSelf();
+            animatedSprite.attachChild(explosionAnimatedSprite);
+//        }
     }
 
     private void animateExplosion() {
@@ -346,30 +357,38 @@ public class GameScene extends Scene {
                 || animatedSprite.getCurrentTileIndex() == correctTileNumbers[3]
                 || animatedSprite.getCurrentTileIndex() == correctTileNumbers[4]
                 || animatedSprite.getCurrentTileIndex() == correctTileNumbers[5]) {
-            correctCount++;
-            Log.d(TAG, "checkTileColor: CORRECT COUNT " + correctCount);
-            Log.d(TAG, "checkTileColor: CORRECT ");
-
-            if (correctCount % 10 == 0) giveBounty(100);
-
-            if (correctCount % 5 == 0) {
-                ResourceManager.lifeUpSound.play();
-                gainLife();
-                gainPoints();
-            } else {
-                gainPoints();
-                ResourceManager.rightTileSound.play();
-            }
+            processCorrectCount();
         } else {
-            wrongCount++;
-            if (wrongCount == 3) {
-                wrongCount = 0;
-                correctCount = 0;
-                ResourceManager.lifeDownSound.play();
-                loseLife();
-            } else {
-                ResourceManager.wrongTileSound.play();
-            }
+            processWrongCount();
+        }
+    }
+
+    private void processCorrectCount() {
+        correctCount++;
+        Log.d(TAG, "checkTileColor: CORRECT COUNT " + correctCount);
+        Log.d(TAG, "checkTileColor: CORRECT ");
+
+        if (correctCount % 10 == 0) giveBounty(100);
+
+        if (correctCount % 5 == 0) {
+            ResourceManager.lifeUpSound.play();
+            gainLife();
+            gainPoints();
+        } else {
+            gainPoints();
+            ResourceManager.rightTileSound.play();
+        }
+    }
+
+    private void processWrongCount() {
+        wrongCount++;
+        if (wrongCount == 3) {
+            wrongCount = 0;
+            correctCount = 0;
+            ResourceManager.lifeDownSound.play();
+            loseLife();
+        } else {
+            ResourceManager.wrongTileSound.play();
         }
     }
 
