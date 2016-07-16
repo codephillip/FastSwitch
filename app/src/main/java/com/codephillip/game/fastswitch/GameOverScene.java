@@ -10,6 +10,9 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.font.FontFactory;
+import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.adt.color.Color;
 
 /**
@@ -17,10 +20,16 @@ import org.andengine.util.adt.color.Color;
  */
 public class GameOverScene extends Scene {  private static final String TAG = GameOverScene.class.getSimpleName();
     Engine engine;
-    Sprite sprite;
     Context context;
-    private Sprite sprite2;
+    private Sprite backgroundSprite;
+    private Sprite nextOrRestartSprite;
     private Text timeLeftText, livesText, pointsText, highPointsText, bountyText;
+    private Text winOrLoseText;
+    private int lives = 5;
+    private int points = 2;
+    private int textCount = 2;
+    final float positionX = Utils.CAMERA_WIDTH * 0.5f;
+    final float positionY = Utils.CAMERA_HEIGHT * 0.5f;
 
 
     public GameOverScene(Context context, Engine engine) {
@@ -34,61 +43,82 @@ public class GameOverScene extends Scene {  private static final String TAG = Ga
     public void attachChild(IEntity pEntity) {
         Log.d(TAG, "attachChild: GAMEOVER finished");
         this.setBackground(new Background(Color.GREEN));
-//        sprite = new Sprite(800 / 2+300, 480 / 2+300, ResourceManager.splashTextureRegion, engine.getVertexBufferObjectManager()){
-//            @Override
-//            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-//                switch (pSceneTouchEvent.getAction()) {
-//                    case TouchEvent.ACTION_DOWN:
-//                        this.setAlpha(0.5f);
-//                        break;
-//                    case TouchEvent.ACTION_UP:
-//                        this.setAlpha(1.0f);
-////                        updateUI();
-//                        Log.d(TAG, "onAreaTouched: clicked: MENU CLASS");
-//                        SceneManager.loadSplashResources();
-//                        SceneManager.setCurrentScene(AllScenes.SPLASH, SceneManager.createSplashScene());
-//                        break;
-//                }
-//                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-//            }
-//        };
-//        sprite2 = new Sprite(800 / 2 + 100, 480 / 2 + 500, ResourceManager.splashTextureRegion, engine.getVertexBufferObjectManager()) {
-//            @Override
-//            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-//                switch (pSceneTouchEvent.getAction()) {
-//                    case TouchEvent.ACTION_DOWN:
-//                        this.setAlpha(0.5f);
-//                        break;
-//                    case TouchEvent.ACTION_UP:
-//                        this.setAlpha(1.0f);
-////                        updateUI();
-//                        Log.d(TAG, "onAreaTouched: clicked: MENU CLASS");
-//                        SceneManager.loadSplashResources();
-//                        SceneManager.setCurrentScene(AllScenes.SPLASH, SceneManager.createSplashScene());
-//                        break;
-//                }
-//                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-//            }
-//        };
-//        super.attachChild(sprite2);
-//        super.attachChild(sprite);
+
+        backgroundSprite = new Sprite(positionX, positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
+
+        nextOrRestartSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 90, setNextorRestartSprite(Utils.getHasWonGame()), engine.getVertexBufferObjectManager()) {
+            @Override
+            public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                switch (superTouchEvent.getAction()) {
+                    case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
+                        Log.d(TAG, "onAreaTouched: clicked");
+                        break;
+                }
+                return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+            }
+        };
+
+        showStatistics(Utils.getHasWonGame());
+
+        super.attachChild(backgroundSprite);
+        super.attachChild(winOrLoseText);
+        super.attachChild(pointsText);
+        super.attachChild(highPointsText);
+        super.attachChild(nextOrRestartSprite);
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         Log.d(TAG, "registerTouchArea: gameover");
-//        super.registerTouchArea(sprite);
+        super.registerTouchArea(nextOrRestartSprite);
     }
 
-//    public void updateUI(){
-//        //5f is 5 seconds
-//        this.registerUpdateHandler(new TimerHandler(5f, true, new ITimerCallback() {
-//            @Override
-//            public void onTimePassed(TimerHandler pTimerHandler) {
-//                unregisterUpdateHandler(pTimerHandler);
-//                SceneManager.loadSplashResources();
-//                SceneManager.setCurrentScene(AllScenes.SPLASH, SceneManager.createSplashScene());
-//            }
-//        }));
-//    }
+    private void showStatistics(boolean hasWonGame) {
+        backgroundSprite.detachSelf();
+
+        setWinOrLoseFontColor(hasWonGame);
+
+        winOrLoseText = new Text(0, 0, ResourceManager.winOrLoseFont, "YOU WIN", 25, engine.getVertexBufferObjectManager());
+        winOrLoseText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
+        if (hasWonGame) {
+            winOrLoseText.setText("YOU WIN");
+        } else {
+            winOrLoseText.setText("YOU LOSE");
+        }
+
+        pointsText = new Text(0, 0, ResourceManager.menuFont, "Score: 500", 25, engine.getVertexBufferObjectManager());
+        pointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 60);
+        pointsText.setText("Score: " + Utils.getPoints());
+
+        highPointsText = new Text(0, 0, ResourceManager.font, "Hi-Score: 1000", 25, engine.getVertexBufferObjectManager());
+        highPointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
+        highPointsText.setText("Hi-Score: " + Utils.getHiScore());
+
+//        setNextorRestartSprite(hasWonGame);
+    }
+
+    private ITextureRegion setNextorRestartSprite(boolean hasWonGame) {
+        ITextureRegion textureRegion;
+        if (hasWonGame) {
+            textureRegion = ResourceManager.resumeITextureRegion;
+        } else {
+            textureRegion = ResourceManager.restartITextureRegion;
+        }
+        return textureRegion;
+    }
+
+    private void setWinOrLoseFontColor(boolean hasWonGame) {
+        if (hasWonGame) {
+            ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+                    "fnt/sanchez.ttf", 100, true, android.graphics.Color.YELLOW);
+        } else {
+            ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+                    "fnt/sanchez.ttf", 100, true, android.graphics.Color.RED);
+        }
+        ResourceManager.winOrLoseFont.load();
+    }
 }

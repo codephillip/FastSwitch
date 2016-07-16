@@ -1,9 +1,6 @@
 package com.codephillip.game.fastswitch;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.preference.PreferenceManager;
 import android.util.Log;
 
 import org.andengine.engine.Engine;
@@ -17,8 +14,6 @@ import org.andengine.entity.sprite.AnimatedSprite;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.font.FontFactory;
-import org.andengine.opengl.texture.region.ITextureRegion;
 
 /**
  * Created by codephillip on 7/15/16.
@@ -51,8 +46,6 @@ public class GameScene extends Scene {
     private int points = 2;
     private int textCount = 2;
     private int pointsTextYIncrement = 20;
-    private Text winOrLoseText;
-    private Sprite nextOrRestartSprite;
     private int targetPoints = 500;
 
     public GameScene(Context context, Engine engine) {
@@ -70,16 +63,9 @@ public class GameScene extends Scene {
         final float positionX = WIDTH * 0.5f;
         final float positionY = HEIGHT * 0.5f;
         backgroundSprite = new Sprite(positionX, positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
-        super.attachChild(backgroundSprite);
-
         heartSprite = new Sprite(positionX, positionY + 215, ResourceManager.heartITextureRegion, engine.getVertexBufferObjectManager());
-        super.attachChild(heartSprite);
-
         coinSprite = new Sprite(positionX + 170, positionY + 215, ResourceManager.coinITextureRegion, engine.getVertexBufferObjectManager());
-        super.attachChild(coinSprite);
-
         explosionAnimatedSprite = new AnimatedSprite(0, 0, ResourceManager.explosionTiledTextureRegion, engine.getVertexBufferObjectManager());
-//        explosionAnimatedSprite.animate(100);
 
         animatedSprite1 = new AnimatedSprite(initialX, initialY, ResourceManager.fruitTiledTextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
@@ -194,22 +180,26 @@ public class GameScene extends Scene {
         };
 
         timeLeftText = new Text(0, 0, ResourceManager.font, "TIME: 00", 15, engine.getVertexBufferObjectManager());
-        super.attachChild(timeLeftText);
         timeLeftText.setPosition(WIDTH / 2 - (timeLeftText.getWidth() / 2) - 90, HEIGHT / 2 - (timeLeftText.getHeight() / 2) + 240);
 
         livesText = new Text(0, 0, ResourceManager.font, "3", 5, engine.getVertexBufferObjectManager());
-        super.attachChild(livesText);
         livesText.setPosition(WIDTH / 2 - (livesText.getWidth() / 2) + 70, HEIGHT / 2 - (livesText.getHeight() / 2) + 240);
         livesText.setText("" + lives);
 
         pointsText = new Text(0, 0, ResourceManager.font, "2", 10, engine.getVertexBufferObjectManager());
-        super.attachChild(pointsText);
         pointsText.setPosition(WIDTH / 2 - (livesText.getWidth() / 2) + 240, HEIGHT / 2 - (livesText.getHeight() / 2) + 240);
         pointsText.setText("" + points);
 
         bountyText = new Text(0, 0, ResourceManager.bountyFont, "+100", 10, engine.getVertexBufferObjectManager());
-        super.attachChild(bountyText);
         bountyText.setPosition(WIDTH / 2, HEIGHT / 2);
+
+        super.attachChild(backgroundSprite);
+        super.attachChild(heartSprite);
+        super.attachChild(coinSprite);
+        super.attachChild(livesText);
+        super.attachChild(timeLeftText);
+        super.attachChild(pointsText);
+        super.attachChild(bountyText);
 
         super.attachChild(explosionAnimatedSprite);
         super.attachChild(animatedSprite1);
@@ -229,8 +219,6 @@ public class GameScene extends Scene {
         super.registerTouchArea(animatedSprite4);
         super.registerTouchArea(animatedSprite5);
         super.registerTouchArea(animatedSprite6);
-        //initialise timer
-//        registerUpdateHandler(null);
     }
 
     @Override
@@ -240,8 +228,8 @@ public class GameScene extends Scene {
             public void onTimePassed(TimerHandler pTimerHandler) {
                 timeLength--;
                 try {
-                    changeSpriteTile();
-                    changeTimeLeft();
+                    updateSpriteTile();
+                    updateTimeLeft();
                 } catch (ArrayIndexOutOfBoundsException e) {
                     e.printStackTrace();
                 }
@@ -249,8 +237,14 @@ public class GameScene extends Scene {
                 if (timeLength == 0) {
                     unregisterUpdateHandler(pTimerHandler);
                     Log.d(TAG, "onTimePassed: FINISHED");
-                    if (lives >= 1 && points >= targetPoints) gameOver(true);
-                    else gameOver(false);
+                    if (lives >= 1 && points >= targetPoints) {
+                        Utils.saveHasWonGame(Utils.HAS_WON_GAME, true);
+                        gameOver(true);
+                    }
+                    else {
+                        Utils.saveHasWonGame(Utils.HAS_WON_GAME, false);
+                        gameOver(false);
+                    }
                 }
                 pTimerHandler.reset();
             }
@@ -294,110 +288,22 @@ public class GameScene extends Scene {
                 });
     }
 
-    private void changeTimeLeft() {
+    private void updateTimeLeft() {
         timeLeftText.setText("TIME: " + timeLength);
     }
 
-
-    ///
     private void gameOver(boolean hasWonGame) {
-//        ResourceManager.gameSound.stop();
-//        if (points > getHiScore()) storePref(POINTS, points);
-//        storeStatistics();
-//        showStatistics(hasWonGame);
-//        attachChildrenToPauseScreen();
+        ResourceManager.gameSound.stop();
+        storeStatistics();
         this.clearChildScene();
         this.clearUpdateHandlers();
-        SceneManager.loadGameResources();
         SceneManager.setCurrentScene(AllScenes.GAME0VER, SceneManager.createGameOverScene());
     }
 
     private void storeStatistics() {
-        if (points > getHiScore()) storePref(POINTS, points);
+        if (points > Utils.getHiScore()) Utils.storeIntPref(Utils.HI_POINTS, points);
+        Utils.storeIntPref(Utils.POINTS, points);
     }
-
-    private void storePref(String prefString, int value) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(prefString, value);
-        editor.apply();
-    }
-
-    private int getHiScore() {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        int hiScore = prefs.getInt(POINTS, 0);
-        return hiScore;
-    }
-
-    private void showStatistics(boolean hasWonGame) {
-        backgroundSprite.detachSelf();
-
-        setWinOrLoseFontColor(hasWonGame);
-
-        winOrLoseText = new Text(0, 0, ResourceManager.winOrLoseFont, "YOU WIN", 25, engine.getVertexBufferObjectManager());
-        winOrLoseText.setPosition(WIDTH / 2, HEIGHT / 2 + 150);
-        if (hasWonGame) {
-            winOrLoseText.setText("YOU WIN");
-        } else {
-            winOrLoseText.setText("YOU LOSE");
-        }
-
-        pointsText = new Text(0, 0, ResourceManager.menuFont, "Score: 500", 25, engine.getVertexBufferObjectManager());
-        pointsText.setPosition(WIDTH / 2, HEIGHT / 2 + 60);
-        pointsText.setText("Score: " + points);
-
-        highPointsText = new Text(0, 0, ResourceManager.font, "Hi-Score: 1000", 25, engine.getVertexBufferObjectManager());
-        highPointsText.setPosition(WIDTH / 2, HEIGHT / 2);
-        highPointsText.setText("Hi-Score: " + getHiScore());
-
-        setNextorRestartSprite(hasWonGame);
-    }
-
-    private void setNextorRestartSprite(boolean hasWonGame) {
-        ITextureRegion textureRegion;
-        if (hasWonGame) {
-            textureRegion = ResourceManager.resumeITextureRegion;
-        } else {
-            textureRegion = ResourceManager.restartITextureRegion;
-        }
-
-        nextOrRestartSprite = new Sprite(WIDTH / 2, HEIGHT / 2 - 90, textureRegion, engine.getVertexBufferObjectManager()) {
-            @Override
-            public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                switch (superTouchEvent.getAction()) {
-                    case TouchEvent.ACTION_DOWN:
-                        this.setAlpha(0.5f);
-                        break;
-                    case TouchEvent.ACTION_UP:
-                        this.setAlpha(1.0f);
-                        Log.d(TAG, "onAreaTouched: clicked");
-                        break;
-                }
-                return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-            }
-        };
-    }
-
-    private void setWinOrLoseFontColor(boolean hasWonGame) {
-        if (hasWonGame) {
-            ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
-                    "fnt/sanchez.ttf", 100, true, Color.YELLOW);
-        } else {
-            ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
-                    "fnt/sanchez.ttf", 100, true, Color.RED);
-        }
-        ResourceManager.winOrLoseFont.load();
-    }
-
-//    private void attachChildrenToPauseScreen() {
-//        scene.attachChild(backgroundSprite);
-//        scene.attachChild(winOrLoseText);
-//        scene.attachChild(pointsText);
-//        scene.attachChild(highPointsText);
-//        scene.attachChild(nextOrRestartSprite);
-//        scene.registerTouchArea(nextOrRestartSprite);
-//    }
-    ///
 
     private void checkTileColor(AnimatedSprite animatedSprite) {
         /*hit correct tile 3 times to gain lives
@@ -469,23 +375,18 @@ public class GameScene extends Scene {
         livesText.setText("" + lives);
         if (lives <= 0) {
             ResourceManager.deathSound.play();
+            Utils.saveHasWonGame(Utils.HAS_WON_GAME, false);
             gameOver(false);
         }
         Log.d(TAG, "loseLife: " + lives);
     }
 
-    private void changeSpriteTile() {
-        animatedSprite1.setCurrentTileIndex(randInt(0, 11));
-        animatedSprite2.setCurrentTileIndex(randInt(0, 11));
-        animatedSprite3.setCurrentTileIndex(randInt(0, 11));
-        animatedSprite4.setCurrentTileIndex(randInt(0, 11));
-        animatedSprite5.setCurrentTileIndex(randInt(0, 11));
-        animatedSprite6.setCurrentTileIndex(randInt(0, 11));
-    }
-
-    public static int randInt(int min, int max) {
-        int randomNum = min + (int) (Math.random() * ((max - min) + 1));
-        Log.d("RANDOM", String.valueOf(randomNum));
-        return randomNum;
+    private void updateSpriteTile() {
+        animatedSprite1.setCurrentTileIndex(Utils.randInt(0, 11));
+        animatedSprite2.setCurrentTileIndex(Utils.randInt(0, 11));
+        animatedSprite3.setCurrentTileIndex(Utils.randInt(0, 11));
+        animatedSprite4.setCurrentTileIndex(Utils.randInt(0, 11));
+        animatedSprite5.setCurrentTileIndex(Utils.randInt(0, 11));
+        animatedSprite6.setCurrentTileIndex(Utils.randInt(0, 11));
     }
 }
