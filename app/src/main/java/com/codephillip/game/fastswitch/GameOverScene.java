@@ -22,12 +22,11 @@ public class GameOverScene extends Scene {  private static final String TAG = Ga
     Engine engine;
     Context context;
     private Sprite backgroundSprite;
-    private Sprite nextOrRestartSprite;
+    private Sprite nextOrRestartSprite, menuSprite;
     private Text pointsText, highPointsText;
     private Text winOrLoseText;
     final float positionX = Utils.CAMERA_WIDTH * 0.5f;
     final float positionY = Utils.CAMERA_HEIGHT * 0.5f;
-
 
     public GameOverScene(Context context, Engine engine) {
         this.context = context;
@@ -61,6 +60,24 @@ public class GameOverScene extends Scene {  private static final String TAG = Ga
             }
         };
 
+        menuSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.menuITextureRegion, engine.getVertexBufferObjectManager()) {
+            @Override
+            public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                switch (superTouchEvent.getAction()) {
+                    case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
+                        clearChildScene();
+                        SceneManager.setCurrentScene(AllScenes.MENU, SceneManager.createMenuScene());
+                        Log.d(TAG, "onAreaTouched: clicked");
+                        break;
+                }
+                return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+            }
+        };
+
         showStatistics(Utils.getHasWonGame());
 
         super.attachChild(backgroundSprite);
@@ -68,12 +85,14 @@ public class GameOverScene extends Scene {  private static final String TAG = Ga
         super.attachChild(pointsText);
         super.attachChild(highPointsText);
         super.attachChild(nextOrRestartSprite);
+        super.attachChild(menuSprite);
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         Log.d(TAG, "registerTouchArea: gameover");
         super.registerTouchArea(nextOrRestartSprite);
+        super.registerTouchArea(menuSprite);
     }
 
     private void showStatistics(boolean hasWonGame) {

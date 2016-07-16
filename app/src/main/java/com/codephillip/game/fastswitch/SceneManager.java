@@ -42,13 +42,13 @@ public class SceneManager {
 //        return splashScene;
 //    }
 //
-//    public static Scene createMenuScene() {
-//        MenuScene menuScene = new MenuScene(ResourceManager.getInstance().context, ResourceManager.engine);
-//        menuScene.attachChild(null);
-//        menuScene.registerTouchArea(null);
-//        Log.d(TAG, "createMenuScene: finished");
-//        return menuScene;
-//    }
+    public static Scene createMenuScene() {
+        MenuScene menuScene = new MenuScene(ResourceManager.getInstance().context, ResourceManager.engine);
+        menuScene.attachChild(null);
+        menuScene.registerTouchArea(null);
+        Log.d(TAG, "createMenuScene: finished");
+        return menuScene;
+    }
 
     public static Scene createGameOverScene() {
         GameOverScene gameOverScene = new GameOverScene(ResourceManager.getInstance().context, ResourceManager.engine);
