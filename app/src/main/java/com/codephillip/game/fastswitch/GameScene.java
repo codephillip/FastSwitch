@@ -229,7 +229,6 @@ public class GameScene extends Scene {
         super.attachChild(pointsText);
         super.attachChild(bountyText);
 
-        super.attachChild(explosionAnimatedSprite);
         super.attachChild(animatedSprite1);
         super.attachChild(animatedSprite2);
         super.attachChild(animatedSprite3);
@@ -237,7 +236,7 @@ public class GameScene extends Scene {
         super.attachChild(animatedSprite5);
         super.attachChild(animatedSprite6);
         super.attachChild(pauseSprite);
-
+        ResourceManager.gameSound.play();
     }
 
     @Override
@@ -324,7 +323,7 @@ public class GameScene extends Scene {
     }
 
     private void gameOver() {
-        ResourceManager.gameSound.stop();
+        ResourceManager.gameSound.pause();
         storeStatistics();
         this.clearChildScene();
         this.clearUpdateHandlers();

@@ -162,7 +162,7 @@ public class ResourceManager extends Object {
 		fruitTextureAtlas.load();
 
 		explosionTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 768, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-		explosionTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionTextureAtlas, context, "good_explosion.png", 0, 0, 3, 4);
+		explosionTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionTextureAtlas, context, "explosion.png", 0, 0, 3, 4);
 		explosionTextureAtlas.load();
 
 		heartTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 32, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
