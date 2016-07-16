@@ -20,24 +20,21 @@ import org.andengine.input.touch.TouchEvent;
  */
 public class GameScene extends Scene {
     private static final String TAG = GameScene.class.getSimpleName();
-    Engine engine;
-    Context context;
-    private Text timeLeftText, livesText, pointsText, highPointsText, bountyText;
+    private Engine engine;
+    private Context context;
+    private Text timeLeftText, livesText, pointsText, bountyText;
     private Sprite backgroundSprite;
     private AnimatedSprite explosionAnimatedSprite;
     private AnimatedSprite animatedSprite1, animatedSprite2, animatedSprite3, animatedSprite4, animatedSprite5, animatedSprite6;
     private Sprite heartSprite;
     private Sprite coinSprite;
-    public static final int WIDTH = 800;
-    public static final int HEIGHT = 480;
-    private float initialX = 165;
-    private float initialY = 120;
+    private final float initialX = 165;
+    private final float initialY = 120;
     private final int RECTANGLE_DIMENSIONS = 200;
-    private static final String POINTS = "points";
 
     //TODO [REMOVE ON RELEASE]
-    private int timeLength = 2;
-//    private int timeLength = 30;
+//    private int timeLength = 2;
+    private int timeLength = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
@@ -59,12 +56,10 @@ public class GameScene extends Scene {
     @Override
     public void attachChild(IEntity pEntity) {
         Log.d(TAG, "attachChild: finished");
-
-        final float positionX = WIDTH * 0.5f;
-        final float positionY = HEIGHT * 0.5f;
-        backgroundSprite = new Sprite(positionX, positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
-        heartSprite = new Sprite(positionX, positionY + 215, ResourceManager.heartITextureRegion, engine.getVertexBufferObjectManager());
-        coinSprite = new Sprite(positionX + 170, positionY + 215, ResourceManager.coinITextureRegion, engine.getVertexBufferObjectManager());
+        
+        backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
+        heartSprite = new Sprite(Utils.positionX, Utils.positionY + 215, ResourceManager.heartITextureRegion, engine.getVertexBufferObjectManager());
+        coinSprite = new Sprite(Utils.positionX + 170, Utils.positionY + 215, ResourceManager.coinITextureRegion, engine.getVertexBufferObjectManager());
         explosionAnimatedSprite = new AnimatedSprite(0, 0, ResourceManager.explosionTiledTextureRegion, engine.getVertexBufferObjectManager());
 
         animatedSprite1 = new AnimatedSprite(initialX, initialY, ResourceManager.fruitTiledTextureRegion, engine.getVertexBufferObjectManager()) {
@@ -180,18 +175,18 @@ public class GameScene extends Scene {
         };
 
         timeLeftText = new Text(0, 0, ResourceManager.font, "TIME: 00", 15, engine.getVertexBufferObjectManager());
-        timeLeftText.setPosition(WIDTH / 2 - (timeLeftText.getWidth() / 2) - 90, HEIGHT / 2 - (timeLeftText.getHeight() / 2) + 240);
+        timeLeftText.setPosition(Utils.CAMERA_WIDTH / 2 - (timeLeftText.getWidth() / 2) - 90, Utils.CAMERA_HEIGHT / 2 - (timeLeftText.getHeight() / 2) + 240);
 
         livesText = new Text(0, 0, ResourceManager.font, "3", 5, engine.getVertexBufferObjectManager());
-        livesText.setPosition(WIDTH / 2 - (livesText.getWidth() / 2) + 70, HEIGHT / 2 - (livesText.getHeight() / 2) + 240);
+        livesText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 70, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + 240);
         livesText.setText("" + lives);
 
         pointsText = new Text(0, 0, ResourceManager.font, "2", 10, engine.getVertexBufferObjectManager());
-        pointsText.setPosition(WIDTH / 2 - (livesText.getWidth() / 2) + 240, HEIGHT / 2 - (livesText.getHeight() / 2) + 240);
+        pointsText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 240, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + 240);
         pointsText.setText("" + points);
 
         bountyText = new Text(0, 0, ResourceManager.bountyFont, "+100", 10, engine.getVertexBufferObjectManager());
-        bountyText.setPosition(WIDTH / 2, HEIGHT / 2);
+        bountyText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
 
         super.attachChild(backgroundSprite);
         super.attachChild(heartSprite);
@@ -347,7 +342,7 @@ public class GameScene extends Scene {
         points += lives * 2;
         pointsText.setText("" + points);
         if (pointsText.getText().toString().length() > textCount) {
-            pointsText.setX(WIDTH / 2 - (livesText.getWidth() / 2) + 230 + pointsTextYIncrement);
+            pointsText.setX(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 230 + pointsTextYIncrement);
             pointsTextYIncrement += 35;
             textCount += 1;
         }

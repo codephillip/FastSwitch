@@ -15,6 +15,8 @@ public class Utils {
     public static final String HAS_WON_GAME = "has_won_game";
     public static final int CAMERA_WIDTH = 800;
     public static final int CAMERA_HEIGHT = 480;
+    public static final float positionX = CAMERA_WIDTH * 0.5f;
+    public static final float positionY = CAMERA_HEIGHT * 0.5f;
 
     public static void storeIntPref(String prefString, int value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

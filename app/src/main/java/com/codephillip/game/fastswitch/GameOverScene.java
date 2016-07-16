@@ -18,15 +18,14 @@ import org.andengine.util.adt.color.Color;
 /**
  * Created by codephillip on 7/15/16.
  */
-public class GameOverScene extends Scene {  private static final String TAG = GameOverScene.class.getSimpleName();
-    Engine engine;
-    Context context;
+public class GameOverScene extends Scene {
+    private static final String TAG = GameOverScene.class.getSimpleName();
+    private Engine engine;
+    private Context context;
     private Sprite backgroundSprite;
     private Sprite nextOrRestartSprite, menuSprite;
     private Text pointsText, highPointsText;
     private Text winOrLoseText;
-    final float positionX = Utils.CAMERA_WIDTH * 0.5f;
-    final float positionY = Utils.CAMERA_HEIGHT * 0.5f;
 
     public GameOverScene(Context context, Engine engine) {
         this.context = context;
@@ -40,7 +39,7 @@ public class GameOverScene extends Scene {  private static final String TAG = Ga
         Log.d(TAG, "attachChild: GAMEOVER finished");
         this.setBackground(new Background(Color.GREEN));
 
-        backgroundSprite = new Sprite(positionX, positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
+        backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
 
         nextOrRestartSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 90, setNextorRestartSprite(Utils.getHasWonGame()), engine.getVertexBufferObjectManager()) {
             @Override
@@ -115,8 +114,6 @@ public class GameOverScene extends Scene {  private static final String TAG = Ga
         highPointsText = new Text(0, 0, ResourceManager.font, "Hi-Score: 1000", 25, engine.getVertexBufferObjectManager());
         highPointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
         highPointsText.setText("Hi-Score: " + Utils.getHiScore());
-
-//        setNextorRestartSprite(hasWonGame);
     }
 
     private ITextureRegion setNextorRestartSprite(boolean hasWonGame) {

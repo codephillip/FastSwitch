@@ -10,6 +10,7 @@ import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.input.touch.TouchEvent;
 import org.andengine.util.adt.color.Color;
 
 /**
@@ -17,10 +18,10 @@ import org.andengine.util.adt.color.Color;
  */
 public class MenuScene extends Scene {
     private static final String TAG = MenuScene.class.getSimpleName();
-    Engine engine;
-    Sprite sprite;
-    Context context;
-    private Sprite sprite2;
+    private Engine engine;
+    private Context context;
+    private Sprite playSprite;
+    private Sprite backgroundSprite;
 
     public MenuScene(Context context, Engine engine) {
         this.context = context;
@@ -31,50 +32,35 @@ public class MenuScene extends Scene {
     public void attachChild(IEntity pEntity) {
         Log.d(TAG, "attachChild: finished");
         this.setBackground(new Background(Color.BLUE));
-//        sprite = new Sprite(800 / 2+300, 480 / 2+300, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager()){
-//            @Override
-//            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-//                switch (pSceneTouchEvent.getAction()) {
-//                    case TouchEvent.ACTION_DOWN:
-//                        this.setAlpha(0.5f);
-//                        break;
-//                    case TouchEvent.ACTION_UP:
-//                        this.setAlpha(1.0f);
-////                        updateUI();
-//                        Log.d(TAG, "onAreaTouched: clicked: MENU CLASS");
-//                        SceneManager.loadSplashResources();
-//                        SceneManager.setCurrentScene(AllScenes.SPLASH, SceneManager.createSplashScene());
-//                        break;
-//                }
-//                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-//            }
-//        };
-//        sprite2 = new Sprite(800 / 2 + 100, 480 / 2 + 500, ResourceManager.splashTextureRegion, engine.getVertexBufferObjectManager()) {
-//            @Override
-//            public boolean onAreaTouched(TouchEvent pSceneTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-//                switch (pSceneTouchEvent.getAction()) {
-//                    case TouchEvent.ACTION_DOWN:
-//                        this.setAlpha(0.5f);
-//                        break;
-//                    case TouchEvent.ACTION_UP:
-//                        this.setAlpha(1.0f);
-////                        updateUI();
-//                        Log.d(TAG, "onAreaTouched: clicked: MENU CLASS");
-//                        SceneManager.loadSplashResources();
-//                        SceneManager.setCurrentScene(AllScenes.SPLASH, SceneManager.createSplashScene());
-//                        break;
-//                }
-//                return super.onAreaTouched(pSceneTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-//            }
-//        };
-//        super.attachChild(sprite2);
-//        super.attachChild(sprite);
+
+        backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
+
+        playSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 90, ResourceManager.playITextureRegion, engine.getVertexBufferObjectManager()) {
+            @Override
+            public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                switch (superTouchEvent.getAction()) {
+                    case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
+                        clearChildScene();
+                        SceneManager.setCurrentScene(AllScenes.GAME, SceneManager.createGameScene());
+                        Log.d(TAG, "onAreaTouched: clicked");
+                        break;
+                }
+                return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+            }
+        };
+
+        super.attachChild(backgroundSprite);
+        super.attachChild(playSprite);
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         Log.d(TAG, "registerTouchArea: menu");
-//        super.registerTouchArea(sprite);
+        super.registerTouchArea(playSprite);
     }
 
     @Override
