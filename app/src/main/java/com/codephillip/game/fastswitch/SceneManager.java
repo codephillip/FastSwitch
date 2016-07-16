@@ -66,6 +66,7 @@ public class SceneManager {
                 ResourceManager.engine.setScene(scene);
                 break;
             case GAME:
+                Log.d(TAG, "setCurrentScene: GAME SCENE");
                 ResourceManager.engine.setScene(scene);
                 break;
             case GAME0VER:

@@ -34,26 +34,36 @@ public class GameScene extends Scene {
     private final int RECTANGLE_DIMENSIONS = 200;
 
     //TODO [REMOVE ON RELEASE]
-//    private int timeLength = 5;
-    private int timeLength = 30;
+//    private int gameTimeLeft = 5;
+    private int gameTimeLeft = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
     private static int wrongCount = 0;
     private int lives = 5;
     private int points = 2;
-    private int textCount = 2;
+    //prevents overlapping of pointsText
+    private int textSpaceCount = 2;
     private int pointsTextYIncrement = 20;
     //todo make this value change per level
     private int targetPoints = 500;
 
     public GameScene(Context context, Engine engine) {
+        Log.d(TAG, "GameScene: CONSTRUCTOR");
         this.context = context;
         this.engine = engine;
         attachChild(null);
         registerTouchArea(null);
+        if (Utils.getPausedGame()) {
+            gameTimeLeft = Utils.getGameTimeLeft();
+            lives = Utils.getLives();
+            points = Utils.getPoints();
+            Utils.savePausedGame(Utils.HAS_PAUSED_GAME, false);
+        }
         registerUpdateHandler(null);
     }
+
+
 
     @Override
     public void attachChild(IEntity pEntity) {
@@ -176,7 +186,7 @@ public class GameScene extends Scene {
             }
         };
 
-        pauseSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2, ResourceManager.playITextureRegion, engine.getVertexBufferObjectManager()) {
+        pauseSprite = new Sprite(Utils.CAMERA_WIDTH / 2 +330, Utils.CAMERA_HEIGHT / 2-170, ResourceManager.pauseITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -185,6 +195,10 @@ public class GameScene extends Scene {
                         break;
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
+                        Utils.savePausedGame(Utils.HAS_PAUSED_GAME, true);
+                        Utils.saveIntPref(Utils.GAME_TIME_LEFT, gameTimeLeft);
+                        Utils.saveIntPref(Utils.LIVES, lives);
+                        Utils.saveIntPref(Utils.POINTS, points);
                         SceneManager.setCurrentScene(AllScenes.PAUSE, SceneManager.createMenuScene());
                         break;
                 }
@@ -243,7 +257,7 @@ public class GameScene extends Scene {
         super.registerUpdateHandler(new TimerHandler(switchSpeed, true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
-                timeLength--;
+                gameTimeLeft--;
                 try {
                     updateSpriteTile();
                     updateTimeLeft();
@@ -251,7 +265,7 @@ public class GameScene extends Scene {
                     e.printStackTrace();
                 }
 
-                if (timeLength == 0) {
+                if (gameTimeLeft == 0) {
                     unregisterUpdateHandler(pTimerHandler);
                     Log.d(TAG, "onTimePassed: FINISHED");
                     if (lives >= 1 && points >= targetPoints) {
@@ -306,7 +320,7 @@ public class GameScene extends Scene {
     }
 
     private void updateTimeLeft() {
-        timeLeftText.setText("TIME: " + timeLength);
+        timeLeftText.setText("TIME: " + gameTimeLeft);
     }
 
     private void gameOver() {
@@ -318,8 +332,8 @@ public class GameScene extends Scene {
     }
 
     private void storeStatistics() {
-        if (points > Utils.getHiScore()) Utils.storeIntPref(Utils.HI_POINTS, points);
-        Utils.storeIntPref(Utils.POINTS, points);
+        if (points > Utils.getHiScore()) Utils.saveIntPref(Utils.HI_POINTS, points);
+        Utils.saveIntPref(Utils.POINTS, points);
     }
 
     private void checkTileColor(AnimatedSprite animatedSprite) {
@@ -363,12 +377,12 @@ public class GameScene extends Scene {
     private void gainPoints() {
         points += lives * 2;
         pointsText.setText("" + points);
-        if (pointsText.getText().toString().length() > textCount) {
+        if (pointsText.getText().toString().length() > textSpaceCount) {
             pointsText.setX(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 230 + pointsTextYIncrement);
             pointsTextYIncrement += 35;
-            textCount += 1;
+            textSpaceCount += 1;
         }
-        Log.d(TAG, "gainPoints: timeLength" + pointsText.getText().toString().length());
+        Log.d(TAG, "gainPoints: gameTimeLeft" + pointsText.getText().toString().length());
     }
 
     private void gainLife() {
