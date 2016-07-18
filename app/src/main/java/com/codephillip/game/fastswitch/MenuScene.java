@@ -1,6 +1,7 @@
 package com.codephillip.game.fastswitch;
 
 import android.content.Context;
+import android.util.Log;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
@@ -8,6 +9,7 @@ import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.util.adt.color.Color;
 
 /**
  * Created by codephillip on 7/15/16.
@@ -19,6 +21,8 @@ public class MenuScene extends Scene {
     private Sprite playSprite;
     private Sprite backgroundSprite;
     private Sprite instructionSprite;
+    private Sprite topPlayersSprite;
+    private Sprite overlaySprite;
 
     public MenuScene(Context context, Engine engine) {
         this.context = context;
@@ -31,7 +35,11 @@ public class MenuScene extends Scene {
     public void attachChild(IEntity pEntity) {
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
 
-        playSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2  - 90, ResourceManager.playITextureRegion, engine.getVertexBufferObjectManager()) {
+        overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
+        overlaySprite.setColor(Color.BLACK);
+        overlaySprite.setAlpha(0.7f);
+
+        playSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2  - 50, ResourceManager.playITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -48,7 +56,25 @@ public class MenuScene extends Scene {
             }
         };
 
-        instructionSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.instructionsITextureRegion, engine.getVertexBufferObjectManager()) {
+        topPlayersSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2  - 110, ResourceManager.topPlayersITextureRegion, engine.getVertexBufferObjectManager()) {
+            @Override
+            public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
+                switch (superTouchEvent.getAction()) {
+                    case TouchEvent.ACTION_DOWN:
+                        this.setAlpha(0.5f);
+                        break;
+                    case TouchEvent.ACTION_UP:
+                        this.setAlpha(1.0f);
+                        Log.d(TAG, "onAreaTouched: clicked top players");
+//                        clearChildScene();
+//                        SceneManager.setCurrentScene(AllScenes.GAME, SceneManager.createGameScene());
+                        break;
+                }
+                return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
+            }
+        };
+
+        instructionSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 160, ResourceManager.instructionsITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -66,13 +92,16 @@ public class MenuScene extends Scene {
         };
 
         super.attachChild(backgroundSprite);
+        super.attachChild(overlaySprite);
         super.attachChild(playSprite);
+        super.attachChild(topPlayersSprite);
         super.attachChild(instructionSprite);
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         super.registerTouchArea(playSprite);
+        super.registerTouchArea(topPlayersSprite);
         super.registerTouchArea(instructionSprite);
     }
 }

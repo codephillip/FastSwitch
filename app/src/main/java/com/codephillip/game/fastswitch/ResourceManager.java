@@ -55,7 +55,7 @@ public class ResourceManager extends Object {
     public static ITextureRegion pauseITextureRegion;
     public static ITextureRegion instructionsITextureRegion;
     public static ITextureRegion nextLevelITextureRegion;
-    public static ITextureRegion topITextureRegion;
+    public static ITextureRegion topPlayersITextureRegion;
 
     public static Font font, bountyFont;
     public static Font menuFont, smallMenuFont, winOrLoseFont;
@@ -102,7 +102,7 @@ public class ResourceManager extends Object {
         playITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 234 - value, 250, 60);
         restartITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 292 - value, 250, 60);
         resumeITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 350 - value, 250, 60);
-        topITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 408 - value, 250, 60);
+        topPlayersITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 408 - value, 250, 60);
 
         backgroundTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 1024, 512, TextureOptions.DEFAULT);
         backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, context, "background.png", 0, 0);
