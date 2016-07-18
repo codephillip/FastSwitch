@@ -94,7 +94,7 @@ public class ResourceManager extends Object {
         menuButtonsTextureAtlas.load();
 
         BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuButtonsTextureAtlas, context, "button_sprite2.png", 0, 0);
-        exitITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 2, 250, 60);
+        exitITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 1, 250, 60);
         int value = 6;
         instructionsITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 60 - value, 250, 60);
         menuITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 118 - value, 250, 60);
@@ -166,5 +166,9 @@ public class ResourceManager extends Object {
         instructionFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                 "fnt/Roboto_Regular.ttf", 30, true, Color.WHITE);
         instructionFont.load();
+
+        winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+                "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
+        winOrLoseFont.load();
     }
 }

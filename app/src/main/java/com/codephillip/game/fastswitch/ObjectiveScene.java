@@ -17,16 +17,16 @@ import org.andengine.util.adt.color.Color;
 /**
  * Created by codephillip on 7/15/16.
  */
-public class PauseScene extends Scene {
-    private static final String TAG = PauseScene.class.getSimpleName();
+public class ObjectiveScene extends Scene {
+    private static final String TAG = ObjectiveScene.class.getSimpleName();
     private Engine engine;
     private Context context;
     private Sprite backgroundSprite, overlaySprite;
-    private Sprite resumeSprite, menuSprite;
-    private Text pointsText, highPointsText;
+    private Sprite resumeSprite;
+    private Text pointsText, instructionText;
     private Text titleText;
 
-    public PauseScene(Context context, Engine engine) {
+    public ObjectiveScene(Context context, Engine engine) {
         this.context = context;
         this.engine = engine;
         attachChild(null);
@@ -44,25 +44,7 @@ public class PauseScene extends Scene {
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 
-        resumeSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 90, ResourceManager.resumeITextureRegion, engine.getVertexBufferObjectManager()) {
-            @Override
-            public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                switch (superTouchEvent.getAction()) {
-                    case TouchEvent.ACTION_DOWN:
-                        this.setAlpha(0.5f);
-                        break;
-                    case TouchEvent.ACTION_UP:
-                        this.setAlpha(1.0f);
-                        clearChildScene();
-                        SceneManager.setCurrentScene(AllScenes.GAME, SceneManager.createGameScene());
-                        Log.d(TAG, "onAreaTouched: clicked");
-                        break;
-                }
-                return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-            }
-        };
-
-        menuSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.menuITextureRegion, engine.getVertexBufferObjectManager()) {
+        resumeSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.resumeITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -85,17 +67,14 @@ public class PauseScene extends Scene {
         super.attachChild(backgroundSprite);
         super.attachChild(overlaySprite);
         super.attachChild(titleText);
-        super.attachChild(pointsText);
-        super.attachChild(highPointsText);
+        super.attachChild(instructionText);
         super.attachChild(resumeSprite);
-        super.attachChild(menuSprite);
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         Log.d(TAG, "registerTouchArea: gameover");
         super.registerTouchArea(resumeSprite);
-        super.registerTouchArea(menuSprite);
     }
 
     private void showStatistics() {
@@ -105,15 +84,13 @@ public class PauseScene extends Scene {
                 "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
         ResourceManager.winOrLoseFont.load();
 
-        titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "GAME PAUSED", 25, engine.getVertexBufferObjectManager());
+        titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "INSTRUCTIONS", 25, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
-        pointsText = new Text(0, 0, ResourceManager.menuFont, "Score: 500", 25, engine.getVertexBufferObjectManager());
-        pointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 60);
-        pointsText.setText("Score: " + Utils.getPoints());
-
-        highPointsText = new Text(0, 0, ResourceManager.smallMenuFont, "Hi-Score: 1000", 25, engine.getVertexBufferObjectManager());
-        highPointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
-        highPointsText.setText("Hi-Score: " + Utils.getHiScore());
+        instructionText = new Text(0, 0, ResourceManager.instructionFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
+        instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
+        instructionText.setText("+ Reach the target score by hitting the fruits very fast.\n" +
+                "+ Get life by hitting the fruits five times\n" +
+                "+ You will lose a life when you hit a bomb");
     }
 }

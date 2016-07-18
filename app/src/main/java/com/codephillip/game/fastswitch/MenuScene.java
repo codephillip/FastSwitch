@@ -8,7 +8,10 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
+import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.util.adt.color.Color;
 
 /**
@@ -91,8 +94,16 @@ public class MenuScene extends Scene {
             }
         };
 
+        Font winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+                "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
+        winOrLoseFont.load();
+
+        Text titleText = new Text(0, 0, winOrLoseFont, "FAST SWITCH", 25, engine.getVertexBufferObjectManager());
+        titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
+
         super.attachChild(backgroundSprite);
         super.attachChild(overlaySprite);
+        super.attachChild(titleText);
         super.attachChild(playSprite);
         super.attachChild(topPlayersSprite);
         super.attachChild(instructionSprite);
