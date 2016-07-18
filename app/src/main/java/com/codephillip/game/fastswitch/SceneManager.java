@@ -12,21 +12,9 @@ public class SceneManager {
     private SceneManager INSTANCE = null;
 
     public SceneManager getInstance(){
-        if (INSTANCE == null) return INSTANCE = new SceneManager();
+        if (INSTANCE == null) 
+            return INSTANCE = new SceneManager();
         return INSTANCE;
-    }
-
-    public static void loadSplashResources() {
-//        ResourceManager.loadSplashScreenResources();
-    }
-
-    public static void loadGameResources() {
-        //used by both the GameScene and GameOverScene
-        ResourceManager.loadGameScreenResources();
-    }
-
-    public static void loadMenuResources() {
-//        ResourceManager.loadSplashScreenResources();
     }
 
     public static Scene createSplashScene() {
@@ -64,6 +52,12 @@ public class SceneManager {
         return instructionScene;
     }
 
+    public static Scene createObjectiveScene() {
+        ObjectiveScene objectiveScene = new ObjectiveScene(ResourceManager.context, ResourceManager.engine);
+        Log.d(TAG, "createMenuScene: finished");
+        return objectiveScene;
+    }
+
     public static void setCurrentScene(AllScenes currentScene, Scene scene) {
         //after we set the enum's current placeholder
         //we're going to tell the engine to go to the
@@ -89,8 +83,11 @@ public class SceneManager {
                 Log.d(TAG, "setCurrentScene: PAUSE SCENE");
                 ResourceManager.engine.setScene(scene);
                 break;
-            case INSTRUCTIONS:
-                Log.d(TAG, "setCurrentScene: PAUSE SCENE");
+            case INSTRUCTION:
+                ResourceManager.engine.setScene(scene);
+                break;
+            case OBJECTIVE:
+                Log.d(TAG, "setCurrentScene: OBJECTIVE SCENE");
                 ResourceManager.engine.setScene(scene);
                 break;
 

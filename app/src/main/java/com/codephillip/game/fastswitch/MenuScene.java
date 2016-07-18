@@ -52,7 +52,7 @@ public class MenuScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         clearChildScene();
-                        SceneManager.setCurrentScene(AllScenes.GAME, SceneManager.createGameScene());
+                        SceneManager.setCurrentScene(AllScenes.OBJECTIVE, SceneManager.createObjectiveScene());
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -87,7 +87,7 @@ public class MenuScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         clearChildScene();
-                        SceneManager.setCurrentScene(AllScenes.INSTRUCTIONS, SceneManager.createInstructionScene());
+                        SceneManager.setCurrentScene(AllScenes.INSTRUCTION, SceneManager.createInstructionScene());
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);

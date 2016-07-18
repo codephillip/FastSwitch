@@ -58,7 +58,7 @@ public class ResourceManager extends Object {
     public static ITextureRegion topPlayersITextureRegion;
 
     public static Font font, bountyFont;
-    public static Font menuFont, smallMenuFont, winOrLoseFont;
+    public static Font menuFont, smallMenuFont, winOrLoseFont, levelFont;
     public static Font instructionFont;
 
     public static Music gameSound;
@@ -158,6 +158,10 @@ public class ResourceManager extends Object {
         menuFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                 "fnt/pipedream.ttf", 60, true, Color.WHITE);
         menuFont.load();
+
+        levelFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+                "fnt/sanchez.ttf", 45, true, Color.WHITE);
+        levelFont.load();
 
         smallMenuFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                 "fnt/pipedream.ttf", 46, true, Color.WHITE);

@@ -45,7 +45,6 @@ public class SplashScene extends Scene {
             public void onTimePassed(TimerHandler pTimerHandler) {
                 //stops the timer
                 unregisterUpdateHandler(pTimerHandler);
-                SceneManager.loadMenuResources();
                 SceneManager.setCurrentScene(AllScenes.MENU, SceneManager.createMenuScene());
             }
         }));

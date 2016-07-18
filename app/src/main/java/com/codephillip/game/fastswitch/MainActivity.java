@@ -36,7 +36,7 @@ public class MainActivity extends BaseGameActivity {
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws IOException {
         ResourceManager.getInstance().setup(this.getEngine(), this.getApplicationContext(), WIDTH, HEIGHT);
-        SceneManager.loadGameResources();
+        ResourceManager.loadGameScreenResources();
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 

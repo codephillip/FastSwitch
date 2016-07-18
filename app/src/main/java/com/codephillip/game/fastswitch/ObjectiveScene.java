@@ -25,6 +25,7 @@ public class ObjectiveScene extends Scene {
     private Sprite resumeSprite;
     private Text pointsText, instructionText;
     private Text titleText;
+    private Text levelText;
 
     public ObjectiveScene(Context context, Engine engine) {
         this.context = context;
@@ -54,7 +55,7 @@ public class ObjectiveScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         clearChildScene();
-                        SceneManager.setCurrentScene(AllScenes.MENU, SceneManager.createMenuScene());
+                        SceneManager.setCurrentScene(AllScenes.GAME, SceneManager.createGameScene());
                         Log.d(TAG, "onAreaTouched: clicked");
                         break;
                 }
@@ -67,6 +68,7 @@ public class ObjectiveScene extends Scene {
         super.attachChild(backgroundSprite);
         super.attachChild(overlaySprite);
         super.attachChild(titleText);
+        super.attachChild(levelText);
         super.attachChild(instructionText);
         super.attachChild(resumeSprite);
     }
@@ -84,13 +86,14 @@ public class ObjectiveScene extends Scene {
                 "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
         ResourceManager.winOrLoseFont.load();
 
-        titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "INSTRUCTIONS", 25, engine.getVertexBufferObjectManager());
+        titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "OBJECTIVES", 25, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
+
+        levelText = new Text(0, 0, ResourceManager.levelFont, "LEVEL 1", 25, engine.getVertexBufferObjectManager());
+        levelText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 90);
 
         instructionText = new Text(0, 0, ResourceManager.instructionFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
         instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
-        instructionText.setText("+ Reach the target score by hitting the fruits very fast.\n" +
-                "+ Get life by hitting the fruits five times\n" +
-                "+ You will lose a life when you hit a bomb");
+        instructionText.setText("+ Reach a score of 500 to move to the next level");
     }
 }

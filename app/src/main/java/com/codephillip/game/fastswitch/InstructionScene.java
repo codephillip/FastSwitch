@@ -84,7 +84,7 @@ public class InstructionScene extends Scene {
                 "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
         ResourceManager.winOrLoseFont.load();
 
-        titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "INSTRUCTIONS", 25, engine.getVertexBufferObjectManager());
+        titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "INSTRUCTION", 25, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
         instructionText = new Text(0, 0, ResourceManager.instructionFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
