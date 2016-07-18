@@ -34,8 +34,8 @@ public class GameScene extends Scene {
     private final int RECTANGLE_DIMENSIONS = 200;
 
     //TODO [REMOVE ON RELEASE]
-//    private int gameTimeLeft = 5;
-    private int gameTimeLeft = 30;
+    private int gameTimeLeft = 5;
+//    private int gameTimeLeft = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;

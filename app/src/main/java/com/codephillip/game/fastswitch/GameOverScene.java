@@ -7,7 +7,6 @@ import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.ITouchArea;
 import org.andengine.entity.scene.Scene;
-import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
@@ -23,6 +22,7 @@ public class GameOverScene extends Scene {
     private Engine engine;
     private Context context;
     private Sprite backgroundSprite;
+    private Sprite overlaySprite;
     private Sprite nextOrRestartSprite, menuSprite;
     private Text pointsText, highPointsText;
     private Text winOrLoseText;
@@ -37,9 +37,12 @@ public class GameOverScene extends Scene {
     @Override
     public void attachChild(IEntity pEntity) {
         Log.d(TAG, "attachChild: GAMEOVER finished");
-        this.setBackground(new Background(Color.GREEN));
 
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
+        overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
+        overlaySprite.setColor(Color.BLACK);
+        overlaySprite.setAlpha(0.7f);
+
 
         nextOrRestartSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 90, setNextorRestartSprite(Utils.getHasWonGame()), engine.getVertexBufferObjectManager()) {
             @Override
@@ -80,6 +83,7 @@ public class GameOverScene extends Scene {
         showStatistics(Utils.getHasWonGame());
 
         super.attachChild(backgroundSprite);
+        super.attachChild(overlaySprite);
         super.attachChild(winOrLoseText);
         super.attachChild(pointsText);
         super.attachChild(highPointsText);
@@ -111,7 +115,7 @@ public class GameOverScene extends Scene {
         pointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 60);
         pointsText.setText("Score: " + Utils.getPoints());
 
-        highPointsText = new Text(0, 0, ResourceManager.font, "Hi-Score: 1000", 25, engine.getVertexBufferObjectManager());
+        highPointsText = new Text(0, 0, ResourceManager.smallMenuFont, "Hi-Score: 1000", 25, engine.getVertexBufferObjectManager());
         highPointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
         highPointsText.setText("Hi-Score: " + Utils.getHiScore());
     }
