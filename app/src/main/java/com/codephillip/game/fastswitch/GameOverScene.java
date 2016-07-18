@@ -44,7 +44,7 @@ public class GameOverScene extends Scene {
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 
-        nextOrRestartSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 90, setNextorRestartSprite(Utils.getHasWonGame()), engine.getVertexBufferObjectManager()) {
+        nextOrRestartSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 90, setNextorRestartSprite(Utils.getHasWonGame()), engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -62,7 +62,7 @@ public class GameOverScene extends Scene {
             }
         };
 
-        menuSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.menuITextureRegion, engine.getVertexBufferObjectManager()) {
+        menuSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.menuITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {

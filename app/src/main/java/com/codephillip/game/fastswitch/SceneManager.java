@@ -58,6 +58,12 @@ public class SceneManager {
         return pauseScene;
     }
 
+    public static Scene createInstructionScene() {
+        InstructionScene instructionScene = new InstructionScene(ResourceManager.context, ResourceManager.engine);
+        Log.d(TAG, "createMenuScene: finished");
+        return instructionScene;
+    }
+
     public static void setCurrentScene(AllScenes currentScene, Scene scene) {
         //after we set the enum's current placeholder
         //we're going to tell the engine to go to the
@@ -80,6 +86,10 @@ public class SceneManager {
                 ResourceManager.engine.setScene(scene);
                 break;
             case PAUSE:
+                Log.d(TAG, "setCurrentScene: PAUSE SCENE");
+                ResourceManager.engine.setScene(scene);
+                break;
+            case INSTRUCTIONS:
                 Log.d(TAG, "setCurrentScene: PAUSE SCENE");
                 ResourceManager.engine.setScene(scene);
                 break;

@@ -8,5 +8,6 @@ public enum AllScenes {
     MENU,
     GAME,
     GAME0VER,
-    PAUSE
+    PAUSE,
+    INSTRUCTIONS
 }
