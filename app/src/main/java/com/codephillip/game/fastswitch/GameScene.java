@@ -249,6 +249,45 @@ public class GameScene extends Scene {
         }
     }
 
+    private void attachExplosionAnimation(AnimatedSprite animatedSprite) {
+//        if (animatedSprite.getCurrentTileIndex() == correctTileNumbers[0]){
+        // Get the scene coordinates of the animatedSprite as an array.
+        float[] coodinates = {animatedSprite.getX(), animatedSprite.getY()};
+        // Convert the the scene coordinates of the animatedSprite to the local corrdinates of the explosionAnimatedSprite.
+        float[] localCoordinates = animatedSprite.convertSceneCoordinatesToLocalCoordinates(coodinates);
+        // Attach and set position of explosionAnimatedSprite
+        explosionAnimatedSprite.setPosition(localCoordinates[0], localCoordinates[1]);
+        explosionAnimatedSprite.detachSelf();
+        animatedSprite.attachChild(explosionAnimatedSprite);
+//        }
+    }
+
+    private void animateExplosion() {
+        explosionAnimatedSprite.animate(30, false,
+                new AnimatedSprite.IAnimationListener() {
+                    @Override
+                    public void onAnimationStarted(AnimatedSprite pAnimatedSprite, int pInitialLoopCount) {
+
+                    }
+
+                    @Override
+                    public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite, int pOldFrameIndex, int pNewFrameIndex) {
+
+                    }
+
+                    @Override
+                    public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite, int pRemainingLoopCount, int pInitialLoopCount) {
+
+                    }
+
+                    @Override
+                    public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
+                        Log.d(TAG, "onAnimationFinished: TRUE");
+                        explosionAnimatedSprite.detachSelf();
+                    }
+                });
+    }
+
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         Log.d(TAG, "registerTouchArea: menu");
@@ -289,45 +328,6 @@ public class GameScene extends Scene {
                 pTimerHandler.reset();
             }
         }));
-    }
-
-    private void attachExplosionAnimation(AnimatedSprite animatedSprite) {
-//        if (animatedSprite.getCurrentTileIndex() == correctTileNumbers[0]){
-            // Get the scene coordinates of the animatedSprite as an array.
-            float[] coodinates = {animatedSprite.getX(), animatedSprite.getY()};
-            // Convert the the scene coordinates of the animatedSprite to the local corrdinates of the explosionAnimatedSprite.
-            float[] localCoordinates = animatedSprite.convertSceneCoordinatesToLocalCoordinates(coodinates);
-            // Attach and set position of explosionAnimatedSprite
-            explosionAnimatedSprite.setPosition(localCoordinates[0], localCoordinates[1]);
-            explosionAnimatedSprite.detachSelf();
-            animatedSprite.attachChild(explosionAnimatedSprite);
-//        }
-    }
-
-    private void animateExplosion() {
-        explosionAnimatedSprite.animate(30, false,
-                new AnimatedSprite.IAnimationListener() {
-                    @Override
-                    public void onAnimationStarted(AnimatedSprite pAnimatedSprite, int pInitialLoopCount) {
-
-                    }
-
-                    @Override
-                    public void onAnimationFrameChanged(AnimatedSprite pAnimatedSprite, int pOldFrameIndex, int pNewFrameIndex) {
-
-                    }
-
-                    @Override
-                    public void onAnimationLoopFinished(AnimatedSprite pAnimatedSprite, int pRemainingLoopCount, int pInitialLoopCount) {
-
-                    }
-
-                    @Override
-                    public void onAnimationFinished(AnimatedSprite pAnimatedSprite) {
-                        Log.d(TAG, "onAnimationFinished: TRUE");
-                        explosionAnimatedSprite.detachSelf();
-                    }
-                });
     }
 
     private void updateTimeLeftText() {
