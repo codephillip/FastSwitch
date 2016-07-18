@@ -21,7 +21,7 @@ public class PauseScene extends Scene {
     private static final String TAG = PauseScene.class.getSimpleName();
     private Engine engine;
     private Context context;
-    private Sprite backgroundSprite;
+    private Sprite backgroundSprite, overlaySprite;
     private Sprite resumeSprite, menuSprite;
     private Text pointsText, highPointsText;
     private Text gamePausedText;
@@ -39,6 +39,10 @@ public class PauseScene extends Scene {
         this.setBackground(new Background(Color.GREEN));
 
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
+
+        overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
+        overlaySprite.setColor(Color.BLACK);
+        overlaySprite.setAlpha(0.7f);
 
         resumeSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 90, ResourceManager.resumeITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
@@ -79,6 +83,7 @@ public class PauseScene extends Scene {
         showStatistics();
 
         super.attachChild(backgroundSprite);
+        super.attachChild(overlaySprite);
         super.attachChild(gamePausedText);
         super.attachChild(pointsText);
         super.attachChild(highPointsText);
@@ -107,7 +112,7 @@ public class PauseScene extends Scene {
         pointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 60);
         pointsText.setText("Score: " + Utils.getPoints());
 
-        highPointsText = new Text(0, 0, ResourceManager.font, "Hi-Score: 1000", 25, engine.getVertexBufferObjectManager());
+        highPointsText = new Text(0, 0, ResourceManager.smallMenuFont, "Hi-Score: 1000", 25, engine.getVertexBufferObjectManager());
         highPointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
         highPointsText.setText("Hi-Score: " + Utils.getHiScore());
     }

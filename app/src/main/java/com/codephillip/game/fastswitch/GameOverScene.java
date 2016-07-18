@@ -39,10 +39,10 @@ public class GameOverScene extends Scene {
         Log.d(TAG, "attachChild: GAMEOVER finished");
 
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
+
         overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
-
 
         nextOrRestartSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 90, setNextorRestartSprite(Utils.getHasWonGame()), engine.getVertexBufferObjectManager()) {
             @Override
