@@ -48,11 +48,15 @@ public class ResourceManager extends Object {
 	public static ITextureRegion coinITextureRegion;
 
 	public BitmapTextureAtlas menuButtonsTextureAtlas;
+	public static ITextureRegion exitITextureRegion;
 	public static ITextureRegion playITextureRegion;
 	public static ITextureRegion restartITextureRegion;
 	public static ITextureRegion resumeITextureRegion;
 	public static ITextureRegion menuITextureRegion;
 	public static ITextureRegion pauseITextureRegion;
+	public static ITextureRegion instructionsITextureRegion;
+	public static ITextureRegion nextLevelITextureRegion;
+	public static ITextureRegion topITextureRegion;
 
 	public static Font font, bountyFont;
 	public static Font menuFont, winOrLoseFont;
@@ -143,15 +147,18 @@ public class ResourceManager extends Object {
 	private void loadGameTextures(){
 		BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 		
-		menuButtonsTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 665, 210, TextureOptions.BILINEAR);
+		menuButtonsTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 250, 500, TextureOptions.BILINEAR);
 		menuButtonsTextureAtlas.load();
 
-		BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuButtonsTextureAtlas, context, "buttons_spritesheet.png", 0, 0);
-		playITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 70, 221, 60);
-		restartITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 223, 70, 221, 60);
-		resumeITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 444, 70, 221, 60);
-		menuITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 444, 0, 221, 60);
-		pauseITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 510, 130, 80, 80);
+		BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuButtonsTextureAtlas, context, "button_sprite2.png", 0, 0);
+		exitITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 2, 250, 60);
+		instructionsITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 60, 250, 60);
+		menuITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 118, 250, 60);
+		nextLevelITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 176, 250, 60);
+		playITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 234, 250, 60);
+		restartITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 292, 250, 60);
+		resumeITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 350, 250, 60);
+		topITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 408, 250, 60);
 
 		backgroundTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 1024, 512, TextureOptions.DEFAULT);
 		backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, context, "background.png", 0, 0);

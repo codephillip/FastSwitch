@@ -119,7 +119,7 @@ public class GameOverScene extends Scene {
     private ITextureRegion setNextorRestartSprite(boolean hasWonGame) {
         ITextureRegion textureRegion;
         if (hasWonGame) {
-            textureRegion = ResourceManager.resumeITextureRegion;
+            textureRegion = ResourceManager.nextLevelITextureRegion;
         } else {
             textureRegion = ResourceManager.restartITextureRegion;
         }
