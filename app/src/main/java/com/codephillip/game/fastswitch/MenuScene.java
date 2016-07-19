@@ -30,8 +30,15 @@ public class MenuScene extends Scene {
     public MenuScene(Context context, Engine engine) {
         this.context = context;
         this.engine = engine;
+//        resetLevelAttributes();
         attachChild(null);
         registerTouchArea(null);
+    }
+
+    private void resetLevelAttributes() {
+        Utils.saveIntPref(Utils.TARGET_SCORE, 500);
+        Utils.saveSwitchSpeed(Utils.SWITCH_SPEED, 1.1f);
+        Utils.saveIntPref(Utils.LEVEL, 1);
     }
 
     @Override

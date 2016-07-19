@@ -105,16 +105,18 @@ public class GameOverScene extends Scene {
 
         setWinOrLoseFontColor(hasWonGame);
 
+        levelText = new Text(0, 0, ResourceManager.levelFont, "LEVEL 1", 25, engine.getVertexBufferObjectManager());
+        levelText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 90);
+        levelText.setText("LEVEL "+Utils.getLevel());
+
         winOrLoseText = new Text(0, 0, ResourceManager.winOrLoseFont, "YOU WIN", 25, engine.getVertexBufferObjectManager());
         winOrLoseText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
         if (hasWonGame) {
             winOrLoseText.setText("YOU WIN");
+            Utils.saveIntPref(Utils.LEVEL, Utils.getLevel() + 1);
         } else {
             winOrLoseText.setText("YOU LOSE");
         }
-
-        levelText = new Text(0, 0, ResourceManager.levelFont, "LEVEL 1", 25, engine.getVertexBufferObjectManager());
-        levelText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 90);
 
         scoresText = new Text(0, 0, ResourceManager.menuFont, "Score: 500", 25, engine.getVertexBufferObjectManager());
         scoresText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 20);

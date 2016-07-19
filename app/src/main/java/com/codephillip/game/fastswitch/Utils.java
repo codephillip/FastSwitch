@@ -17,6 +17,8 @@ public class Utils {
     public static final String LIVES = "lives";
     public static final String TARGET_SCORE = "target_score";
     public static final String HAS_PAUSED_GAME = "has_paused_game";
+    public static final String LEVEL = "level";
+    public static final String SWITCH_SPEED = "switch_speed";
     public static final int CAMERA_WIDTH = 800;
     public static final int CAMERA_HEIGHT = 480;
     //when using positionX and positionX plotting system.
@@ -51,9 +53,15 @@ public class Utils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(LIVES, 30);
     }
+
     public static int getTargetScore() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(TARGET_SCORE, 500);
+    }
+
+    public static int getLevel() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(LEVEL, 1);
     }
 
 
@@ -85,5 +93,17 @@ public class Utils {
     public static boolean getPausedGame() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(HAS_PAUSED_GAME, false);
+    }
+
+    public static void saveSwitchSpeed(String prefString, float switchSpeed) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putFloat(prefString, switchSpeed);
+        editor.apply();
+    }
+
+    public static float getSwitchSpeed() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getFloat(SWITCH_SPEED, 1.1f);
     }
 }

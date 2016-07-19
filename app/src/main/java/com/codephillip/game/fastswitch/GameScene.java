@@ -22,7 +22,7 @@ public class GameScene extends Scene {
     private static final String TAG = GameScene.class.getSimpleName();
     private Engine engine;
     private Context context;
-    private Text timeLeftText, livesText, scoreText, bountyText, targetScoreText;
+    private Text timeLeftText, livesText, scoreText, bountyText, targetScoreText, levelText;
     private Sprite backgroundSprite;
     private AnimatedSprite explosionAnimatedSprite;
     private Sprite pauseSprite;
@@ -34,7 +34,7 @@ public class GameScene extends Scene {
 
     //TODO [REMOVE ON RELEASE]
 //    private int gameTimeLeft = 5;
-        private int gameTimeLeft = 30;
+    private int gameTimeLeft = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
@@ -44,6 +44,7 @@ public class GameScene extends Scene {
     //prevents overlapping of scoreText
     //todo make this value change per level
     private int targetScore = 500;
+    private int levelIncrement = 1;
 
     public GameScene(Context context, Engine engine) {
         Log.d(TAG, "GameScene: CONSTRUCTOR");
@@ -206,7 +207,7 @@ public class GameScene extends Scene {
         super.attachChild(scoreText);
         super.attachChild(targetScoreText);
         super.attachChild(bountyText);
-
+        super.attachChild(levelText);
         super.attachChild(animatedSprite1);
         super.attachChild(animatedSprite2);
         super.attachChild(animatedSprite3);
@@ -220,17 +221,21 @@ public class GameScene extends Scene {
     private void showStatistics() {
         final int Y_INCREMENT = 230;
         timeLeftText = new Text(0, 0, ResourceManager.font, "TIME: 00", 15, engine.getVertexBufferObjectManager());
-        timeLeftText.setPosition(Utils.CAMERA_WIDTH / 2 - (timeLeftText.getWidth() / 2) - 170, Utils.CAMERA_HEIGHT / 2 - (timeLeftText.getHeight() / 2) + Y_INCREMENT);
+        timeLeftText.setPosition(Utils.CAMERA_WIDTH / 2 - (timeLeftText.getWidth() / 2) - 220, Utils.CAMERA_HEIGHT / 2 - (timeLeftText.getHeight() / 2) + Y_INCREMENT);
+
+        levelText = new Text(0, 0, ResourceManager.font, "LEVEL 1", 15, engine.getVertexBufferObjectManager());
+        levelText.setPosition(Utils.CAMERA_WIDTH / 2 - (timeLeftText.getWidth() / 2) - 100, Utils.CAMERA_HEIGHT / 2 - (timeLeftText.getHeight() / 2) + Y_INCREMENT);
+        levelText.setText("Lv: "+Utils.getLevel());
 
         livesText = new Text(0, 0, ResourceManager.font, "3", 5, engine.getVertexBufferObjectManager());
         livesText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) - 50, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + Y_INCREMENT);
         livesText.setText("" + lives);
 
-        scoreText = new Text(0, 0, ResourceManager.font, "2", 10, engine.getVertexBufferObjectManager());
+        scoreText = new Text(0, 0, ResourceManager.font, "2", 15, engine.getVertexBufferObjectManager());
         scoreText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 80, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + Y_INCREMENT);
         scoreText.setText("SCORE: " + points);
 
-        targetScoreText = new Text(0, 0, ResourceManager.font, "2", 10, engine.getVertexBufferObjectManager());
+        targetScoreText = new Text(0, 0, ResourceManager.font, "2", 15, engine.getVertexBufferObjectManager());
         targetScoreText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 270, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + Y_INCREMENT);
         targetScoreText.setText("TARGET: " + Utils.getTargetScore());
 
@@ -306,7 +311,7 @@ public class GameScene extends Scene {
 
     @Override
     public void registerUpdateHandler(IUpdateHandler pUpdateHandler) {
-        super.registerUpdateHandler(new TimerHandler(switchSpeed, true, new ITimerCallback() {
+        super.registerUpdateHandler(new TimerHandler(Utils.getSwitchSpeed(), true, new ITimerCallback() {
             @Override
             public void onTimePassed(TimerHandler pTimerHandler) {
                 gameTimeLeft--;
@@ -320,7 +325,7 @@ public class GameScene extends Scene {
                 if (gameTimeLeft == 0) {
                     unregisterUpdateHandler(pTimerHandler);
                     Log.d(TAG, "onTimePassed: FINISHED");
-                    if (lives >= 1 && points >= targetScore) {
+                    if (lives >= 1 && points >= Utils.getTargetScore()) {
                         Utils.saveHasWonGame(Utils.HAS_WON_GAME, true);
                         gameOver();
                     } else {
@@ -346,7 +351,9 @@ public class GameScene extends Scene {
     }
 
     private void storeStatistics() {
-        if (points > Utils.getHiScore()) Utils.saveIntPref(Utils.HI_POINTS, points);
+        if (points > Utils.getHiScore()) {
+            Utils.saveIntPref(Utils.HI_POINTS, points);
+        }
         Utils.saveIntPref(Utils.POINTS, points);
     }
 
