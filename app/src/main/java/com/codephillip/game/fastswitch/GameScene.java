@@ -22,7 +22,7 @@ public class GameScene extends Scene {
     private static final String TAG = GameScene.class.getSimpleName();
     private Engine engine;
     private Context context;
-    private Text timeLeftText, livesText, pointsText, bountyText;
+    private Text timeLeftText, livesText, scoreText, bountyText, targetScoreText;
     private Sprite backgroundSprite;
     private AnimatedSprite explosionAnimatedSprite;
     private Sprite pauseSprite;
@@ -35,18 +35,16 @@ public class GameScene extends Scene {
 
     //TODO [REMOVE ON RELEASE]
     private int gameTimeLeft = 5;
-//    private int gameTimeLeft = 30;
+//        private int gameTimeLeft = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
     private static int wrongCount = 0;
     private int lives = 5;
     private int points = 2;
-    //prevents overlapping of pointsText
-    private int textSpaceCount = 2;
-    private int pointsTextYIncrement = 20;
+    //prevents overlapping of scoreText
     //todo make this value change per level
-    private int targetPoints = 500;
+    private int targetScore = 500;
 
     public GameScene(Context context, Engine engine) {
         Log.d(TAG, "GameScene: CONSTRUCTOR");
@@ -57,7 +55,7 @@ public class GameScene extends Scene {
         if (Utils.getPausedGame()) {
             gameTimeLeft = Utils.getGameTimeLeft();
             lives = Utils.getLives();
-            points = Utils.getPoints();
+            points = Utils.getScores();
             updateTimeLeftText();
             updateLivesText();
             updatePointsText();
@@ -69,10 +67,10 @@ public class GameScene extends Scene {
     @Override
     public void attachChild(IEntity pEntity) {
         Log.d(TAG, "attachChild: finished");
-        
+
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
-        heartSprite = new Sprite(Utils.positionX, Utils.positionY + 215, ResourceManager.heartITextureRegion, engine.getVertexBufferObjectManager());
-        coinSprite = new Sprite(Utils.positionX + 170, Utils.positionY + 215, ResourceManager.coinITextureRegion, engine.getVertexBufferObjectManager());
+        heartSprite = new Sprite(Utils.positionX - 90, Utils.positionY + 215, ResourceManager.heartITextureRegion, engine.getVertexBufferObjectManager());
+        coinSprite = new Sprite(Utils.positionX, Utils.positionY + 215, ResourceManager.coinITextureRegion, engine.getVertexBufferObjectManager());
         explosionAnimatedSprite = new AnimatedSprite(0, 0, ResourceManager.explosionTiledTextureRegion, engine.getVertexBufferObjectManager());
 
         animatedSprite1 = new AnimatedSprite(initialX, initialY, ResourceManager.fruitTiledTextureRegion, engine.getVertexBufferObjectManager()) {
@@ -181,7 +179,7 @@ public class GameScene extends Scene {
             }
         };
 
-        pauseSprite = new Sprite(Utils.CAMERA_WIDTH / 2 +330, Utils.CAMERA_HEIGHT / 2-170, ResourceManager.menuITextureRegion, engine.getVertexBufferObjectManager()) {
+        pauseSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 330, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.menuITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -201,27 +199,15 @@ public class GameScene extends Scene {
             }
         };
 
-
-        timeLeftText = new Text(0, 0, ResourceManager.font, "TIME: 00", 15, engine.getVertexBufferObjectManager());
-        timeLeftText.setPosition(Utils.CAMERA_WIDTH / 2 - (timeLeftText.getWidth() / 2) - 90, Utils.CAMERA_HEIGHT / 2 - (timeLeftText.getHeight() / 2) + 240);
-
-        livesText = new Text(0, 0, ResourceManager.font, "3", 5, engine.getVertexBufferObjectManager());
-        livesText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 70, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + 240);
-        livesText.setText("" + lives);
-
-        pointsText = new Text(0, 0, ResourceManager.font, "2", 10, engine.getVertexBufferObjectManager());
-        pointsText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 240, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + 240);
-        pointsText.setText("" + points);
-
-        bountyText = new Text(0, 0, ResourceManager.bountyFont, "+100", 10, engine.getVertexBufferObjectManager());
-        bountyText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
+        showStatistics();
 
         super.attachChild(backgroundSprite);
         super.attachChild(heartSprite);
-        super.attachChild(coinSprite);
+//        super.attachChild(coinSprite);
         super.attachChild(livesText);
         super.attachChild(timeLeftText);
-        super.attachChild(pointsText);
+        super.attachChild(scoreText);
+        super.attachChild(targetScoreText);
         super.attachChild(bountyText);
 
         super.attachChild(animatedSprite1);
@@ -232,6 +218,27 @@ public class GameScene extends Scene {
         super.attachChild(animatedSprite6);
         super.attachChild(pauseSprite);
         ResourceManager.gameSound.play();
+    }
+
+    private void showStatistics() {
+        final int Y_INCREMENT = 230;
+        timeLeftText = new Text(0, 0, ResourceManager.font, "TIME: 00", 15, engine.getVertexBufferObjectManager());
+        timeLeftText.setPosition(Utils.CAMERA_WIDTH / 2 - (timeLeftText.getWidth() / 2) - 170, Utils.CAMERA_HEIGHT / 2 - (timeLeftText.getHeight() / 2) + Y_INCREMENT);
+
+        livesText = new Text(0, 0, ResourceManager.font, "3", 5, engine.getVertexBufferObjectManager());
+        livesText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) - 50, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + Y_INCREMENT);
+        livesText.setText("" + lives);
+
+        scoreText = new Text(0, 0, ResourceManager.font, "2", 10, engine.getVertexBufferObjectManager());
+        scoreText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 80, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + Y_INCREMENT);
+        scoreText.setText("SCORE: " + points);
+
+        targetScoreText = new Text(0, 0, ResourceManager.font, "2", 10, engine.getVertexBufferObjectManager());
+        targetScoreText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 270, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + Y_INCREMENT);
+        targetScoreText.setText("TARGET: " + Utils.getTargetScore());
+
+        bountyText = new Text(0, 0, ResourceManager.bountyFont, "+100", 10, engine.getVertexBufferObjectManager());
+        bountyText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
     }
 
     private void initialiseExplosionAnimation(AnimatedSprite animatedSprite) {
@@ -316,11 +323,10 @@ public class GameScene extends Scene {
                 if (gameTimeLeft == 0) {
                     unregisterUpdateHandler(pTimerHandler);
                     Log.d(TAG, "onTimePassed: FINISHED");
-                    if (lives >= 1 && points >= targetPoints) {
+                    if (lives >= 1 && points >= targetScore) {
                         Utils.saveHasWonGame(Utils.HAS_WON_GAME, true);
                         gameOver();
-                    }
-                    else {
+                    } else {
                         Utils.saveHasWonGame(Utils.HAS_WON_GAME, false);
                         gameOver();
                     }
@@ -397,16 +403,10 @@ public class GameScene extends Scene {
     private void gainPoints() {
         points += lives * 2;
         updatePointsText();
-        if (pointsText.getText().toString().length() > textSpaceCount) {
-            pointsText.setX(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 230 + pointsTextYIncrement);
-            pointsTextYIncrement += 35;
-            textSpaceCount += 1;
-        }
-        Log.d(TAG, "gainPoints: gameTimeLeft" + pointsText.getText().toString().length());
     }
 
     private void updatePointsText() {
-        pointsText.setText("" + points);
+        scoreText.setText("SCORE: " + points);
     }
 
     private void gainLife() {

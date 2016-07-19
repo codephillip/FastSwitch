@@ -94,6 +94,6 @@ public class ObjectiveScene extends Scene {
 
         instructionText = new Text(0, 0, ResourceManager.instructionFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
         instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
-        instructionText.setText("+ Reach a score of 500 to move to the next level");
+        instructionText.setText("+ Reach a TARGET SCORE of " + Utils.getTargetScore());
     }
 }

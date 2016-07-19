@@ -24,8 +24,9 @@ public class GameOverScene extends Scene {
     private Sprite backgroundSprite;
     private Sprite overlaySprite;
     private Sprite nextOrRestartSprite, menuSprite;
-    private Text pointsText, highPointsText;
+    private Text scoresText, targetScoreText;
     private Text winOrLoseText;
+    private Text levelText;
 
     public GameOverScene(Context context, Engine engine) {
         this.context = context;
@@ -44,7 +45,7 @@ public class GameOverScene extends Scene {
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 
-        nextOrRestartSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 90, setNextorRestartSprite(Utils.getHasWonGame()), engine.getVertexBufferObjectManager()) {
+        nextOrRestartSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 120, setNextorRestartSprite(Utils.getHasWonGame()), engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -85,8 +86,9 @@ public class GameOverScene extends Scene {
         super.attachChild(backgroundSprite);
         super.attachChild(overlaySprite);
         super.attachChild(winOrLoseText);
-        super.attachChild(pointsText);
-        super.attachChild(highPointsText);
+        super.attachChild(levelText);
+        super.attachChild(scoresText);
+        super.attachChild(targetScoreText);
         super.attachChild(nextOrRestartSprite);
         super.attachChild(menuSprite);
     }
@@ -111,13 +113,16 @@ public class GameOverScene extends Scene {
             winOrLoseText.setText("YOU LOSE");
         }
 
-        pointsText = new Text(0, 0, ResourceManager.menuFont, "Score: 500", 25, engine.getVertexBufferObjectManager());
-        pointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 60);
-        pointsText.setText("Score: " + Utils.getPoints());
+        levelText = new Text(0, 0, ResourceManager.levelFont, "LEVEL 1", 25, engine.getVertexBufferObjectManager());
+        levelText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 90);
 
-        highPointsText = new Text(0, 0, ResourceManager.smallMenuFont, "Hi-Score: 1000", 25, engine.getVertexBufferObjectManager());
-        highPointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
-        highPointsText.setText("Hi-Score: " + Utils.getHiScore());
+        scoresText = new Text(0, 0, ResourceManager.menuFont, "Score: 500", 25, engine.getVertexBufferObjectManager());
+        scoresText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 20);
+        scoresText.setText("Score: " + Utils.getScores());
+
+        targetScoreText = new Text(0, 0, ResourceManager.smallMenuFont, "Target: 1000", 25, engine.getVertexBufferObjectManager());
+        targetScoreText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 30);
+        targetScoreText.setText("Target: " + Utils.getTargetScore());
     }
 
     private ITextureRegion setNextorRestartSprite(boolean hasWonGame) {

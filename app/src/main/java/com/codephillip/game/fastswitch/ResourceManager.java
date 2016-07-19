@@ -148,7 +148,7 @@ public class ResourceManager extends Object {
 
     private void loadFonts() {
         font = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
-                "fnt/pipedream.ttf", 46, true, Color.BLACK);
+                "fnt/pipedream.ttf", 25, true, Color.BLACK);
         font.load();
 
         bountyFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),

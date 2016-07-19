@@ -15,9 +15,12 @@ public class Utils {
     public static final String GAME_TIME_LEFT = "game_time_left";
     public static final String HAS_WON_GAME = "has_won_game";
     public static final String LIVES = "lives";
+    public static final String TARGET_SCORE = "target_score";
     public static final String HAS_PAUSED_GAME = "has_paused_game";
     public static final int CAMERA_WIDTH = 800;
     public static final int CAMERA_HEIGHT = 480;
+    //when using positionX and positionX plotting system.
+    //The point 0,0 is at the center of the screen like a graph
     public static final float positionX = CAMERA_WIDTH * 0.5f;
     public static final float positionY = CAMERA_HEIGHT * 0.5f;
 
@@ -34,7 +37,7 @@ public class Utils {
         return prefs.getInt(HI_POINTS, 0);
     }
 
-    public static int getPoints() {
+    public static int getScores() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(POINTS, 0);
     }
@@ -48,7 +51,11 @@ public class Utils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(LIVES, 30);
     }
-    //END
+    public static int getTargetScore() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(TARGET_SCORE, 500);
+    }
+
 
     public static int randInt(int min, int max) {
         int randomNum = min + (int) (Math.random() * ((max - min) + 1));

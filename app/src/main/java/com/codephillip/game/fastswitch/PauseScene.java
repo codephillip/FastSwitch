@@ -11,7 +11,6 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.font.FontFactory;
 import org.andengine.util.adt.color.Color;
 
 /**
@@ -22,9 +21,10 @@ public class PauseScene extends Scene {
     private Engine engine;
     private Context context;
     private Sprite backgroundSprite, overlaySprite;
-    private Sprite resumeSprite, menuSprite;
-    private Text pointsText, highPointsText;
+    private Sprite resumeSprite, exitSprite;
+    private Text scoresText, targetScoreText;
     private Text titleText;
+    private Text levelText;
 
     public PauseScene(Context context, Engine engine) {
         this.context = context;
@@ -44,7 +44,7 @@ public class PauseScene extends Scene {
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 
-        resumeSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 90, ResourceManager.resumeITextureRegion, engine.getVertexBufferObjectManager()) {
+        resumeSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 120, ResourceManager.resumeITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -62,7 +62,7 @@ public class PauseScene extends Scene {
             }
         };
 
-        menuSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.menuITextureRegion, engine.getVertexBufferObjectManager()) {
+        exitSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.exitITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -85,35 +85,35 @@ public class PauseScene extends Scene {
         super.attachChild(backgroundSprite);
         super.attachChild(overlaySprite);
         super.attachChild(titleText);
-        super.attachChild(pointsText);
-        super.attachChild(highPointsText);
+        super.attachChild(levelText);
+        super.attachChild(scoresText);
+        super.attachChild(targetScoreText);
         super.attachChild(resumeSprite);
-        super.attachChild(menuSprite);
+        super.attachChild(exitSprite);
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         Log.d(TAG, "registerTouchArea: gameover");
         super.registerTouchArea(resumeSprite);
-        super.registerTouchArea(menuSprite);
+        super.registerTouchArea(exitSprite);
     }
 
     private void showStatistics() {
         backgroundSprite.detachSelf();
 
-        ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
-                "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
-        ResourceManager.winOrLoseFont.load();
-
-        titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "GAME PAUSED", 25, engine.getVertexBufferObjectManager());
+        titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "GAME PAUSED", 100, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
-        pointsText = new Text(0, 0, ResourceManager.menuFont, "Score: 500", 25, engine.getVertexBufferObjectManager());
-        pointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 60);
-        pointsText.setText("Score: " + Utils.getPoints());
+        levelText = new Text(0, 0, ResourceManager.levelFont, "LEVEL 1", 25, engine.getVertexBufferObjectManager());
+        levelText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 90);
 
-        highPointsText = new Text(0, 0, ResourceManager.smallMenuFont, "Hi-Score: 1000", 25, engine.getVertexBufferObjectManager());
-        highPointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
-        highPointsText.setText("Hi-Score: " + Utils.getHiScore());
+        scoresText = new Text(0, 0, ResourceManager.menuFont, "Score: 500", 25, engine.getVertexBufferObjectManager());
+        scoresText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 20);
+        scoresText.setText("Score: " + Utils.getScores());
+
+        targetScoreText = new Text(0, 0, ResourceManager.smallMenuFont, "Target: 1000", 25, engine.getVertexBufferObjectManager());
+        targetScoreText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 30);
+        targetScoreText.setText("Target: " + Utils.getTargetScore());
     }
 }
