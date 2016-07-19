@@ -1,5 +1,8 @@
-+add objective screen before the game
 +carry on the total as you move through the levels
 +add ? to the pause scene for instructions
 +make credits button, start button
 +add levels, music and backgrounds
++add 3 stars to gameover screen
++add analytics
++build backend and deploy to app engine
++add win sound

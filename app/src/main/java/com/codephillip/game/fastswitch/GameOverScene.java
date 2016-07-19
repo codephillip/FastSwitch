@@ -138,10 +138,10 @@ public class GameOverScene extends Scene {
     private void setWinOrLoseFontColor(boolean hasWonGame) {
         if (hasWonGame) {
             ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
-                    "fnt/sanchez.ttf", 100, true, android.graphics.Color.YELLOW);
+                    "fnt/sanchez.ttf", 80, true, android.graphics.Color.YELLOW);
         } else {
             ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
-                    "fnt/sanchez.ttf", 100, true, android.graphics.Color.RED);
+                    "fnt/sanchez.ttf", 80, true, android.graphics.Color.RED);
         }
         ResourceManager.winOrLoseFont.load();
     }

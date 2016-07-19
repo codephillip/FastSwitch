@@ -95,7 +95,7 @@ public class MenuScene extends Scene {
         };
 
         Font winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
-                "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
+                "fnt/sanchez.ttf", 100, true, android.graphics.Color.YELLOW);
         winOrLoseFont.load();
 
         Text titleText = new Text(0, 0, winOrLoseFont, "FAST SWITCH", 25, engine.getVertexBufferObjectManager());

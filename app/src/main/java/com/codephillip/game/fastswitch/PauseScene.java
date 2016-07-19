@@ -11,6 +11,7 @@ import org.andengine.entity.scene.background.Background;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
+import org.andengine.opengl.font.FontFactory;
 import org.andengine.util.adt.color.Color;
 
 /**
@@ -101,6 +102,10 @@ public class PauseScene extends Scene {
 
     private void showStatistics() {
         backgroundSprite.detachSelf();
+
+        ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+                "fnt/sanchez.ttf", 80, true, android.graphics.Color.YELLOW);
+        ResourceManager.winOrLoseFont.load();
 
         titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "GAME PAUSED", 100, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);

@@ -28,14 +28,13 @@ public class GameScene extends Scene {
     private Sprite pauseSprite;
     private AnimatedSprite animatedSprite1, animatedSprite2, animatedSprite3, animatedSprite4, animatedSprite5, animatedSprite6;
     private Sprite heartSprite;
-    private Sprite coinSprite;
     private final float initialX = 165;
     private final float initialY = 120;
     private final int RECTANGLE_DIMENSIONS = 200;
 
     //TODO [REMOVE ON RELEASE]
-    private int gameTimeLeft = 5;
-//        private int gameTimeLeft = 30;
+//    private int gameTimeLeft = 5;
+        private int gameTimeLeft = 30;
     private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
@@ -70,7 +69,6 @@ public class GameScene extends Scene {
 
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
         heartSprite = new Sprite(Utils.positionX - 90, Utils.positionY + 215, ResourceManager.heartITextureRegion, engine.getVertexBufferObjectManager());
-        coinSprite = new Sprite(Utils.positionX, Utils.positionY + 215, ResourceManager.coinITextureRegion, engine.getVertexBufferObjectManager());
         explosionAnimatedSprite = new AnimatedSprite(0, 0, ResourceManager.explosionTiledTextureRegion, engine.getVertexBufferObjectManager());
 
         animatedSprite1 = new AnimatedSprite(initialX, initialY, ResourceManager.fruitTiledTextureRegion, engine.getVertexBufferObjectManager()) {
@@ -203,7 +201,6 @@ public class GameScene extends Scene {
 
         super.attachChild(backgroundSprite);
         super.attachChild(heartSprite);
-//        super.attachChild(coinSprite);
         super.attachChild(livesText);
         super.attachChild(timeLeftText);
         super.attachChild(scoreText);
