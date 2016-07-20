@@ -1,5 +1,8 @@
 package com.codephillip.game.fastswitch;
 
+import android.content.Intent;
+import android.os.Bundle;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -21,13 +24,9 @@ public class MainActivity extends BaseGameActivity {
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.getAudioOptions().setNeedsSound(true);
         engineOptions.getAudioOptions().setNeedsMusic(true);
-        // Turn on Dithering to smooth texture gradients.
-        engineOptions.getRenderOptions().setDithering(true);
-        // Turn on MultiSampling to smooth the alias of hard-edge elements.
-        engineOptions.getRenderOptions().getConfigChooserOptions().setRequestedMultiSampling(true);
-        // Turn on MultiTouch
+//        // Turn on MultiTouch
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
-        // Set the Wake Lock options to prevent the engine from dumping textures when focus changes.
+//        // Set the Wake Lock options to prevent the engine from dumping textures when focus changes.
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
         return engineOptions;
     }
@@ -40,6 +39,26 @@ public class MainActivity extends BaseGameActivity {
     @Override
     public synchronized void onResumeGame() {
         super.onResumeGame();
+    }
+
+    @Override
+    protected void onCreate(Bundle pSavedInstanceState) {
+        super.onCreate(pSavedInstanceState);
+//        addShortcut();
+    }
+
+    private void addShortcut() {
+        Intent shortcutIntent = new Intent(getApplicationContext(),
+                MainActivity.class);
+        shortcutIntent.setAction(Intent.ACTION_MAIN);
+        Intent addIntent = new Intent();
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, R.string.app_name);
+        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
+                Intent.ShortcutIconResource.fromContext(getApplicationContext(),
+                        R.mipmap.ic_launcher));
+        addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
+        getApplicationContext().sendBroadcast(addIntent);
     }
 
     @Override
