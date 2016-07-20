@@ -62,6 +62,7 @@ public class GameScene extends Scene {
             Utils.savePausedGame(Utils.HAS_PAUSED_GAME, false);
         }
         registerUpdateHandler(null);
+        Utils.logAnalyticsScene("GameScene");
     }
 
     @Override

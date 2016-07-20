@@ -29,6 +29,7 @@ public class MenuScene extends Scene {
         this.engine = engine;
         attachChild(null);
         registerTouchArea(null);
+        Utils.logAnalyticsScene("MenuScene");
     }
 
     @Override

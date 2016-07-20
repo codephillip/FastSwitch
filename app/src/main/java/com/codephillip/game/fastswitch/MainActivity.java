@@ -2,6 +2,8 @@ package com.codephillip.game.fastswitch;
 
 import android.os.Bundle;
 
+import com.google.firebase.analytics.FirebaseAnalytics;
+
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
@@ -16,6 +18,8 @@ public class MainActivity extends BaseGameActivity {
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 480;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -43,11 +47,13 @@ public class MainActivity extends BaseGameActivity {
     @Override
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
+        // Obtain the FirebaseAnalytics instance.
+        mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
     }
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws IOException {
-        ResourceManager.getInstance().setup(this.getEngine(), this.getApplicationContext(), WIDTH, HEIGHT);
+        ResourceManager.getInstance().setup(this.getEngine(), this.getApplicationContext(), mFirebaseAnalytics, WIDTH, HEIGHT);
         ResourceManager.loadGameScreenResources();
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }

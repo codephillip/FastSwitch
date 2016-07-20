@@ -2,8 +2,11 @@ package com.codephillip.game.fastswitch;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 /**
  * Created by codephillip on 7/16/16.
@@ -117,5 +120,17 @@ public class Utils {
 
     public static void resetLevelAttributes() {
         Utils.saveIntPref(Utils.LEVEL, 1);
+    }
+
+    public static void logAnalyticsScene(String scene) {
+        Bundle bundle = new Bundle();
+        bundle.putString("Scene", scene);
+        ResourceManager.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
+    }
+
+    public static void logAnalyticsLevel(String level) {
+        Bundle bundle = new Bundle();
+        bundle.putString("Scene", level);
+        ResourceManager.firebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 }

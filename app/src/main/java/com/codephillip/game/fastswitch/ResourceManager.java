@@ -2,6 +2,9 @@ package com.codephillip.game.fastswitch;
 
 import android.content.Context;
 import android.graphics.Color;
+import android.os.Bundle;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.andengine.audio.music.Music;
 import org.andengine.audio.music.MusicFactory;
@@ -66,6 +69,7 @@ public class ResourceManager extends Object {
 
     public static Music gameSound;
     public static Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound, deathSound, bountySound;
+    public static FirebaseAnalytics firebaseAnalytics;
 
     private ResourceManager() {
     }
@@ -76,11 +80,19 @@ public class ResourceManager extends Object {
         return INSTANCE;
     }
 
-    public void setup(final Engine pEngine, final Context pContext, final float pCameraWidth, final float pCameraHeight) {
+    public void setup(final Engine pEngine, final Context pContext, FirebaseAnalytics mFirebaseAnalytics, final float pCameraWidth, final float pCameraHeight) {
         engine = pEngine;
         context = pContext;
         cameraWidth = pCameraWidth;
         cameraHeight = pCameraHeight;
+        firebaseAnalytics = mFirebaseAnalytics;
+        logAnalyticsEvent(mFirebaseAnalytics);
+    }
+
+    private void logAnalyticsEvent(FirebaseAnalytics mFirebaseAnalytics) {
+        Bundle bundle = new Bundle();
+        bundle.putString("Scene", "MenuScene");
+        mFirebaseAnalytics.logEvent(FirebaseAnalytics.Event.SELECT_CONTENT, bundle);
     }
 
     // Loads all game resources.

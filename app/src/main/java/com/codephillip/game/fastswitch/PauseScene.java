@@ -32,6 +32,7 @@ public class PauseScene extends Scene {
         this.engine = engine;
         attachChild(null);
         registerTouchArea(null);
+        Utils.logAnalyticsScene("PauseScene");
     }
 
 
