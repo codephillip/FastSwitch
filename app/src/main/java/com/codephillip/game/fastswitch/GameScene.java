@@ -22,7 +22,7 @@ public class GameScene extends Scene {
     private static final String TAG = GameScene.class.getSimpleName();
     private Engine engine;
     private Context context;
-    private Text timeLeftText, livesText, scoreText, bountyText, targetScoreText, levelText;
+    private Text timeLeftText, livesText, scoreText, targetScoreText, levelText;
     private Sprite backgroundSprite;
     private AnimatedSprite explosionAnimatedSprite;
     private Sprite pauseSprite;
@@ -203,7 +203,6 @@ public class GameScene extends Scene {
         super.attachChild(timeLeftText);
         super.attachChild(scoreText);
         super.attachChild(targetScoreText);
-        super.attachChild(bountyText);
         super.attachChild(levelText);
         super.attachChild(animatedSprite1);
         super.attachChild(animatedSprite2);
@@ -235,9 +234,6 @@ public class GameScene extends Scene {
         targetScoreText = new Text(0, 0, ResourceManager.font, "2", 15, engine.getVertexBufferObjectManager());
         targetScoreText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) + 270, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + Y_INCREMENT);
         targetScoreText.setText("TARGET: " + Utils.getTargetScore());
-
-        bountyText = new Text(0, 0, ResourceManager.bountyFont, "+100", 10, engine.getVertexBufferObjectManager());
-        bountyText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
     }
 
     private void initialiseExplosionAnimation(AnimatedSprite animatedSprite) {
