@@ -27,22 +27,22 @@ public class LevelManager {
     public static void setLevelAttributes() {
         switch (Utils.getLevel()) {
             case 1:
+                changeBackground(BACKGROUND1);
+                changeGameMusic(MUSIC1);
                 switchSpeed = 1.1f;
                 targetScore = 500;
-                changeBackground(BACKGROUND2);
-                changeGameMusic(MUSIC2);
                 break;
             case 2:
                 switchSpeed = 1.05f;
                 targetScore = 600;
-                changeBackground(BACKGROUND3);
-                changeGameMusic(MUSIC3);
                 break;
             case 3:
                 switchSpeed = 0.9f;
                 targetScore = 800;
                 break;
             case 4:
+                changeBackground(BACKGROUND2);
+                changeGameMusic(MUSIC2);
                 switchSpeed = 0.85f;
                 targetScore = 1000;
                 break;
@@ -55,6 +55,8 @@ public class LevelManager {
                 targetScore = 2000;
                 break;
             case 7:
+                changeBackground(BACKGROUND3);
+                changeGameMusic(MUSIC3);
                 switchSpeed = 0.75f;
                 targetScore = 2500;
                 break;
@@ -78,6 +80,7 @@ public class LevelManager {
     }
 
     private static void changeGameMusic(String music) {
+        ResourceManager.gameSound.stop();
         try {
             ResourceManager.gameSound = MusicFactory.createMusicFromAsset(ResourceManager.engine.getMusicManager(), ResourceManager.context, "mfx/"+music);
         } catch (IOException e) {
