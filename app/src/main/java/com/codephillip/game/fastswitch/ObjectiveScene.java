@@ -23,11 +23,9 @@ public class ObjectiveScene extends Scene {
     private Context context;
     private Sprite backgroundSprite, overlaySprite;
     private Sprite resumeSprite;
-    private Text pointsText, instructionText;
+    private Text instructionText;
     private Text titleText;
     private Text levelText;
-    private float switchSpeed;
-    private int targetScore;
 
     public ObjectiveScene(Context context, Engine engine) {
         this.context = context;

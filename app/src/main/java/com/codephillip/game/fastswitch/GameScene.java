@@ -344,7 +344,7 @@ public class GameScene extends Scene {
     }
 
     private void gameOver() {
-        ResourceManager.gameSound.pause();
+        Utils.pauseMusic();
         storeStatistics();
         this.clearChildScene();
         this.clearUpdateHandlers();

@@ -55,6 +55,7 @@ public class GameOverScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         clearChildScene();
+                        Utils.playMusic();
                         SceneManager.setCurrentScene(AllScenes.OBJECTIVE, SceneManager.createObjectiveScene());
                         Log.d(TAG, "onAreaTouched: clicked");
                         break;
