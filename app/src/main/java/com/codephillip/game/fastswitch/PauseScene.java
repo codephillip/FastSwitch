@@ -34,6 +34,7 @@ public class PauseScene extends Scene {
         registerTouchArea(null);
     }
 
+
     @Override
     public void attachChild(IEntity pEntity) {
         Log.d(TAG, "attachChild: GAMEOVER finished");
@@ -55,6 +56,8 @@ public class PauseScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         clearChildScene();
+//                        Utils.playMusic();
+                        engine.getMusicManager().setMasterVolume(1.0f);
                         SceneManager.setCurrentScene(AllScenes.GAME, SceneManager.createGameScene());
                         Log.d(TAG, "onAreaTouched: clicked");
                         break;

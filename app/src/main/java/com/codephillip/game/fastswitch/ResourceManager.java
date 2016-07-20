@@ -105,7 +105,7 @@ public class ResourceManager extends Object {
         topPlayersITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 408 - value, 250, 60);
 
         backgroundTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 1024, 512, TextureOptions.DEFAULT);
-        backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, context, "background.png", 0, 0);
+        backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, context, "background1.png", 0, 0);
         backgroundTextureAtlas.load();
 
         overlayTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 775, 431, TextureOptions.DEFAULT);
@@ -132,7 +132,7 @@ public class ResourceManager extends Object {
     private void loadSounds() {
         if (gameSound == null) {
             try {
-                gameSound = MusicFactory.createMusicFromAsset(engine.getMusicManager(), context, "mfx/game_music.mp3");
+                gameSound = MusicFactory.createMusicFromAsset(engine.getMusicManager(), context, "mfx/game_music0.ogg");
                 wrongTileSound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), context, "mfx/wrong_tile.ogg");
                 rightTileSound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), context, "mfx/right_tile.ogg");
                 lifeUpSound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), context, "mfx/life_up.ogg");
@@ -140,6 +140,8 @@ public class ResourceManager extends Object {
                 lifeDownSound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), context, "mfx/death.ogg");
                 deathSound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), context, "mfx/death.ogg");
                 gameSound.setLooping(true);
+                wrongTileSound.setVolume(0.5f);
+                rightTileSound.setVolume(0.5f);
             } catch (IOException e) {
                 e.printStackTrace();
             }

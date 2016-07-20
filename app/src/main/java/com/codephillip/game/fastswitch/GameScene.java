@@ -191,6 +191,7 @@ public class GameScene extends Scene {
                         Utils.saveIntPref(Utils.GAME_TIME_LEFT, gameTimeLeft);
                         Utils.saveIntPref(Utils.LIVES, lives);
                         Utils.saveIntPref(Utils.POINTS, points);
+                        Utils.pauseMusic();
                         SceneManager.setCurrentScene(AllScenes.PAUSE, SceneManager.createPauseScene());
                         break;
                 }

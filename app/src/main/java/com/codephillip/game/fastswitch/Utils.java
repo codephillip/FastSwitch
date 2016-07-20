@@ -106,4 +106,15 @@ public class Utils {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getFloat(SWITCH_SPEED, 1.1f);
     }
+
+    public static void pauseMusic() {
+        ResourceManager.engine.getMusicManager().setMasterVolume(0);
+    }
+
+    public static void playMusic() {
+        ResourceManager.engine.getMusicManager().setMasterVolume(1.0f);
+    }
+
+
+
 }
