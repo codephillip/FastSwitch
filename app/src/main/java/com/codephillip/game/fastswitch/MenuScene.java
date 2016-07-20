@@ -1,7 +1,6 @@
 package com.codephillip.game.fastswitch;
 
 import android.content.Context;
-import android.util.Log;
 
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
@@ -30,15 +29,8 @@ public class MenuScene extends Scene {
     public MenuScene(Context context, Engine engine) {
         this.context = context;
         this.engine = engine;
-//        resetLevelAttributes();
         attachChild(null);
         registerTouchArea(null);
-    }
-
-    private void resetLevelAttributes() {
-        Utils.saveIntPref(Utils.TARGET_SCORE, 500);
-        Utils.saveSwitchSpeed(Utils.SWITCH_SPEED, 1.1f);
-        Utils.saveIntPref(Utils.LEVEL, 1);
     }
 
     @Override
@@ -60,24 +52,6 @@ public class MenuScene extends Scene {
                         this.setAlpha(1.0f);
                         clearChildScene();
                         SceneManager.setCurrentScene(AllScenes.OBJECTIVE, SceneManager.createObjectiveScene());
-                        break;
-                }
-                return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
-            }
-        };
-
-        topPlayersSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2  - 110, ResourceManager.topPlayersITextureRegion, engine.getVertexBufferObjectManager()) {
-            @Override
-            public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
-                switch (superTouchEvent.getAction()) {
-                    case TouchEvent.ACTION_DOWN:
-                        this.setAlpha(0.5f);
-                        break;
-                    case TouchEvent.ACTION_UP:
-                        this.setAlpha(1.0f);
-                        Log.d(TAG, "onAreaTouched: clicked top players");
-//                        clearChildScene();
-//                        SceneManager.setCurrentScene(AllScenes.GAME, SceneManager.createGameScene());
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -112,14 +86,12 @@ public class MenuScene extends Scene {
         super.attachChild(overlaySprite);
         super.attachChild(titleText);
         super.attachChild(playSprite);
-        super.attachChild(topPlayersSprite);
         super.attachChild(instructionSprite);
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         super.registerTouchArea(playSprite);
-        super.registerTouchArea(topPlayersSprite);
         super.registerTouchArea(instructionSprite);
     }
 }
