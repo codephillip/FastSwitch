@@ -32,7 +32,7 @@ public class ObjectiveScene extends Scene {
     public ObjectiveScene(Context context, Engine engine) {
         this.context = context;
         this.engine = engine;
-        setLevelAttributes();
+        LevelManager.setLevelAttributes();
         attachChild(null);
         registerTouchArea(null);
     }
@@ -99,54 +99,5 @@ public class ObjectiveScene extends Scene {
         instructionText = new Text(0, 0, ResourceManager.instructionFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
         instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
         instructionText.setText("+ Reach a TARGET SCORE of " + Utils.getTargetScore());
-    }
-
-    private void setLevelAttributes() {
-        switch (Utils.getLevel()) {
-            case 1:
-                switchSpeed = 1.1f;
-                targetScore = 500;
-                break;
-            case 2:
-                switchSpeed = 1.05f;
-                targetScore = 600;
-                break;
-            case 3:
-                switchSpeed = 0.9f;
-                targetScore = 800;
-                break;
-            case 4:
-                switchSpeed = 0.85f;
-                targetScore = 1000;
-                break;
-            case 5:
-                switchSpeed = 0.8f;
-                targetScore = 1500;
-                break;
-            case 6:
-                switchSpeed = 0.78f;
-                targetScore = 2000;
-                break;
-            case 7:
-                switchSpeed = 0.75f;
-                targetScore = 2500;
-                break;
-            case 8:
-                switchSpeed = 0.72f;
-                targetScore = 3200;
-                break;
-            case 9:
-                switchSpeed = 0.7f;
-                targetScore = 3500;
-                break;
-            case 10:
-                switchSpeed = 0.6f;
-                targetScore = 4000;
-                break;
-            default:
-                throw new UnsupportedOperationException("Wrong level");
-        }
-        Utils.saveIntPref(Utils.TARGET_SCORE, targetScore);
-        Utils.saveSwitchSpeed(Utils.SWITCH_SPEED, switchSpeed);
     }
 }

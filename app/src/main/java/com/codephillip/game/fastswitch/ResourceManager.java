@@ -28,7 +28,7 @@ public class ResourceManager extends Object {
     public float cameraWidth;
     public float cameraHeight;
 
-    public BitmapTextureAtlas backgroundTextureAtlas;
+    public static BitmapTextureAtlas backgroundTextureAtlas;
     public static ITextureRegion backgroundTextureRegion;
 
     public BitmapTextureAtlas overlayTextureAtlas;
