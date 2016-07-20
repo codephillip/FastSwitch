@@ -51,6 +51,7 @@ public class MenuScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         clearChildScene();
+                        Utils.resetLevelAttributes();
                         SceneManager.setCurrentScene(AllScenes.OBJECTIVE, SceneManager.createObjectiveScene());
                         break;
                 }

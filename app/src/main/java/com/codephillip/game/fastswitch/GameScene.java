@@ -178,7 +178,7 @@ public class GameScene extends Scene {
             }
         };
 
-        pauseSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 330, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.menuITextureRegion, engine.getVertexBufferObjectManager()) {
+        pauseSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 340, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.pauseITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {

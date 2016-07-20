@@ -15,6 +15,7 @@ import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.opengl.texture.region.ITiledTextureRegion;
+import org.andengine.opengl.texture.region.TextureRegion;
 import org.andengine.opengl.texture.region.TextureRegionFactory;
 
 import java.io.IOException;
@@ -40,9 +41,6 @@ public class ResourceManager extends Object {
     public BitmapTextureAtlas fruitTextureAtlas;
     public static ITiledTextureRegion fruitTiledTextureRegion;
 
-    public BitmapTextureAtlas heartTextureAtlas;
-    public static ITextureRegion heartITextureRegion;
-
     public BitmapTextureAtlas coinTextureAtlas;
     public static ITextureRegion coinITextureRegion;
 
@@ -56,6 +54,11 @@ public class ResourceManager extends Object {
     public static ITextureRegion instructionsITextureRegion;
     public static ITextureRegion nextLevelITextureRegion;
     public static ITextureRegion topPlayersITextureRegion;
+
+    public BitmapTextureAtlas menuButtonsTextureAtlas2;
+    public static TextureRegion creditsITextureRegion;
+    public static TextureRegion startITextureRegion;
+    public static ITextureRegion heartITextureRegion;
 
     public static Font font, bountyFont;
     public static Font menuFont, smallMenuFont, winOrLoseFont, levelFont;
@@ -104,6 +107,16 @@ public class ResourceManager extends Object {
         resumeITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 350 - value, 250, 60);
         topPlayersITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 408 - value, 250, 60);
 
+        //sprite2
+        menuButtonsTextureAtlas2 = new BitmapTextureAtlas(engine.getTextureManager(), 528, 65, TextureOptions.BILINEAR);
+        menuButtonsTextureAtlas2.load();
+        BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuButtonsTextureAtlas2, context, "button_sprite1.png", 0, 0);
+        //extractFromTexture(x then y,...)
+        creditsITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas2, 2, 2, 210, 60);
+        startITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas2, 317, 2, 210, 60);
+        pauseITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas2, 250, 2, 60, 60);
+        heartITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas2, 215, 4, 32, 32);
+
         backgroundTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 1024, 512, TextureOptions.DEFAULT);
         backgroundTextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(backgroundTextureAtlas, context, "background1.png", 0, 0);
         backgroundTextureAtlas.load();
@@ -119,10 +132,6 @@ public class ResourceManager extends Object {
         explosionTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 768, 512, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         explosionTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionTextureAtlas, context, "explosion.png", 0, 0, 3, 4);
         explosionTextureAtlas.load();
-
-        heartTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 32, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        heartITextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(heartTextureAtlas, context, "heart.png", 0, 0);
-        heartTextureAtlas.load();
 
         coinTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 32, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
         coinITextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(coinTextureAtlas, context, "coin.png", 0, 0);

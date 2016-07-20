@@ -22,7 +22,7 @@ public class ObjectiveScene extends Scene {
     private Engine engine;
     private Context context;
     private Sprite backgroundSprite, overlaySprite;
-    private Sprite resumeSprite;
+    private Sprite startSprite;
     private Text instructionText;
     private Text titleText;
     private Text levelText;
@@ -46,7 +46,7 @@ public class ObjectiveScene extends Scene {
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 
-        resumeSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.resumeITextureRegion, engine.getVertexBufferObjectManager()) {
+        startSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.startITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -71,13 +71,13 @@ public class ObjectiveScene extends Scene {
         super.attachChild(titleText);
         super.attachChild(levelText);
         super.attachChild(instructionText);
-        super.attachChild(resumeSprite);
+        super.attachChild(startSprite);
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         Log.d(TAG, "registerTouchArea: gameover");
-        super.registerTouchArea(resumeSprite);
+        super.registerTouchArea(startSprite);
     }
 
     private void showStatistics() {

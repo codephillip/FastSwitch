@@ -115,9 +115,7 @@ public class Utils {
         ResourceManager.engine.getMusicManager().setMasterVolume(1.0f);
     }
 
-    private void resetLevelAttributes() {
-        Utils.saveIntPref(Utils.TARGET_SCORE, 500);
-        Utils.saveSwitchSpeed(Utils.SWITCH_SPEED, 1.1f);
+    public static void resetLevelAttributes() {
         Utils.saveIntPref(Utils.LEVEL, 1);
     }
 }
