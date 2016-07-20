@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "400007953719",
+    "firebase_url": "https://poised-gateway-133923.firebaseio.com",
+    "project_id": "poised-gateway-133923",
+    "storage_bucket": "poised-gateway-133923.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:400007953719:android:c81d41ce52469bbf",
+        "android_client_info": {
+          "package_name": "com.codephillip.game.fastswitch"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "400007953719-f46nq8e6q3r3ac2vgjrr3lg302lhfgac.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codephillip.game.fastswitch",
+            "certificate_hash": "964C9707BF2DC385FF645BD544D95AC348BC0F27"
+          }
+        },
+        {
+          "client_id": "400007953719-t7gedkurjog5svkeiiinnc1ur1u6niqp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDAuBTPxM9Tl-512QPPnc-b4e3qoMujjn4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "400007953719-t7gedkurjog5svkeiiinnc1ur1u6niqp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

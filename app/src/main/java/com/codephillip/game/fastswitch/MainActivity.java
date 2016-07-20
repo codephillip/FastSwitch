@@ -1,6 +1,5 @@
 package com.codephillip.game.fastswitch;
 
-import android.content.Intent;
 import android.os.Bundle;
 
 import org.andengine.engine.camera.Camera;
@@ -44,21 +43,6 @@ public class MainActivity extends BaseGameActivity {
     @Override
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
-//        addShortcut();
-    }
-
-    private void addShortcut() {
-        Intent shortcutIntent = new Intent(getApplicationContext(),
-                MainActivity.class);
-        shortcutIntent.setAction(Intent.ACTION_MAIN);
-        Intent addIntent = new Intent();
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_INTENT, shortcutIntent);
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_NAME, R.string.app_name);
-        addIntent.putExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE,
-                Intent.ShortcutIconResource.fromContext(getApplicationContext(),
-                        R.mipmap.ic_launcher));
-        addIntent.setAction("com.android.launcher.action.INSTALL_SHORTCUT");
-        getApplicationContext().sendBroadcast(addIntent);
     }
 
     @Override
