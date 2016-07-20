@@ -3,6 +3,7 @@ package com.codephillip.game.fastswitch;
 import org.andengine.engine.camera.Camera;
 import org.andengine.engine.options.EngineOptions;
 import org.andengine.engine.options.ScreenOrientation;
+import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
 import org.andengine.ui.activity.BaseGameActivity;
@@ -20,6 +21,14 @@ public class MainActivity extends BaseGameActivity {
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.getAudioOptions().setNeedsSound(true);
         engineOptions.getAudioOptions().setNeedsMusic(true);
+        // Turn on Dithering to smooth texture gradients.
+        engineOptions.getRenderOptions().setDithering(true);
+        // Turn on MultiSampling to smooth the alias of hard-edge elements.
+        engineOptions.getRenderOptions().getConfigChooserOptions().setRequestedMultiSampling(true);
+        // Turn on MultiTouch
+        engineOptions.getTouchOptions().setNeedsMultiTouch(true);
+        // Set the Wake Lock options to prevent the engine from dumping textures when focus changes.
+        engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
         return engineOptions;
     }
 

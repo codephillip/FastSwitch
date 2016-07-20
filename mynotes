@@ -1,0 +1,27 @@
+Ideas (Added on Wed, 20 Jul 2016 2:52 PM)
+-------------------------------------------------------------------
++carry on the total as you move through the levels
++add analytics
+
++add win sound
++design GUI for instructions
+
++#polish up the app.
+    dithering
+    lock screen
+    create shortcut
+
+
+
+version2 (Added on Wed, 20 Jul 2016 2:57 PM)
+-------------------------------------------------------------------
++add authentication code. to fetch nickname from email
++build backend and deploy to app engine
++hit 3 different fruits in a row to get combo/bounty
++add 3 stars to gameover screen
++add ? to the pause scene for instructions
+
+onHold (Added on Wed, 20 Jul 2016 3:56 PM)
+-------------------------------------------------------------------
+Enter your notes here...
+

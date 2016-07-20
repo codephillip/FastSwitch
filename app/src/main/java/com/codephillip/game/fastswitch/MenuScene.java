@@ -17,13 +17,11 @@ import org.andengine.util.adt.color.Color;
  * Created by codephillip on 7/15/16.
  */
 public class MenuScene extends Scene {
-    private static final String TAG = MenuScene.class.getSimpleName();
     private Engine engine;
     private Context context;
     private Sprite playSprite;
     private Sprite backgroundSprite;
     private Sprite instructionSprite;
-    private Sprite topPlayersSprite;
     private Sprite overlaySprite;
 
     public MenuScene(Context context, Engine engine) {
@@ -76,11 +74,11 @@ public class MenuScene extends Scene {
             }
         };
 
-        Font winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+        Font titleFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                 "fnt/sanchez.ttf", 100, true, android.graphics.Color.YELLOW);
-        winOrLoseFont.load();
+        titleFont.load();
 
-        Text titleText = new Text(0, 0, winOrLoseFont, "FAST SWITCH", 25, engine.getVertexBufferObjectManager());
+        Text titleText = new Text(0, 0, titleFont, "FAST SWITCH", 25, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
         super.attachChild(backgroundSprite);

@@ -10,6 +10,8 @@ import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
+import org.andengine.opengl.font.Font;
+import org.andengine.opengl.font.FontFactory;
 
 /**
  * Created by codephillip on 7/15/16.
@@ -34,8 +36,16 @@ public class SplashScene extends Scene {
         Text highPointsText = new Text(0, 0, ResourceManager.font, "LOADING...", 15, engine.getVertexBufferObjectManager());
         highPointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
 
+        Font titleFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+                "fnt/sanchez.ttf", 100, true, android.graphics.Color.YELLOW);
+        titleFont.load();
+
+        Text titleText = new Text(0, 0, titleFont, "FAST SWITCH", 25, engine.getVertexBufferObjectManager());
+        titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
+
         super.attachChild(backgroundSprite);
         super.attachChild(highPointsText);
+        super.attachChild(titleText);
     }
 
     @Override
