@@ -67,7 +67,7 @@ public class ResourceManager extends Object {
     public static Font menuFont, smallMenuFont, winOrLoseFont, levelFont;
     public static Font instructionFont;
 
-    public static Music gameSound;
+    public static Music gameSound, finalWinSound, finalFailSound;
     public static Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound, deathSound, bountySound;
     public static FirebaseAnalytics firebaseAnalytics;
 
@@ -160,6 +160,8 @@ public class ResourceManager extends Object {
                 bountySound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), context, "mfx/bounty.ogg");
                 lifeDownSound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), context, "mfx/death.ogg");
                 deathSound = SoundFactory.createSoundFromAsset(engine.getSoundManager(), context, "mfx/death.ogg");
+                finalWinSound = MusicFactory.createMusicFromAsset(engine.getMusicManager(), context, "mfx/final_win.ogg");
+                finalFailSound = MusicFactory.createMusicFromAsset(engine.getMusicManager(), context, "mfx/final_fail.ogg");
                 gameSound.setLooping(true);
                 wrongTileSound.setVolume(0.5f);
                 rightTileSound.setVolume(0.5f);

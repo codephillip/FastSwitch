@@ -35,16 +35,11 @@ public class GameScene extends Scene {
     //TODO [REMOVE ON RELEASE]
 //    private int gameTimeLeft = 5;
     private int gameTimeLeft = 30;
-    private float switchSpeed = 1.1f;
     private final int[] correctTileNumbers = {2, 4, 6, 7, 9, 11};
     private static int correctCount = 0;
     private static int wrongCount = 0;
     private int lives = 5;
     private int points = 2;
-    //prevents overlapping of scoreText
-    //todo make this value change per level
-    private int targetScore = 500;
-    private int levelIncrement = 1;
 
     public GameScene(Context context, Engine engine) {
         Log.d(TAG, "GameScene: CONSTRUCTOR");

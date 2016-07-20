@@ -1,8 +1,10 @@
 package com.codephillip.game.fastswitch;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.util.Log;
 
+import org.andengine.audio.music.MusicFactory;
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.ITouchArea;
@@ -13,6 +15,8 @@ import org.andengine.input.touch.TouchEvent;
 import org.andengine.opengl.font.FontFactory;
 import org.andengine.opengl.texture.region.ITextureRegion;
 import org.andengine.util.adt.color.Color;
+
+import java.io.IOException;
 
 /**
  * Created by codephillip on 7/15/16.
@@ -33,6 +37,15 @@ public class GameOverScene extends Scene {
         this.engine = engine;
         attachChild(null);
         registerTouchArea(null);
+        logAnalyticsGameOver();
+    }
+
+    public static void logAnalyticsGameOver() {
+        Bundle bundle = new Bundle();
+        bundle.putString("Level", String.valueOf(Utils.getLevel()));
+        bundle.putString("Lives", String.valueOf(Utils.getLives()));
+        bundle.putString("Score", String.valueOf(Utils.getScores()));
+        ResourceManager.firebaseAnalytics.logEvent("GAMEOVER", bundle);
     }
 
     @Override
@@ -92,6 +105,24 @@ public class GameOverScene extends Scene {
         super.attachChild(targetScoreText);
         super.attachChild(nextOrRestartSprite);
         super.attachChild(menuSprite);
+        playWinOrFailSound();
+    }
+
+    private void playWinOrFailSound() {
+        Log.d(TAG, "playWinOrFailSound: running");
+
+        try {
+            ResourceManager.finalWinSound = MusicFactory.createMusicFromAsset(engine.getMusicManager(), context, "mfx/final_win.ogg");
+            ResourceManager.finalFailSound = MusicFactory.createMusicFromAsset(engine.getMusicManager(), context, "mfx/final_fail.ogg");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        if (Utils.getHasWonGame()) {
+            ResourceManager.finalWinSound.play();
+        } else {
+            ResourceManager.finalFailSound.play();
+        }
     }
 
     @Override

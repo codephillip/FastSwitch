@@ -90,6 +90,7 @@ public class LevelManager {
     }
 
     private static void changeGameMusic(String music) {
+        //prevents old gameSound from overlapping with the new one
         ResourceManager.gameSound.stop();
         try {
             ResourceManager.gameSound = MusicFactory.createMusicFromAsset(ResourceManager.engine.getMusicManager(), ResourceManager.context, "mfx/"+music);
