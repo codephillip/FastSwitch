@@ -11,5 +11,6 @@ public enum AllScenes {
     PAUSE,
     INSTRUCTION,
     OBJECTIVE,
-    STAGE
+    STAGE,
+    TOP_PLAYERS
 }
