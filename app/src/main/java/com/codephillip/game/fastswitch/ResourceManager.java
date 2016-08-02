@@ -46,8 +46,9 @@ public class ResourceManager extends Object {
     public BitmapTextureAtlas fruitTextureAtlas;
     public static ITiledTextureRegion fruitTiledTextureRegion;
 
-    public BitmapTextureAtlas coinTextureAtlas;
-    public static ITextureRegion coinITextureRegion;
+    public BitmapTextureAtlas stageTextureAtlas;
+    public static TextureRegion speedTapITextureRegion;
+    public static TextureRegion oneTapTiledTextureRegion;;
 
     public BitmapTextureAtlas menuButtonsTextureAtlas;
     public static ITextureRegion exitITextureRegion;
@@ -152,9 +153,12 @@ public class ResourceManager extends Object {
         explosionTiledTextureRegion = BitmapTextureAtlasTextureRegionFactory.createTiledFromAsset(explosionTextureAtlas, context, "explosion.png", 0, 0, 3, 4);
         explosionTextureAtlas.load();
 
-        coinTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 32, 32, TextureOptions.BILINEAR_PREMULTIPLYALPHA);
-        coinITextureRegion = BitmapTextureAtlasTextureRegionFactory.createFromAsset(coinTextureAtlas, context, "coin.png", 0, 0);
-        coinTextureAtlas.load();
+        stageTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 500, 190, TextureOptions.BILINEAR);
+        stageTextureAtlas.load();
+
+        BitmapTextureAtlasTextureRegionFactory.createFromAsset(stageTextureAtlas, context, "stageButtons.png", 0, 0);
+        speedTapITextureRegion = TextureRegionFactory.extractFromTexture(stageTextureAtlas, 2, 1, 248, 188);
+        oneTapTiledTextureRegion = TextureRegionFactory.extractFromTexture(stageTextureAtlas, 248, 1, 248, 188);
     }
 
     private void loadSounds() {

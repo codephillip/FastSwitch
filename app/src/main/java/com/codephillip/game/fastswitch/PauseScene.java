@@ -48,7 +48,7 @@ public class PauseScene extends Scene {
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 
-        resumeSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 120, ResourceManager.resumeITextureRegion, engine.getVertexBufferObjectManager()) {
+        resumeSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 120, ResourceManager.resumeITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -67,7 +67,7 @@ public class PauseScene extends Scene {
             }
         };
 
-        exitSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.exitITextureRegion, engine.getVertexBufferObjectManager()) {
+        exitSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.exitITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {

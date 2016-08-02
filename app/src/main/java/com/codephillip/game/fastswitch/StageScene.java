@@ -19,9 +19,9 @@ import org.andengine.util.adt.color.Color;
 public class StageScene extends Scene {
     private Engine engine;
     private Context context;
-    private Sprite playSprite;
+    private Sprite speedTapSprite;
     private Sprite backgroundSprite;
-    private Sprite instructionSprite;
+    private Sprite oneTapSprite;
     private Sprite overlaySprite;
 
     public StageScene(Context context, Engine engine) {
@@ -39,7 +39,7 @@ public class StageScene extends Scene {
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 
-        playSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2  - 50, ResourceManager.playITextureRegion, engine.getVertexBufferObjectManager()) {
+        speedTapSprite = new Sprite(Utils.CAMERA_WIDTH / 2 - 150, Utils.CAMERA_HEIGHT / 2  - 40, ResourceManager.speedTapITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -58,7 +58,7 @@ public class StageScene extends Scene {
             }
         };
 
-        instructionSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 100, ResourceManager.instructionsITextureRegion, engine.getVertexBufferObjectManager()) {
+        oneTapSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 150, Utils.CAMERA_HEIGHT / 2 - 40, ResourceManager.oneTapTiledTextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -83,16 +83,24 @@ public class StageScene extends Scene {
         Text titleText = new Text(0, 0, titleFont, "GAME TYPE", 25, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
+        Text speedTapText = new Text(0, 0, ResourceManager.pointsFont, "Speed Tap", 50, engine.getVertexBufferObjectManager());
+        speedTapText.setPosition(Utils.CAMERA_WIDTH / 2 - 150, Utils.CAMERA_HEIGHT / 2  - 150);
+
+        Text oneTapText = new Text(0, 0, ResourceManager.pointsFont, "One Tap", 50, engine.getVertexBufferObjectManager());
+        oneTapText.setPosition(Utils.CAMERA_WIDTH / 2 + 150, Utils.CAMERA_HEIGHT / 2 - 150);
+
         super.attachChild(backgroundSprite);
         super.attachChild(overlaySprite);
         super.attachChild(titleText);
-        super.attachChild(playSprite);
-        super.attachChild(instructionSprite);
+        super.attachChild(speedTapText);
+        super.attachChild(oneTapText);
+        super.attachChild(speedTapSprite);
+        super.attachChild(oneTapSprite);
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
-        super.registerTouchArea(playSprite);
-        super.registerTouchArea(instructionSprite);
+        super.registerTouchArea(speedTapSprite);
+        super.registerTouchArea(oneTapSprite);
     }
 }

@@ -52,9 +52,6 @@ public class SceneManager {
     }
 
     public static void setCurrentScene(AllScenes currentScene, Scene scene) {
-        //after we set the enum's current placeholder
-        //we're going to tell the engine to go to the
-        //newly made current scene.
         switch (currentScene) {
             case SPLASH:
                 ResourceManager.engine.setScene(scene);
