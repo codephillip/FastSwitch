@@ -50,8 +50,8 @@ public class MenuScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         clearChildScene();
-                        Utils.resetLevelAttributes();
-                        SceneManager.setCurrentScene(AllScenes.OBJECTIVE, SceneManager.createStageScene());
+                        Utils.resetLevel();
+                        SceneManager.setCurrentScene(AllScenes.STAGE, SceneManager.createStageScene());
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);

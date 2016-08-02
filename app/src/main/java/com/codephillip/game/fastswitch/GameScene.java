@@ -55,6 +55,12 @@ public class GameScene extends Scene {
             updateLivesText();
             updatePointsText();
             Utils.savePausedGame(Utils.HAS_PAUSED_GAME, false);
+        } else {
+             gameTimeLeft = Utils.getGameTime();
+            lives = Utils.getLives();
+            updateTimeLeftText();
+            updateLivesText();
+            updatePointsText();
         }
         registerUpdateHandler(null);
         Utils.logAnalyticsScene("GameScene");
@@ -386,7 +392,8 @@ public class GameScene extends Scene {
 
     private void processWrongCount() {
         wrongCount++;
-        if (wrongCount == 3) {
+
+        if (wrongCount == Utils.getWrongCount()) {
             wrongCount = 0;
             correctCount = 0;
             ResourceManager.lifeDownSound.play();

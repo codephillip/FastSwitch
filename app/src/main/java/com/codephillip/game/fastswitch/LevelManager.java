@@ -25,68 +25,74 @@ public class LevelManager {
     }
 
     public static void setLevelAttributes() {
+        setGameType();
         switch (Utils.getLevel()) {
             case 1:
+                Utils.saveIntPref(Utils.GAME_TIME, 30);
                 changeBackground(BACKGROUND1);
                 changeGameMusic(MUSIC1);
-                Utils.logAnalyticsLevel("level "+ Utils.getLevel());
                 switchSpeed = 1.1f;
                 targetScore = 500;
                 break;
             case 2:
-                Utils.logAnalyticsLevel("level "+ Utils.getLevel());
                 switchSpeed = 1.05f;
                 targetScore = 600;
                 break;
             case 3:
-                Utils.logAnalyticsLevel("level "+ Utils.getLevel());
                 switchSpeed = 0.9f;
                 targetScore = 800;
                 break;
             case 4:
+                Utils.saveIntPref(Utils.GAME_TIME, 60);
                 changeBackground(BACKGROUND2);
                 changeGameMusic(MUSIC2);
-                Utils.logAnalyticsLevel("level "+ Utils.getLevel());
                 switchSpeed = 0.85f;
                 targetScore = 1000;
                 break;
             case 5:
-                Utils.logAnalyticsLevel("level "+ Utils.getLevel());
                 switchSpeed = 0.8f;
                 targetScore = 1500;
                 break;
             case 6:
-                Utils.logAnalyticsLevel("level "+ Utils.getLevel());
-                switchSpeed = 0.78f;
+                switchSpeed = 0.8f;
                 targetScore = 2000;
                 break;
             case 7:
-                Utils.logAnalyticsLevel("level "+ Utils.getLevel());
+                Utils.saveIntPref(Utils.GAME_TIME, 90);
                 changeBackground(BACKGROUND3);
                 changeGameMusic(MUSIC3);
-                switchSpeed = 0.75f;
+                switchSpeed = 0.8f;
                 targetScore = 2500;
                 break;
             case 8:
-                Utils.logAnalyticsLevel("level "+ Utils.getLevel());
-                switchSpeed = 0.72f;
+                switchSpeed = 0.8f;
                 targetScore = 3200;
                 break;
             case 9:
-                Utils.logAnalyticsLevel("level "+ Utils.getLevel());
-                switchSpeed = 0.7f;
+                switchSpeed = 0.8f;
                 targetScore = 3500;
                 break;
             case 10:
-                Utils.logAnalyticsLevel("level "+ Utils.getLevel());
-                switchSpeed = 0.6f;
+                switchSpeed = 0.8f;
                 targetScore = 4000;
                 break;
             default:
                 throw new UnsupportedOperationException("Level not found");
         }
+        Utils.logAnalyticsLevel("level "+ Utils.getLevel());
         Utils.saveIntPref(Utils.TARGET_SCORE, targetScore);
         Utils.saveSwitchSpeed(Utils.SWITCH_SPEED, switchSpeed);
+    }
+
+    private static void setGameType() {
+        if (Utils.getGameType() == Utils.ONE_TAP){
+            Utils.saveIntPref(Utils.LIVES, 1);
+            Utils.saveIntPref(Utils.WRONG_COUNT, 1);
+        }
+        else{
+            Utils.saveIntPref(Utils.LIVES, 5);
+            Utils.saveIntPref(Utils.WRONG_COUNT, 3);
+        }
     }
 
     private static void changeGameMusic(String music) {

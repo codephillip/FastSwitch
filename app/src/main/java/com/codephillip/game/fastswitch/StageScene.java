@@ -49,7 +49,8 @@ public class StageScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         clearChildScene();
-                        Utils.resetLevelAttributes();
+                        Utils.resetLevel();
+                        Utils.saveIntPref(Utils.GAME_TYPE, Utils.SPEED_TAP);
                         SceneManager.setCurrentScene(AllScenes.OBJECTIVE, SceneManager.createObjectiveScene());
                         break;
                 }
@@ -67,7 +68,8 @@ public class StageScene extends Scene {
                     case TouchEvent.ACTION_UP:
                         this.setAlpha(1.0f);
                         clearChildScene();
-                        SceneManager.setCurrentScene(AllScenes.INSTRUCTION, SceneManager.createInstructionScene());
+                        Utils.saveIntPref(Utils.GAME_TYPE, Utils.ONE_TAP);
+                        SceneManager.setCurrentScene(AllScenes.OBJECTIVE, SceneManager.createObjectiveScene());
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);

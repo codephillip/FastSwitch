@@ -20,8 +20,13 @@ public class Utils {
     public static final String HAS_PAUSED_GAME = "has_paused_game";
     public static final String LEVEL = "level";
     public static final String SWITCH_SPEED = "switch_speed";
+    public static final String GAME_TYPE = "game_type";
+    public static final String GAME_TIME = "game_time";
+    public static final String WRONG_COUNT = "wrong_count";
     public static final int CAMERA_WIDTH = 800;
     public static final int CAMERA_HEIGHT = 480;
+    public static final int SPEED_TAP = 1;
+    public static final int ONE_TAP = 2;
     //when using positionX and positionX plotting system.
     //The point 0,0 is at the center of the screen like a graph
     public static final float positionX = CAMERA_WIDTH * 0.5f;
@@ -34,7 +39,7 @@ public class Utils {
         editor.apply();
     }
 
-    //USE saveIntPref()
+    //all return int methods use saveIntPref()
     public static int getHiScore() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getInt(HI_POINTS, 0);
@@ -65,6 +70,20 @@ public class Utils {
         return prefs.getInt(LEVEL, 1);
     }
 
+    public static int getGameType() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(GAME_TYPE, 1);
+    }
+
+    public static int getGameTime() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(GAME_TIME, 30);
+    }
+
+    public static int getWrongCount() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getInt(WRONG_COUNT, 3);
+    }
 
     public static int randInt(int min, int max) {
         int randomNum = min + (int) (Math.random() * ((max - min) + 1));
@@ -116,7 +135,7 @@ public class Utils {
         ResourceManager.engine.getMusicManager().setMasterVolume(1.0f);
     }
 
-    public static void resetLevelAttributes() {
+    public static void resetLevel() {
         Utils.saveIntPref(Utils.LEVEL, 1);
     }
 
