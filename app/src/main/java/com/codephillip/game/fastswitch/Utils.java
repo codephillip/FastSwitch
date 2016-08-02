@@ -23,6 +23,7 @@ public class Utils {
     public static final String GAME_TYPE = "game_type";
     public static final String GAME_TIME = "game_time";
     public static final String WRONG_COUNT = "wrong_count";
+    public static final String INCREMENT_LIFE = "increment_life";
     public static final int CAMERA_WIDTH = 800;
     public static final int CAMERA_HEIGHT = 480;
     public static final int SPEED_TAP = 1;
@@ -113,6 +114,18 @@ public class Utils {
     public static boolean getPausedGame() {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         return prefs.getBoolean(HAS_PAUSED_GAME, false);
+    }
+
+    public static void saveIncrementLife(String prefString, boolean hasPausedGame) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(prefString, hasPausedGame);
+        editor.apply();
+    }
+
+    public static boolean getIncrementLife() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getBoolean(INCREMENT_LIFE, true);
     }
 
     public static void saveSwitchSpeed(String prefString, float switchSpeed) {

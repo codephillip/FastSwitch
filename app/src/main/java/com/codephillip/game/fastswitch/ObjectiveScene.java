@@ -96,6 +96,11 @@ public class ObjectiveScene extends Scene {
 
         instructionText = new Text(0, 0, ResourceManager.instructionFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
         instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
-        instructionText.setText("+ Reach a TARGET SCORE of " + Utils.getTargetScore());
+        if (Utils.getIncrementLife()){
+            instructionText.setText("+ Reach a TARGET SCORE of " + Utils.getTargetScore());
+        } else {
+            instructionText.setText("+ Reach a TARGET SCORE of " + Utils.getTargetScore() +
+                    "\n+ Don't tap any bomb");
+        }
     }
 }

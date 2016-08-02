@@ -91,7 +91,6 @@ public class InstructionScene extends Scene {
         instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
         instructionText.setText("+ Reach the target score by hitting the fruits very fast.\n" +
                 "+ Get life by hitting the fruits 5 times\n" +
-                "+ Get bonus points when you hit a fruit 5 times\n" +
                 "+ You will lose a life when you hit a bomb");
     }
 }

@@ -88,10 +88,12 @@ public class LevelManager {
         if (Utils.getGameType() == Utils.ONE_TAP){
             Utils.saveIntPref(Utils.LIVES, 1);
             Utils.saveIntPref(Utils.WRONG_COUNT, 1);
+            Utils.saveIncrementLife(Utils.INCREMENT_LIFE, false);
         }
         else{
             Utils.saveIntPref(Utils.LIVES, 5);
             Utils.saveIntPref(Utils.WRONG_COUNT, 3);
+            Utils.saveIncrementLife(Utils.INCREMENT_LIFE, true);
         }
     }
 

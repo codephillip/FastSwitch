@@ -56,7 +56,7 @@ public class GameScene extends Scene {
             updatePointsText();
             Utils.savePausedGame(Utils.HAS_PAUSED_GAME, false);
         } else {
-             gameTimeLeft = Utils.getGameTime();
+            gameTimeLeft = Utils.getGameTime();
             lives = Utils.getLives();
             updateTimeLeftText();
             updateLivesText();
@@ -227,7 +227,7 @@ public class GameScene extends Scene {
 
         levelText = new Text(0, 0, ResourceManager.font, "LEVEL 1", 15, engine.getVertexBufferObjectManager());
         levelText.setPosition(Utils.CAMERA_WIDTH / 2 - (timeLeftText.getWidth() / 2) - 100, Utils.CAMERA_HEIGHT / 2 - (timeLeftText.getHeight() / 2) + Y_INCREMENT);
-        levelText.setText("Lv: "+Utils.getLevel());
+        levelText.setText("Lv: " + Utils.getLevel());
 
         livesText = new Text(0, 0, ResourceManager.font, "3", 5, engine.getVertexBufferObjectManager());
         livesText.setPosition(Utils.CAMERA_WIDTH / 2 - (livesText.getWidth() / 2) - 50, Utils.CAMERA_HEIGHT / 2 - (livesText.getHeight() / 2) + Y_INCREMENT);
@@ -378,8 +378,6 @@ public class GameScene extends Scene {
         Log.d(TAG, "checkTileColor: CORRECT COUNT " + correctCount);
         Log.d(TAG, "checkTileColor: CORRECT ");
 
-        if (correctCount % 10 == 0) giveBounty(100);
-
         if (correctCount % 5 == 0) {
             ResourceManager.lifeUpSound.play();
             gainLife();
@@ -414,19 +412,11 @@ public class GameScene extends Scene {
     }
 
     private void gainLife() {
-        lives++;
-        livesText.setText("" + lives);
-        Log.d(TAG, "gainLife: " + lives);
-    }
-
-    private void giveBounty(int points) {
-        resetCorrectCount();
-        ResourceManager.bountySound.play();
-        this.points += points;
-    }
-
-    private void resetCorrectCount() {
-        correctCount = 0;
+        if (Utils.getIncrementLife()) {
+            lives++;
+            livesText.setText("" + lives);
+            Log.d(TAG, "gainLife: " + lives);
+        }
     }
 
     private void loseLife() {
