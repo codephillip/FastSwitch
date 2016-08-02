@@ -57,7 +57,13 @@ public class SceneManager {
         Log.d(TAG, "createMenuScene: finished");
         return objectiveScene;
     }
-
+    
+    public static Scene createStageScene() {
+        StageScene stageScene = new StageScene(ResourceManager.context, ResourceManager.engine);
+        Log.d(TAG, "createMenuScene: finished");
+        return stageScene;
+    }
+    
     public static void setCurrentScene(AllScenes currentScene, Scene scene) {
         //after we set the enum's current placeholder
         //we're going to tell the engine to go to the
@@ -87,6 +93,10 @@ public class SceneManager {
                 ResourceManager.engine.setScene(scene);
                 break;
             case OBJECTIVE:
+                Log.d(TAG, "setCurrentScene: OBJECTIVE SCENE");
+                ResourceManager.engine.setScene(scene);
+                break;
+            case STAGE:
                 Log.d(TAG, "setCurrentScene: OBJECTIVE SCENE");
                 ResourceManager.engine.setScene(scene);
                 break;

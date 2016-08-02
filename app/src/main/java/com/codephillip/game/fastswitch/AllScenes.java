@@ -10,5 +10,6 @@ public enum AllScenes {
     GAME0VER,
     PAUSE,
     INSTRUCTION,
-    OBJECTIVE
+    OBJECTIVE,
+    STAGE
 }

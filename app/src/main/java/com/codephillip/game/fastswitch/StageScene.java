@@ -16,7 +16,7 @@ import org.andengine.util.adt.color.Color;
 /**
  * Created by codephillip on 7/15/16.
  */
-public class MenuScene extends Scene {
+public class StageScene extends Scene {
     private Engine engine;
     private Context context;
     private Sprite playSprite;
@@ -24,12 +24,11 @@ public class MenuScene extends Scene {
     private Sprite instructionSprite;
     private Sprite overlaySprite;
 
-    public MenuScene(Context context, Engine engine) {
+    public StageScene(Context context, Engine engine) {
         this.context = context;
         this.engine = engine;
         attachChild(null);
         registerTouchArea(null);
-        Utils.logAnalyticsScene("MenuScene");
     }
 
     @Override
@@ -51,7 +50,7 @@ public class MenuScene extends Scene {
                         this.setAlpha(1.0f);
                         clearChildScene();
                         Utils.resetLevelAttributes();
-                        SceneManager.setCurrentScene(AllScenes.OBJECTIVE, SceneManager.createStageScene());
+                        SceneManager.setCurrentScene(AllScenes.OBJECTIVE, SceneManager.createObjectiveScene());
                         break;
                 }
                 return super.onAreaTouched(superTouchEvent, pTouchAreaLocalX, pTouchAreaLocalY);
@@ -79,7 +78,7 @@ public class MenuScene extends Scene {
                 "fnt/sanchez.ttf", 100, true, android.graphics.Color.YELLOW);
         titleFont.load();
 
-        Text titleText = new Text(0, 0, titleFont, "FAST SWITCH", 25, engine.getVertexBufferObjectManager());
+        Text titleText = new Text(0, 0, titleFont, "GAME TYPE", 25, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
         super.attachChild(backgroundSprite);
