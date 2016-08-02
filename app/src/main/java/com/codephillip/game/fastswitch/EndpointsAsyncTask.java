@@ -59,10 +59,6 @@ public class EndpointsAsyncTask extends AsyncTask<Pair<Context, String>, Void, L
             //List<Student> z = myApiService.listStudent().execute().getItems();
             //long id = z.get(0).getId();
             //myApiService.removeStudent(id).execute();
-            //delete
-            //myApiService.removeStudent(5076495651307520L).execute();
-            //update
-            //String x = String.valueOf(myApiService.updateStudent(new Student().setId(5066549580791808L).setWho("mememe").setWhat("deleted and gone")).execute());
             //post
             //String x = String.valueOf(myApiService.insertStudent(new Student().setWho("Makarov2").setWhat("Best in Call of duty")).execute());
             //multiple post

@@ -1,6 +1,7 @@
 package com.codephillip.game.fastswitch;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -46,16 +47,6 @@ public class MainActivity extends BaseGameActivity {
     }
 
     @Override
-    public synchronized void onPauseGame() {
-        super.onPauseGame();
-    }
-
-    @Override
-    public synchronized void onResumeGame() {
-        super.onResumeGame();
-    }
-
-    @Override
     protected void onCreate(Bundle pSavedInstanceState) {
         super.onCreate(pSavedInstanceState);
         // Obtain the FirebaseAnalytics instance.
@@ -67,7 +58,8 @@ public class MainActivity extends BaseGameActivity {
         ResourceManager.getInstance().setup(this.getEngine(), this, this.getApplicationContext(), mFirebaseAnalytics, adView, WIDTH, HEIGHT);
         ResourceManager.loadGameScreenResources();
         Utils.saveEmail();
-        new EndpointsAsyncTask(getBaseContext()).execute();
+//        new EndpointsAsyncTask(getBaseContext()).execute();
+        startService(new Intent(this, BackendService.class).putExtra(Utils.POST, true));
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 

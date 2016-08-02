@@ -19,6 +19,7 @@ import java.util.regex.Pattern;
 public class Utils {
     private static final String NICKNAME = "nickname";
     private static final String TAG = Utils.class.getSimpleName();
+    private static final String PLAYER_ID = "player_id";
     static Context context = ResourceManager.context;
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static final String HI_POINTS = "high_points";
@@ -42,6 +43,7 @@ public class Utils {
     //The point 0,0 is at the center of the screen like a graph
     public static final float positionX = CAMERA_WIDTH * 0.5f;
     public static final float positionY = CAMERA_HEIGHT * 0.5f;
+    public static final String POST = "post";
 
     public static void saveIntPref(String prefString, int value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
@@ -220,5 +222,21 @@ public class Utils {
             }
         }
         return emails;
+    }
+
+    public static String getNickname() {
+        return Utils.getEmail().split("@")[0];
+    }
+
+    public static void savePlayerId(Long id) {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(PLAYER_ID, id);
+        editor.apply();
+    }
+
+    public static Long getPlayerId() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getLong(PLAYER_ID, 0);
     }
 }
