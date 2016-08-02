@@ -1,6 +1,7 @@
 package com.codephillip.game.fastswitch;
 
 import org.andengine.audio.music.MusicFactory;
+import org.andengine.audio.music.exception.MusicReleasedException;
 import org.andengine.opengl.texture.TextureOptions;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlas;
 import org.andengine.opengl.texture.atlas.bitmap.BitmapTextureAtlasTextureRegionFactory;
@@ -99,13 +100,17 @@ public class LevelManager {
 
     private static void changeGameMusic(String music) {
         //prevents old gameSound from overlapping with the new one
-        ResourceManager.gameSound.stop();
+        try {
+            ResourceManager.gameSound.stop();
+        } catch (MusicReleasedException e) {
+            e.printStackTrace();
+        }
         try {
             ResourceManager.gameSound = MusicFactory.createMusicFromAsset(ResourceManager.engine.getMusicManager(), ResourceManager.context, "mfx/"+music);
+            ResourceManager.gameSound.setLooping(true);
         } catch (IOException e) {
             e.printStackTrace();
         }
-        ResourceManager.gameSound.setLooping(true);
     }
 
     private static void changeBackground(String background) {
