@@ -41,7 +41,7 @@ public class MenuScene extends Scene {
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 
-        playSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2  - 50, ResourceManager.playITextureRegion, engine.getVertexBufferObjectManager()) {
+        playSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 50, ResourceManager.playITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -84,17 +84,16 @@ public class MenuScene extends Scene {
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
         Font font = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
-                "fnt/pipedream.ttf", 40, true, android.graphics.Color.WHITE);
+                "fnt/pipedream.ttf", 60, true, android.graphics.Color.WHITE);
         font.load();
 
         Text nicknameText = new Text(0, 0, font, "nickname", 50, engine.getVertexBufferObjectManager());
-        nicknameText.setPosition(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2+ 70);
+        nicknameText.setPosition(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 + 70);
         nicknameText.setText(getNickname());
 
-        Text pointsText = new Text(0, 0, ResourceManager.pointsFont, "24235", 30, engine.getVertexBufferObjectManager());
-        pointsText.setPosition(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2+ 40);
-        //TODO make total points in Utils
-        pointsText.setText(getNickname());
+        Text pointsText = new Text(0, 0, ResourceManager.pointsFont, "24235", 60, engine.getVertexBufferObjectManager());
+        pointsText.setPosition(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 + 30);
+        pointsText.setText(String.valueOf("HIGH SCORE: " + Utils.getHiScore()));
 
         super.attachChild(backgroundSprite);
         super.attachChild(overlaySprite);
@@ -103,7 +102,6 @@ public class MenuScene extends Scene {
         super.attachChild(pointsText);
         super.attachChild(playSprite);
         super.attachChild(instructionSprite);
-
     }
 
     @Override
@@ -112,7 +110,7 @@ public class MenuScene extends Scene {
         super.registerTouchArea(instructionSprite);
     }
 
-    private String getNickname(){
+    private String getNickname() {
         return Utils.getEmail().split("@")[0];
     }
 }

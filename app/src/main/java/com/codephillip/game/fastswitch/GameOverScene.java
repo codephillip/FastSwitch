@@ -54,7 +54,6 @@ public class GameOverScene extends Scene {
         Log.d(TAG, "attachChild: GAMEOVER finished");
 
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
-
         overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
@@ -97,7 +96,7 @@ public class GameOverScene extends Scene {
         };
 
         showStatistics(Utils.getHasWonGame());
-
+        updateHiScore(Utils.getHasWonGame());
         super.attachChild(backgroundSprite);
         super.attachChild(overlaySprite);
         super.attachChild(winOrLoseText);
@@ -107,6 +106,12 @@ public class GameOverScene extends Scene {
         super.attachChild(nextOrRestartSprite);
         super.attachChild(menuSprite);
         playWinOrFailSound();
+    }
+
+    private void updateHiScore(boolean hasWonGame) {
+        if (hasWonGame) {
+            Utils.saveIntPref(Utils.HI_POINTS, Utils.getHiScore()+Utils.getScores());
+        }
     }
 
     private void playWinOrFailSound() {
