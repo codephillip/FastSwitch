@@ -105,19 +105,19 @@ public class ResourceManager extends Object {
     private void loadGameTextures() {
         BitmapTextureAtlasTextureRegionFactory.setAssetBasePath("gfx/");
 
-        menuButtonsTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 250, 500, TextureOptions.BILINEAR);
+        menuButtonsTextureAtlas = new BitmapTextureAtlas(engine.getTextureManager(), 202, 457, TextureOptions.BILINEAR);
         menuButtonsTextureAtlas.load();
 
         BitmapTextureAtlasTextureRegionFactory.createFromAsset(menuButtonsTextureAtlas, context, "button_sprite2.png", 0, 0);
-        exitITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 1, 250, 60);
+        exitITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 1, 202, 60);
         int value = 6;
-        instructionsITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 60 - value, 250, 60);
-        menuITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 118 - value, 250, 60);
-        nextLevelITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 176 - value, 250, 60);
-        playITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 234 - value, 250, 60);
-        restartITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 292 - value, 250, 60);
-        resumeITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 350 - value, 250, 60);
-        topPlayersITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 408 - value, 250, 60);
+        instructionsITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 60 - value, 202, 60);
+        menuITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 118 - value, 202, 60);
+        nextLevelITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 176 - value, 202, 60);
+        playITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 234 - value, 202, 60);
+        restartITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 292 - value, 202, 60);
+        resumeITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 350 - value, 202, 60);
+        topPlayersITextureRegion = TextureRegionFactory.extractFromTexture(menuButtonsTextureAtlas, 2, 408 - value, 202, 60);
 
         //sprite2
         menuButtonsTextureAtlas2 = new BitmapTextureAtlas(engine.getTextureManager(), 528, 65, TextureOptions.BILINEAR);
