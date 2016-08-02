@@ -6,15 +6,6 @@ import org.andengine.entity.scene.Scene;
  * Created by codephillip on 7/15/16.
  */
 public class SceneManager {
-    private static final String TAG = SceneManager.class.getSimpleName();
-    private SceneManager INSTANCE = null;
-
-    public SceneManager getInstance() {
-        if (INSTANCE == null)
-            return INSTANCE = new SceneManager();
-        return INSTANCE;
-    }
-
     public static Scene createSplashScene() {
         SplashScene splashScene = new SplashScene(ResourceManager.context, ResourceManager.engine);
         return splashScene;
