@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.View;
 
 /**
  * Created by codephillip on 7/16/16.
@@ -162,5 +163,16 @@ public class Utils {
         Bundle bundle = new Bundle();
         bundle.putString("Level", level);
         ResourceManager.firebaseAnalytics.logEvent("LEVEL", bundle);
+    }
+
+    public static void resumeAds() {
+        ResourceManager.mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (ResourceManager.adView!=null || !ResourceManager.adView.isShown()){
+                    ResourceManager.adView.setVisibility(View.VISIBLE);
+                }
+            }
+        });
     }
 }

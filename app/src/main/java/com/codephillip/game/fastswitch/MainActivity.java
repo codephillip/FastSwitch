@@ -31,6 +31,7 @@ public class MainActivity extends BaseGameActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private FirebaseAnalytics mFirebaseAnalytics;
+    private AdView adView;
 
     @Override
     public EngineOptions onCreateEngineOptions() {
@@ -64,7 +65,7 @@ public class MainActivity extends BaseGameActivity {
 
     @Override
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws IOException {
-        ResourceManager.getInstance().setup(this.getEngine(), this.getApplicationContext(), mFirebaseAnalytics, WIDTH, HEIGHT);
+        ResourceManager.getInstance().setup(this.getEngine(), this, this.getApplicationContext(), mFirebaseAnalytics, adView, WIDTH, HEIGHT);
         ResourceManager.loadGameScreenResources();
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
@@ -92,7 +93,7 @@ public class MainActivity extends BaseGameActivity {
         FrameLayout frameLayout = new FrameLayout(this);
         FrameLayout.LayoutParams fparams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
 
-        AdView adView = new AdView(this);
+        adView = new AdView(this);
         final FrameLayout.LayoutParams adViewLayoutParams = new FrameLayout.LayoutParams(
                 FrameLayout.LayoutParams.WRAP_CONTENT,
                 FrameLayout.LayoutParams.WRAP_CONTENT,
@@ -102,9 +103,11 @@ public class MainActivity extends BaseGameActivity {
         adView.setAdSize(AdSize.SMART_BANNER);
         adView.refreshDrawableState();
 
+        //TODO deactivate testDevice on release
         AdRequest adRequest = new AdRequest.Builder()
                 .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
                 .build();
+
         adView.loadAd(adRequest);
 
         Log.d(TAG, "onSetContentView() returned: " + "settingup ads");
@@ -112,5 +115,21 @@ public class MainActivity extends BaseGameActivity {
         frameLayout.addView(adView, adViewLayoutParams);
         relativeLayout.addView(frameLayout, fparams);
         this.setContentView(relativeLayout, relativeLayoutLayoutParams);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adView != null) {
+            adView.resume();
+        }
+    }
+
+    @Override
+    public void onDestroy() {
+        if (adView != null) {
+            adView.destroy();
+        }
+        super.onDestroy();
     }
 }

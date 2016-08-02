@@ -37,6 +37,7 @@ public class GameOverScene extends Scene {
         this.engine = engine;
         attachChild(null);
         registerTouchArea(null);
+        Utils.resumeAds();
         logAnalyticsGameOver();
     }
 

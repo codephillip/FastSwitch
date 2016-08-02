@@ -2,6 +2,7 @@ package com.codephillip.game.fastswitch;
 
 import android.content.Context;
 import android.util.Log;
+import android.view.View;
 
 import org.andengine.engine.Engine;
 import org.andengine.engine.handler.IUpdateHandler;
@@ -64,6 +65,18 @@ public class GameScene extends Scene {
         }
         registerUpdateHandler(null);
         Utils.logAnalyticsScene("GameScene");
+        pauseAds();
+    }
+
+    private void pauseAds() {
+        ResourceManager.mainActivity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (ResourceManager.adView != null) {
+                    ResourceManager.adView.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
     }
 
     @Override

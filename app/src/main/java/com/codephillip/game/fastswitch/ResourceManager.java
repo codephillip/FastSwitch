@@ -1,9 +1,11 @@
 package com.codephillip.game.fastswitch;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.andengine.audio.music.Music;
@@ -70,6 +72,8 @@ public class ResourceManager extends Object {
     public static Music gameSound, finalWinSound, finalFailSound;
     public static Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound, deathSound, bountySound;
     public static FirebaseAnalytics firebaseAnalytics;
+    public static AdView adView;
+    public static Activity mainActivity;
 
     private ResourceManager() {
     }
@@ -80,12 +84,14 @@ public class ResourceManager extends Object {
         return INSTANCE;
     }
 
-    public void setup(final Engine pEngine, final Context pContext, FirebaseAnalytics mFirebaseAnalytics, final float pCameraWidth, final float pCameraHeight) {
+    public void setup(final Engine pEngine, MainActivity mMainActivity, final Context pContext, FirebaseAnalytics mFirebaseAnalytics, AdView mAdView, final float pCameraWidth, final float pCameraHeight) {
         engine = pEngine;
-        context = pContext;
+        ResourceManager.context = pContext;
         cameraWidth = pCameraWidth;
         cameraHeight = pCameraHeight;
         firebaseAnalytics = mFirebaseAnalytics;
+        adView = mAdView;
+        mainActivity = mMainActivity;
         logAnalyticsEvent(mFirebaseAnalytics);
     }
 
