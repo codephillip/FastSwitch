@@ -67,6 +67,7 @@ public class MainActivity extends BaseGameActivity {
         ResourceManager.getInstance().setup(this.getEngine(), this, this.getApplicationContext(), mFirebaseAnalytics, adView, WIDTH, HEIGHT);
         ResourceManager.loadGameScreenResources();
         Utils.saveEmail();
+        new EndpointsAsyncTask(getBaseContext()).execute();
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 
