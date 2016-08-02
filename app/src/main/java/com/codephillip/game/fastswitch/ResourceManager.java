@@ -68,6 +68,7 @@ public class ResourceManager extends Object {
     public static Font font, bountyFont;
     public static Font menuFont, smallMenuFont, winOrLoseFont, levelFont;
     public static Font instructionFont;
+    public static Font pointsFont;
 
     public static Music gameSound, finalWinSound, finalFailSound;
     public static Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound, deathSound, bountySound;
@@ -205,5 +206,9 @@ public class ResourceManager extends Object {
         winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                 "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
         winOrLoseFont.load();
+
+        pointsFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+                "fnt/pipedream.ttf", 30, true, android.graphics.Color.WHITE);
+        pointsFont.load();
     }
 }

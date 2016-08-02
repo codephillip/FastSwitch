@@ -33,8 +33,8 @@ public class SplashScene extends Scene {
     public void attachChild(IEntity pEntity) {
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
 
-        Text highPointsText = new Text(0, 0, ResourceManager.font, "LOADING...", 15, engine.getVertexBufferObjectManager());
-        highPointsText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
+        Text loadingText = new Text(0, 0, ResourceManager.font, "LOADING...", 15, engine.getVertexBufferObjectManager());
+        loadingText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
 
         Font titleFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                 "fnt/sanchez.ttf", 100, true, android.graphics.Color.YELLOW);
@@ -44,7 +44,7 @@ public class SplashScene extends Scene {
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
         super.attachChild(backgroundSprite);
-        super.attachChild(highPointsText);
+        super.attachChild(loadingText);
         super.attachChild(titleText);
     }
 

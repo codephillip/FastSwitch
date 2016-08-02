@@ -83,16 +83,36 @@ public class MenuScene extends Scene {
         Text titleText = new Text(0, 0, titleFont, "FAST SWITCH", 25, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
+        Font font = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+                "fnt/pipedream.ttf", 40, true, android.graphics.Color.WHITE);
+        font.load();
+
+        Text nicknameText = new Text(0, 0, font, "nickname", 50, engine.getVertexBufferObjectManager());
+        nicknameText.setPosition(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2+ 70);
+        nicknameText.setText(getNickname());
+
+        Text pointsText = new Text(0, 0, ResourceManager.pointsFont, "24235", 30, engine.getVertexBufferObjectManager());
+        pointsText.setPosition(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2+ 40);
+        //TODO make total points in Utils
+        pointsText.setText(getNickname());
+
         super.attachChild(backgroundSprite);
         super.attachChild(overlaySprite);
         super.attachChild(titleText);
+        super.attachChild(nicknameText);
+        super.attachChild(pointsText);
         super.attachChild(playSprite);
         super.attachChild(instructionSprite);
+
     }
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
         super.registerTouchArea(playSprite);
         super.registerTouchArea(instructionSprite);
+    }
+
+    private String getNickname(){
+        return Utils.getEmail().split("@")[0];
     }
 }

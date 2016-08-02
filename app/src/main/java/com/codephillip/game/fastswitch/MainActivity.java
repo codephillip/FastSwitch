@@ -1,21 +1,13 @@
 package com.codephillip.game.fastswitch;
 
 import android.annotation.TargetApi;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PersistableBundle;
-import android.provider.ContactsContract;
-import android.support.v4.app.LoaderManager;
-import android.support.v4.content.CursorLoader;
-import android.support.v4.content.Loader;
 import android.util.Log;
 import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -30,10 +22,8 @@ import org.andengine.opengl.view.RenderSurfaceView;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-public class MainActivity extends BaseGameActivity implements LoaderManager.LoaderCallbacks<Cursor> {
+public class MainActivity extends BaseGameActivity {
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 480;
@@ -53,13 +43,6 @@ public class MainActivity extends BaseGameActivity implements LoaderManager.Load
 //        // Set the Wake Lock options to prevent the engine from dumping textures when focus changes.
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
         return engineOptions;
-    }
-
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    @Override
-    public void onCreate(Bundle savedInstanceState, PersistableBundle persistentState) {
-        super.onCreate(savedInstanceState, persistentState);
-        getLoaderManager().initLoader(1, null,);
     }
 
     @Override
@@ -83,6 +66,7 @@ public class MainActivity extends BaseGameActivity implements LoaderManager.Load
     public void onCreateResources(OnCreateResourcesCallback pOnCreateResourcesCallback) throws IOException {
         ResourceManager.getInstance().setup(this.getEngine(), this, this.getApplicationContext(), mFirebaseAnalytics, adView, WIDTH, HEIGHT);
         ResourceManager.loadGameScreenResources();
+        Utils.saveEmail();
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }
 
@@ -120,11 +104,11 @@ public class MainActivity extends BaseGameActivity implements LoaderManager.Load
         adView.refreshDrawableState();
 
         //TODO deactivate testDevice on release
-        AdRequest adRequest = new AdRequest.Builder()
-                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-                .build();
-
-        adView.loadAd(adRequest);
+//        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+//                .build();
+//
+//        adView.loadAd(adRequest);
 
         Log.d(TAG, "onSetContentView() returned: " + "settingup ads");
 
@@ -147,55 +131,5 @@ public class MainActivity extends BaseGameActivity implements LoaderManager.Load
             adView.destroy();
         }
         super.onDestroy();
-    }
-
-    @Override
-    public Loader<Cursor> onCreateLoader(int id, Bundle arguments) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-            return new CursorLoader(this,
-                    // Retrieve data rows for the device user's 'profile' contact.
-                    Uri.withAppendedPath(
-                            ContactsContract.Profile.CONTENT_URI,
-                            ContactsContract.Contacts.Data.CONTENT_DIRECTORY),
-                    ProfileQuery.PROJECTION,
-
-                    // Select only email addresses.
-                    ContactsContract.Contacts.Data.MIMETYPE + " = ?",
-                    new String[]{ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE},
-
-                    // Show primary email addresses first. Note that there won't be
-                    // a primary email address if the user hasn't specified one.
-                    ContactsContract.Contacts.Data.IS_PRIMARY + " DESC");
-        }
-        return null;
-    }
-
-    @Override
-    public void onLoadFinished(Loader<Cursor> cursorLoader, Cursor cursor) {
-        List<String> emails = new ArrayList<String>();
-        cursor.moveToFirst();
-        while (!cursor.isAfterLast()) {
-            emails.add(cursor.getString(ProfileQuery.ADDRESS));
-            // Potentially filter on ProfileQuery.IS_PRIMARY
-            cursor.moveToNext();
-        }
-
-        for (String email : emails) {
-            Log.d(TAG, "onLoadFinished() EMAIL: " + email);
-        }
-    }
-
-    @Override
-    public void onLoaderReset(Loader<Cursor> cursorLoader) {
-    }
-
-    private interface ProfileQuery {
-        String[] PROJECTION = {
-                ContactsContract.CommonDataKinds.Email.ADDRESS,
-                ContactsContract.CommonDataKinds.Email.IS_PRIMARY,
-        };
-
-        int ADDRESS = 0;
-        int IS_PRIMARY = 1;
     }
 }

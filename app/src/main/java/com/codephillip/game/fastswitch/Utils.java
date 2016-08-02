@@ -1,5 +1,7 @@
 package com.codephillip.game.fastswitch;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -7,11 +9,18 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
+import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * Created by codephillip on 7/16/16.
  */
 public class Utils {
+    private static final String NICKNAME = "nickname";
+    private static final String TAG = Utils.class.getSimpleName();
     static Context context = ResourceManager.context;
+    private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static final String HI_POINTS = "high_points";
     public static final String POINTS = "points";
     public static final String GAME_TIME_LEFT = "game_time_left";
@@ -169,10 +178,47 @@ public class Utils {
         ResourceManager.mainActivity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (ResourceManager.adView!=null || !ResourceManager.adView.isShown()){
+                if (ResourceManager.adView != null || !ResourceManager.adView.isShown()) {
                     ResourceManager.adView.setVisibility(View.VISIBLE);
                 }
             }
         });
+    }
+
+    public static String getEmail() {
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        return prefs.getString("email", "playerName@example.com");
+    }
+
+    public static void saveEmail() {
+        String email = "nickname";
+        for (String emailaddress : getAccountEmails()) {
+            email = emailaddress;
+        }
+
+        try {
+            SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putString("email", email);
+            editor.apply();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        Log.d(TAG, "saveEmail() USER EMAIL " + getAccountEmails().get(0));
+    }
+
+    public static ArrayList<String> getAccountEmails() {
+        // Get manager
+        AccountManager am = AccountManager.get(ResourceManager.context);
+        Account[] acc = am.getAccounts();
+        ArrayList<String> emails = new ArrayList<String>();
+        Pattern pattern = Pattern.compile(EMAIL_PATTERN);
+        for (Account a : acc) {
+            Matcher matcher = pattern.matcher(a.name);
+            if (matcher.matches() && !emails.contains(a.name)) {
+                emails.add(a.name);
+            }
+        }
+        return emails;
     }
 }
