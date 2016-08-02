@@ -1,7 +1,16 @@
 package com.codephillip.game.fastswitch;
 
+import android.annotation.TargetApi;
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.Gravity;
+import android.widget.FrameLayout;
+import android.widget.RelativeLayout;
 
+import com.google.android.gms.ads.AdRequest;
+import com.google.android.gms.ads.AdSize;
+import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
 
 import org.andengine.engine.camera.Camera;
@@ -10,6 +19,7 @@ import org.andengine.engine.options.ScreenOrientation;
 import org.andengine.engine.options.WakeLockOptions;
 import org.andengine.engine.options.resolutionpolicy.FillResolutionPolicy;
 import org.andengine.entity.scene.Scene;
+import org.andengine.opengl.view.RenderSurfaceView;
 import org.andengine.ui.activity.BaseGameActivity;
 
 import java.io.IOException;
@@ -18,6 +28,7 @@ public class MainActivity extends BaseGameActivity {
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 480;
+    private static final String TAG = MainActivity.class.getSimpleName();
 
     private FirebaseAnalytics mFirebaseAnalytics;
 
@@ -66,5 +77,40 @@ public class MainActivity extends BaseGameActivity {
     @Override
     public void onPopulateScene(final Scene pScene, OnPopulateSceneCallback pOnPopulateSceneCallback) throws IOException {
         pOnPopulateSceneCallback.onPopulateSceneFinished();
+    }
+
+    @TargetApi(Build.VERSION_CODES.KITKAT)
+    @Override
+    protected void onSetContentView() {
+        final RelativeLayout relativeLayout = new RelativeLayout(this);
+        final FrameLayout.LayoutParams relativeLayoutLayoutParams = new FrameLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
+        this.mRenderSurfaceView = new RenderSurfaceView(this);
+        this.mRenderSurfaceView.setRenderer(this.mEngine, this);
+        final android.widget.RelativeLayout.LayoutParams surfaceViewLayoutParams = new RelativeLayout.LayoutParams(BaseGameActivity.createSurfaceViewLayoutParams());
+        surfaceViewLayoutParams.addRule(RelativeLayout.CENTER_HORIZONTAL);
+        relativeLayout.addView(this.mRenderSurfaceView, surfaceViewLayoutParams);
+        FrameLayout frameLayout = new FrameLayout(this);
+        FrameLayout.LayoutParams fparams = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.MATCH_PARENT);
+
+        AdView adView = new AdView(this);
+        final FrameLayout.LayoutParams adViewLayoutParams = new FrameLayout.LayoutParams(
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                FrameLayout.LayoutParams.WRAP_CONTENT,
+                Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM);
+
+        adView.setAdUnitId("ca-app-pub-1319732109388212/1481366283");
+        adView.setAdSize(AdSize.SMART_BANNER);
+        adView.refreshDrawableState();
+
+        AdRequest adRequest = new AdRequest.Builder()
+                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
+        adView.loadAd(adRequest);
+
+        Log.d(TAG, "onSetContentView() returned: " + "settingup ads");
+
+        frameLayout.addView(adView, adViewLayoutParams);
+        relativeLayout.addView(frameLayout, fparams);
+        this.setContentView(relativeLayout, relativeLayoutLayoutParams);
     }
 }

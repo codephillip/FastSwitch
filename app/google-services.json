@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "400007953719-koj81fhdgg9kurjqsvje9q55u5g8d27p.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.codephillip.game.fastswitch",
+            "certificate_hash": "9BA475EC0A72736AE1E1AF1AA00575432A0A8CF8"
+          }
+        },
+        {
           "client_id": "400007953719-f46nq8e6q3r3ac2vgjrr3lg302lhfgac.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
