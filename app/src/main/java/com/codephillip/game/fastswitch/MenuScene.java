@@ -58,7 +58,7 @@ public class MenuScene extends Scene {
             }
         };
 
-        instructionSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 105, ResourceManager.topPlayersITextureRegion, engine.getVertexBufferObjectManager()) {
+        instructionSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 160, ResourceManager.instructionsITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -75,7 +75,7 @@ public class MenuScene extends Scene {
             }
         };
 
-        topPlayersSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 160, ResourceManager.instructionsITextureRegion, engine.getVertexBufferObjectManager()) {
+        topPlayersSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 105, ResourceManager.topPlayersITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {

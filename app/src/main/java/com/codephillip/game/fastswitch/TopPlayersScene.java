@@ -3,6 +3,8 @@ package com.codephillip.game.fastswitch;
 import android.content.Context;
 import android.util.Log;
 
+import com.codephillip.backend.topPlayersApi.model.TopPlayers;
+
 import org.andengine.engine.Engine;
 import org.andengine.entity.IEntity;
 import org.andengine.entity.scene.ITouchArea;
@@ -35,7 +37,6 @@ public class TopPlayersScene extends Scene {
 
     @Override
     public void attachChild(IEntity pEntity) {
-        Log.d(TAG, "attachChild: GAMEOVER finished");
         this.setBackground(new Background(Color.GREEN));
 
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
@@ -73,7 +74,6 @@ public class TopPlayersScene extends Scene {
 
     @Override
     public void registerTouchArea(ITouchArea pTouchArea) {
-        Log.d(TAG, "registerTouchArea: gameover");
         super.registerTouchArea(exitSprite);
     }
 
@@ -89,8 +89,19 @@ public class TopPlayersScene extends Scene {
 
         instructionText = new Text(0, 0, ResourceManager.instructionFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
         instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
-        instructionText.setText("+ Reach the target score by hitting the fruits very fast.\n" +
-                "+ Get life by hitting the fruits 5 times\n" +
-                "+ You will lose a life when you hit a bomb");
+//        instructionText.setText("+ Reach the target score by hitting the fruits very fast.\n" +
+//                "+ Get life by hitting the fruits 5 times\n" +
+//                "+ You will lose a life when you hit a bomb");
+        try {
+            for (TopPlayers topPlayer :Utils.topPlayers) {
+                Log.d(TAG, "doGetRequest() GET_2: " + topPlayer.getName() + "#" + topPlayer.getEmail() + "#" + topPlayer.getPoints());
+                if (topPlayer.getEmail().equals(Utils.getEmail())) {
+                    Utils.savePlayerId(topPlayer.getId());
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            instructionText.setText("Please connect to the internet");
+        }
     }
 }

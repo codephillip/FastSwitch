@@ -9,7 +9,10 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 
+import com.codephillip.backend.topPlayersApi.model.TopPlayers;
+
 import java.util.ArrayList;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -43,6 +46,7 @@ public class Utils {
     public static final float positionX = CAMERA_WIDTH * 0.5f;
     public static final float positionY = CAMERA_HEIGHT * 0.5f;
     public static final String POST = "post";
+    public static List<TopPlayers> topPlayers;
 
     public static void saveIntPref(String prefString, int value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

@@ -25,7 +25,7 @@ import org.andengine.opengl.texture.region.TextureRegionFactory;
 
 import java.io.IOException;
 
-public class ResourceManager extends Object {
+public class ResourceManager {
 
     private static ResourceManager INSTANCE = null;
 
