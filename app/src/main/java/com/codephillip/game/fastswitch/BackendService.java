@@ -61,20 +61,26 @@ public class BackendService extends IntentService {
 
     private void doPostRequest() throws IOException {
         TopPlayers topPlayers;
-        if (Utils.getPlayerId() == 0) {
-            topPlayers = myApiService.insert(new TopPlayers().setName(Utils.getNickname()).setEmail(Utils.getEmail()).setPoints(5555)).execute();
-        } else {
-            topPlayers = (myApiService.update(Utils.getPlayerId(), new TopPlayers().setName(Utils.getNickname()).setEmail(Utils.getEmail()).setPoints(7777)).execute());}
-        Utils.savePlayerId(topPlayers.getId());
-        new MyReceiver().onReceive(this, new Intent());
-        Log.d(TAG, "doPostRequest() POST: " + topPlayers.getId());
+
+        try {
+            if (Utils.getPlayerId() == 0) {
+                topPlayers = myApiService.insert(new TopPlayers().setName(Utils.getNickname()).setEmail(Utils.getEmail()).setPoints(5555)).execute();
+            } else {
+                topPlayers = (myApiService.update(Utils.getPlayerId(), new TopPlayers().setName(Utils.getNickname()).setEmail(Utils.getEmail()).setPoints(7777)).execute());
+            }
+            Utils.savePlayerId(topPlayers.getId());
+            new MyReceiver().onReceive(this, new Intent());
+            Log.d(TAG, "doPostRequest() POST: " + topPlayers.getId());
+        } catch (Exception e){
+            e.printStackTrace();
+        }
     }
 
     private void doGetRequest() {
         try {
             List<TopPlayers> topPlayers = myApiService.list().execute().getItems();
             Utils.topPlayers = topPlayers;
-            for (TopPlayers topPlayer :topPlayers) {
+            for (TopPlayers topPlayer : topPlayers) {
                 Log.d(TAG, "doGetRequest() GET: " + topPlayer.getName() + "#" + topPlayer.getEmail() + "#" + topPlayer.getPoints());
                 if (topPlayer.getEmail().equals(Utils.getEmail())) {
                     Utils.savePlayerId(topPlayer.getId());
