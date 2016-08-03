@@ -31,8 +31,6 @@ public class ResourceManager extends Object {
 
     public static Engine engine;
     public static Context context;
-    public float cameraWidth;
-    public float cameraHeight;
 
     public static BitmapTextureAtlas backgroundTextureAtlas;
     public static ITextureRegion backgroundTextureRegion;
@@ -89,8 +87,6 @@ public class ResourceManager extends Object {
     public void setup(final Engine pEngine, MainActivity mMainActivity, final Context pContext, FirebaseAnalytics mFirebaseAnalytics, AdView mAdView, final float pCameraWidth, final float pCameraHeight) {
         engine = pEngine;
         ResourceManager.context = pContext;
-        cameraWidth = pCameraWidth;
-        cameraHeight = pCameraHeight;
         firebaseAnalytics = mFirebaseAnalytics;
         adView = mAdView;
         mainActivity = mMainActivity;

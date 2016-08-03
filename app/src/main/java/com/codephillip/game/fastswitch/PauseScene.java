@@ -19,9 +19,9 @@ import org.andengine.util.adt.color.Color;
  */
 public class PauseScene extends Scene {
     private static final String TAG = PauseScene.class.getSimpleName();
-    private Engine engine;
-    private Context context;
-    private Sprite backgroundSprite, overlaySprite;
+    private final Engine engine;
+    private final Context context;
+    private Sprite backgroundSprite;
     private Sprite resumeSprite, exitSprite;
     private Text scoresText, targetScoreText;
     private Text titleText;
@@ -44,7 +44,7 @@ public class PauseScene extends Scene {
 
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
 
-        overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
+        Sprite overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 

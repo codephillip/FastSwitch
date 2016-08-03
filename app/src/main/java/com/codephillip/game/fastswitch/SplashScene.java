@@ -17,10 +17,8 @@ import org.andengine.opengl.font.FontFactory;
  * Created by codephillip on 7/15/16.
  */
 public class SplashScene extends Scene {
-    private Engine engine;
-    private Context context;
-    private Sprite playSprite;
-    private Sprite backgroundSprite;
+    private final Engine engine;
+    private final Context context;
 
     public SplashScene(Context context, Engine engine) {
         this.context = context;
@@ -31,7 +29,7 @@ public class SplashScene extends Scene {
 
     @Override
     public void attachChild(IEntity pEntity) {
-        backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
+        Sprite backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
 
         Text loadingText = new Text(0, 0, ResourceManager.font, "LOADING...", 15, engine.getVertexBufferObjectManager());
         loadingText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);

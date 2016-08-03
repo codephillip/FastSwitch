@@ -23,10 +23,9 @@ import java.io.IOException;
  */
 public class GameOverScene extends Scene {
     private static final String TAG = GameOverScene.class.getSimpleName();
-    private Engine engine;
-    private Context context;
+    private final Engine engine;
+    private final Context context;
     private Sprite backgroundSprite;
-    private Sprite overlaySprite;
     private Sprite nextOrRestartSprite, menuSprite;
     private Text scoresText, targetScoreText;
     private Text winOrLoseText;
@@ -54,7 +53,7 @@ public class GameOverScene extends Scene {
         Log.d(TAG, "attachChild: GAMEOVER finished");
 
         backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
-        overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
+        Sprite overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 

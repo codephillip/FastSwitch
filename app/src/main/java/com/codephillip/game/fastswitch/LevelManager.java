@@ -13,8 +13,6 @@ import java.io.IOException;
  */
 public class LevelManager {
 
-    private static float switchSpeed;
-    private static int targetScore;
     private static final String MUSIC1 = "game_music0.ogg";
     private static final String MUSIC2 = "game_music1.ogg";
     private static final String MUSIC3 = "game_music2.ogg";
@@ -22,11 +20,10 @@ public class LevelManager {
     private static final String BACKGROUND2 = "background2.png";
     private static final String BACKGROUND3 = "background3.png";
 
-    public LevelManager() {
-    }
-
     public static void setLevelAttributes() {
         setGameType();
+        int targetScore;
+        float switchSpeed;
         switch (Utils.getLevel()) {
             case 1:
                 Utils.saveIntPref(Utils.GAME_TIME, 30);

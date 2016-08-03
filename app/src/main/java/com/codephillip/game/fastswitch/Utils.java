@@ -17,10 +17,9 @@ import java.util.regex.Pattern;
  * Created by codephillip on 7/16/16.
  */
 public class Utils {
-    private static final String NICKNAME = "nickname";
     private static final String TAG = Utils.class.getSimpleName();
     private static final String PLAYER_ID = "player_id";
-    static Context context = ResourceManager.context;
+    static final Context context = ResourceManager.context;
     private static final String EMAIL_PATTERN = "^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$";
     public static final String HI_POINTS = "high_points";
     public static final String POINTS = "points";

@@ -17,12 +17,10 @@ import org.andengine.util.adt.color.Color;
  * Created by codephillip on 7/15/16.
  */
 public class MenuScene extends Scene {
-    private Engine engine;
-    private Context context;
+    private final Engine engine;
+    private final Context context;
     private Sprite playSprite;
-    private Sprite backgroundSprite;
     private Sprite instructionSprite;
-    private Sprite overlaySprite;
     private Sprite topPlayersSprite;
 
     public MenuScene(Context context, Engine engine) {
@@ -36,9 +34,9 @@ public class MenuScene extends Scene {
 
     @Override
     public void attachChild(IEntity pEntity) {
-        backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
+        Sprite backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
 
-        overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
+        Sprite overlaySprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.overlayTextureRegion, engine.getVertexBufferObjectManager());
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 

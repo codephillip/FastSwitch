@@ -39,9 +39,7 @@ public class MainActivity extends BaseGameActivity {
         EngineOptions engineOptions = new EngineOptions(true, ScreenOrientation.LANDSCAPE_FIXED, new FillResolutionPolicy(), camera);
         engineOptions.getAudioOptions().setNeedsSound(true);
         engineOptions.getAudioOptions().setNeedsMusic(true);
-//        // Turn on MultiTouch
         engineOptions.getTouchOptions().setNeedsMultiTouch(true);
-//        // Set the Wake Lock options to prevent the engine from dumping textures when focus changes.
         engineOptions.setWakeLockOptions(WakeLockOptions.SCREEN_ON);
         return engineOptions;
     }
@@ -58,7 +56,6 @@ public class MainActivity extends BaseGameActivity {
         ResourceManager.getInstance().setup(this.getEngine(), this, this.getApplicationContext(), mFirebaseAnalytics, adView, WIDTH, HEIGHT);
         ResourceManager.loadGameScreenResources();
         Utils.saveEmail();
-//        new EndpointsAsyncTask(getBaseContext()).execute();
         startService(new Intent(this, BackendService.class).putExtra(Utils.POST, true));
         pOnCreateResourcesCallback.onCreateResourcesFinished();
     }

@@ -21,17 +21,11 @@ import org.andengine.input.touch.TouchEvent;
  */
 public class GameScene extends Scene {
     private static final String TAG = GameScene.class.getSimpleName();
-    private Engine engine;
-    private Context context;
+    private final Engine engine;
     private Text timeLeftText, livesText, scoreText, targetScoreText, levelText;
-    private Sprite backgroundSprite;
     private AnimatedSprite explosionAnimatedSprite;
     private Sprite pauseSprite;
     private AnimatedSprite animatedSprite1, animatedSprite2, animatedSprite3, animatedSprite4, animatedSprite5, animatedSprite6;
-    private Sprite heartSprite;
-    private final float initialX = 165;
-    private final float initialY = 120;
-    private final int RECTANGLE_DIMENSIONS = 200;
 
     //TODO [REMOVE ON RELEASE]
 //    private int gameTimeLeft = 5;
@@ -44,7 +38,7 @@ public class GameScene extends Scene {
 
     public GameScene(Context context, Engine engine) {
         Log.d(TAG, "GameScene: CONSTRUCTOR");
-        this.context = context;
+        Context context1 = context;
         this.engine = engine;
         attachChild(null);
         registerTouchArea(null);
@@ -83,10 +77,12 @@ public class GameScene extends Scene {
     public void attachChild(IEntity pEntity) {
         Log.d(TAG, "attachChild: finished");
 
-        backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
-        heartSprite = new Sprite(Utils.positionX - 90, Utils.positionY + 215, ResourceManager.heartITextureRegion, engine.getVertexBufferObjectManager());
+        Sprite backgroundSprite = new Sprite(Utils.positionX, Utils.positionY, ResourceManager.backgroundTextureRegion, engine.getVertexBufferObjectManager());
+        Sprite heartSprite = new Sprite(Utils.positionX - 90, Utils.positionY + 215, ResourceManager.heartITextureRegion, engine.getVertexBufferObjectManager());
         explosionAnimatedSprite = new AnimatedSprite(0, 0, ResourceManager.explosionTiledTextureRegion, engine.getVertexBufferObjectManager());
 
+        float initialY = 120;
+        float initialX = 165;
         animatedSprite1 = new AnimatedSprite(initialX, initialY, ResourceManager.fruitTiledTextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -107,6 +103,7 @@ public class GameScene extends Scene {
             }
         };
 
+        int RECTANGLE_DIMENSIONS = 200;
         animatedSprite2 = new AnimatedSprite(initialX + RECTANGLE_DIMENSIONS + 20, initialY, ResourceManager.fruitTiledTextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
@@ -271,16 +268,11 @@ public class GameScene extends Scene {
     }
 
     private void attachExplosionAnimation(AnimatedSprite animatedSprite) {
-//        if (animatedSprite.getCurrentTileIndex() == correctTileNumbers[0]){
-        // Get the scene coordinates of the animatedSprite as an array.
         float[] coodinates = {animatedSprite.getX(), animatedSprite.getY()};
-        // Convert the the scene coordinates of the animatedSprite to the local corrdinates of the explosionAnimatedSprite.
         float[] localCoordinates = animatedSprite.convertSceneCoordinatesToLocalCoordinates(coodinates);
-        // Attach and set position of explosionAnimatedSprite
         explosionAnimatedSprite.setPosition(localCoordinates[0], localCoordinates[1]);
         explosionAnimatedSprite.detachSelf();
         animatedSprite.attachChild(explosionAnimatedSprite);
-//        }
     }
 
     private void animateExplosion() {
@@ -370,10 +362,6 @@ public class GameScene extends Scene {
     }
 
     private void checkTileColor(AnimatedSprite animatedSprite) {
-        /*hit correct tile 3 times to gain lives
-        * hitting wrong time erases your correctCount
-        * hit the wrong tile 3 time, penalty is to lose a lives
-        * */
         if (animatedSprite.getCurrentTileIndex() == correctTileNumbers[0]
                 || animatedSprite.getCurrentTileIndex() == correctTileNumbers[1]
                 || animatedSprite.getCurrentTileIndex() == correctTileNumbers[2]

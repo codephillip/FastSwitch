@@ -7,48 +7,39 @@ import org.andengine.entity.scene.Scene;
  */
 public class SceneManager {
     public static Scene createSplashScene() {
-        SplashScene splashScene = new SplashScene(ResourceManager.context, ResourceManager.engine);
-        return splashScene;
+        return new SplashScene(ResourceManager.context, ResourceManager.engine);
     }
 
     public static Scene createMenuScene() {
-        MenuScene menuScene = new MenuScene(ResourceManager.context, ResourceManager.engine);
-        return menuScene;
+        return new MenuScene(ResourceManager.context, ResourceManager.engine);
     }
 
     public static Scene createGameOverScene() {
-        GameOverScene gameOverScene = new GameOverScene(ResourceManager.context, ResourceManager.engine);
-        return gameOverScene;
+        return new GameOverScene(ResourceManager.context, ResourceManager.engine);
     }
 
     public static Scene createGameScene() {
-        GameScene gameScene = new GameScene(ResourceManager.context, ResourceManager.engine);
-        return gameScene;
+        return new GameScene(ResourceManager.context, ResourceManager.engine);
     }
 
     public static Scene createPauseScene() {
-        PauseScene pauseScene = new PauseScene(ResourceManager.context, ResourceManager.engine);
-        return pauseScene;
+        return new PauseScene(ResourceManager.context, ResourceManager.engine);
     }
 
     public static Scene createInstructionScene() {
-        InstructionScene instructionScene = new InstructionScene(ResourceManager.context, ResourceManager.engine);
-        return instructionScene;
+        return new InstructionScene(ResourceManager.context, ResourceManager.engine);
     }
 
     public static Scene createObjectiveScene() {
-        ObjectiveScene objectiveScene = new ObjectiveScene(ResourceManager.context, ResourceManager.engine);
-        return objectiveScene;
+        return new ObjectiveScene(ResourceManager.context, ResourceManager.engine);
     }
 
     public static Scene createStageScene() {
-        StageScene stageScene = new StageScene(ResourceManager.context, ResourceManager.engine);
-        return stageScene;
+        return new StageScene(ResourceManager.context, ResourceManager.engine);
     }
 
     public static Scene createTopPlayersScene() {
-        TopPlayersScene topPlayersScene = new TopPlayersScene(ResourceManager.context, ResourceManager.engine);
-        return topPlayersScene;
+        return new TopPlayersScene(ResourceManager.context, ResourceManager.engine);
     }
 
     public static void setCurrentScene(AllScenes currentScene, Scene scene) {
