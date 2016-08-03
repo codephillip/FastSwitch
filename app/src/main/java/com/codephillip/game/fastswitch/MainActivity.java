@@ -31,6 +31,8 @@ public class MainActivity extends BaseGameActivity {
 
     public static final int WIDTH = 800;
     public static final int HEIGHT = 480;
+    private static final int PERIOD = 5000;
+
     private static final String TAG = MainActivity.class.getSimpleName();
 
     private FirebaseAnalytics mFirebaseAnalytics;

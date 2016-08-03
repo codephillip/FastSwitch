@@ -28,7 +28,7 @@ public class BackendService extends IntentService {
     private static final String TAG = BackendService.class.getSimpleName();
     private static final int NOTIFICATION_ID = 400;
     private TopPlayersApi myApiService;
-    private static final long DAY_IN_MILLIS = 1000 * 60 * 60 * 24;
+    private static final long TIME_PASSED = 1000 * 60 * 60 * 48;
 
     public BackendService() {
         super("BackendService");
@@ -37,17 +37,18 @@ public class BackendService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "onHandleIntent: started service");
-        startNotification();
-//        try {
-//            startConnection();
-//            if (intent.getExtras().getBoolean(Utils.POST, false)) {
-//                doPostRequest();
-//            } else {
-//                doGetRequest();
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
+        if (intent.getBooleanExtra("notification", false))
+            startNotification();
+        try {
+            startConnection();
+            if (intent.getExtras().getBoolean(Utils.POST, false)) {
+                doPostRequest();
+            } else {
+                doGetRequest();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void startConnection() {
@@ -115,51 +116,46 @@ public class BackendService extends IntentService {
     }
 
     private void startNotification() {
+        Log.d(TAG, "startNotification: started");
         Context context = this.getBaseContext();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         long lastSync = prefs.getLong(Utils.LAST_NOTIFICATION, 0);
-        boolean displayNotifications = prefs.getBoolean("notifications_new_message", true);
 
-        if (displayNotifications) {
+        if (System.currentTimeMillis() - lastSync >= TIME_PASSED) {
+            int iconId = R.mipmap.ic_launcher;
+            String title = context.getString(R.string.app_name);
+            String contentText = "Time to crunch fruits";
 
-            if (System.currentTimeMillis() - lastSync >= DAY_IN_MILLIS) {
-                int iconId = R.mipmap.ic_launcher;
-                String title = context.getString(R.string.app_name);
-                String contentText = "Time to crunch fruits";
+            NotificationCompat.Builder mBuilder =
+                    new NotificationCompat.Builder(context)
+                            .setSmallIcon(iconId)
+                            .setContentTitle(title)
+                            .setContentText(contentText);
 
-                NotificationCompat.Builder mBuilder =
-                        new NotificationCompat.Builder(context)
-                                .setSmallIcon(iconId)
-                                .setContentTitle(title)
-                                .setContentText(contentText);
+            Intent resultIntent = new Intent(context, MainActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent =
+                    stackBuilder.getPendingIntent(
+                            0,
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+            mBuilder.setContentIntent(resultPendingIntent);
 
-                Intent resultIntent = new Intent(context, MainActivity.class);
-                TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-                stackBuilder.addNextIntent(resultIntent);
-                PendingIntent resultPendingIntent =
-                        stackBuilder.getPendingIntent(
-                                0,
-                                PendingIntent.FLAG_UPDATE_CURRENT
-                        );
-                mBuilder.setContentIntent(resultPendingIntent);
+            NotificationManager mNotificationManager =
+                    (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+            mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
 
-                NotificationManager mNotificationManager =
-                        (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-                mNotificationManager.notify(NOTIFICATION_ID, mBuilder.build());
+            Uri notification = Uri.parse("content://settings/system/notification_sound");
+            Ringtone r = RingtoneManager.getRingtone(context, notification);
+            r.play();
 
-                Uri notification = Uri.parse(prefs.getString("notifications_new_message_ringtone", "content://settings/system/notification_sound"));
-                Ringtone r = RingtoneManager.getRingtone(context, notification);
-                r.play();
+            Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+            v.vibrate(500);
 
-                if (prefs.getBoolean("notifications_new_message_vibrate", true)) {
-                    Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
-                    v.vibrate(500);
-                }
-
-                SharedPreferences.Editor editor = prefs.edit();
-                editor.putLong(Utils.LAST_NOTIFICATION, System.currentTimeMillis());
-                editor.apply();
-            }
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putLong(Utils.LAST_NOTIFICATION, System.currentTimeMillis());
+            editor.apply();
         }
     }
 }
