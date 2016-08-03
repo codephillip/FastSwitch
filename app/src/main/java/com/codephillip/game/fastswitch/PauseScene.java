@@ -107,11 +107,11 @@ public class PauseScene extends Scene {
     private void showStatistics() {
         backgroundSprite.detachSelf();
 
-        ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+        ResourceManager.titleFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                 "fnt/sanchez.ttf", 80, true, android.graphics.Color.YELLOW);
-        ResourceManager.winOrLoseFont.load();
+        ResourceManager.titleFont.load();
 
-        titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "GAME PAUSED", 100, engine.getVertexBufferObjectManager());
+        titleText = new Text(0, 0, ResourceManager.titleFont, "GAME PAUSED", 100, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
         levelText = new Text(0, 0, ResourceManager.levelFont, "LEVEL 1", 25, engine.getVertexBufferObjectManager());

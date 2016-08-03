@@ -146,7 +146,7 @@ public class GameOverScene extends Scene {
         levelText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 90);
         levelText.setText("LEVEL "+Utils.getLevel());
 
-        winOrLoseText = new Text(0, 0, ResourceManager.winOrLoseFont, "YOU WIN", 25, engine.getVertexBufferObjectManager());
+        winOrLoseText = new Text(0, 0, ResourceManager.titleFont, "YOU WIN", 25, engine.getVertexBufferObjectManager());
         winOrLoseText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
         if (hasWonGame) {
             winOrLoseText.setText("YOU WIN");
@@ -176,12 +176,12 @@ public class GameOverScene extends Scene {
 
     private void setWinOrLoseFontColor(boolean hasWonGame) {
         if (hasWonGame) {
-            ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+            ResourceManager.titleFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                     "fnt/sanchez.ttf", 80, true, android.graphics.Color.YELLOW);
         } else {
-            ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+            ResourceManager.titleFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                     "fnt/sanchez.ttf", 80, true, android.graphics.Color.RED);
         }
-        ResourceManager.winOrLoseFont.load();
+        ResourceManager.titleFont.load();
     }
 }

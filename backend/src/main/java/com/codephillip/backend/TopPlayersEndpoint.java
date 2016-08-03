@@ -32,7 +32,7 @@ import static com.googlecode.objectify.ObjectifyService.ofy;
 public class TopPlayersEndpoint {
 
     private static final Logger logger = Logger.getLogger(TopPlayersEndpoint.class.getName());
-    private static final int DEFAULT_LIST_LIMIT = 20;
+    private static final int DEFAULT_LIST_LIMIT = 10;
 
     static {
         ObjectifyService.register(TopPlayers.class);
@@ -89,7 +89,7 @@ public class TopPlayersEndpoint {
             httpMethod = ApiMethod.HttpMethod.GET)
     public CollectionResponse<TopPlayers> list(@Nullable @Named("cursor") String cursor, @Nullable @Named("limit") Integer limit) {
         limit = limit == null ? DEFAULT_LIST_LIMIT : limit;
-        Query<TopPlayers> query = ofy().load().type(TopPlayers.class).limit(limit);
+        Query<TopPlayers> query = ofy().load().type(TopPlayers.class).order("-points").limit(limit);
         if (cursor != null) {
             query = query.startAt(Cursor.fromWebSafeString(cursor));
         }

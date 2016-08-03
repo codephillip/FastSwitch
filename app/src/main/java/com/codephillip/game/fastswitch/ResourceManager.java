@@ -65,9 +65,10 @@ public class ResourceManager {
     public static ITextureRegion heartITextureRegion;
 
     public static Font font, bountyFont;
-    public static Font menuFont, smallMenuFont, winOrLoseFont, levelFont;
+    public static Font menuFont, smallMenuFont, titleFont, levelFont;
     public static Font instructionFont;
     public static Font pointsFont;
+    public static Font topPlayerFont;
 
     public static Music gameSound, finalWinSound, finalFailSound;
     public static Sound wrongTileSound, rightTileSound, lifeUpSound, lifeDownSound, deathSound, bountySound;
@@ -203,12 +204,16 @@ public class ResourceManager {
                 "fnt/Roboto_Regular.ttf", 30, true, Color.WHITE);
         instructionFont.load();
 
-        winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+        titleFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                 "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
-        winOrLoseFont.load();
+        titleFont.load();
 
         pointsFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                 "fnt/pipedream.ttf", 30, true, android.graphics.Color.WHITE);
         pointsFont.load();
+
+        topPlayerFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+                "fnt/Roboto_Regular.ttf", 20, true, Color.WHITE);
+        topPlayerFont.load();
     }
 }

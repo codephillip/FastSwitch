@@ -45,7 +45,7 @@ public class TopPlayersScene extends Scene {
         overlaySprite.setColor(Color.BLACK);
         overlaySprite.setAlpha(0.7f);
 
-        exitSprite = new Sprite(Utils.CAMERA_WIDTH / 2 + 20, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.exitITextureRegion, engine.getVertexBufferObjectManager()) {
+        exitSprite = new Sprite(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 - 170, ResourceManager.exitITextureRegion, engine.getVertexBufferObjectManager()) {
             @Override
             public boolean onAreaTouched(TouchEvent superTouchEvent, float pTouchAreaLocalX, float pTouchAreaLocalY) {
                 switch (superTouchEvent.getAction()) {
@@ -80,20 +80,20 @@ public class TopPlayersScene extends Scene {
     private void showStatistics() {
         backgroundSprite.detachSelf();
 
-        ResourceManager.winOrLoseFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
+        ResourceManager.titleFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
                 "fnt/sanchez.ttf", 70, true, android.graphics.Color.YELLOW);
-        ResourceManager.winOrLoseFont.load();
+        ResourceManager.titleFont.load();
 
-        titleText = new Text(0, 0, ResourceManager.winOrLoseFont, "TOP PLAYERS", 25, engine.getVertexBufferObjectManager());
+        titleText = new Text(0, 0, ResourceManager.titleFont, "TOP PLAYERS", 25, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
-        instructionText = new Text(0, 0, ResourceManager.instructionFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
+        instructionText = new Text(0, 0, ResourceManager.topPlayerFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
         instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
         String string = "";
         try {
             for (TopPlayers topPlayer : Utils.topPlayers) {
                 Log.d(TAG, "doGetRequest() GET_2: " + topPlayer.getName() + "#" + topPlayer.getEmail() + "#" + topPlayer.getPoints());
-                string = string.concat(topPlayer.getName() + "\t\t\t\t\t\t\t" + topPlayer.getPoints() + "\n");
+                string = string.concat(topPlayer.getName() + "\t\t\t\t\t\t\t\t\t" + topPlayer.getPoints() + "\n");
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -101,9 +101,11 @@ public class TopPlayersScene extends Scene {
             try {
                 if (string.length() <= 0)
                     throw new UnsupportedOperationException("String has no elements");
+                instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 30);
                 instructionText.setText(string);
             } catch (Exception e){
                 e.printStackTrace();
+                instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
                 instructionText.setText("Please connect to the internet");
             }
         }

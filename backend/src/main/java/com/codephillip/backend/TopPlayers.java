@@ -2,6 +2,7 @@ package com.codephillip.backend;
 
 import com.googlecode.objectify.annotation.Entity;
 import com.googlecode.objectify.annotation.Id;
+import com.googlecode.objectify.annotation.Index;
 
 /**
  * Created by codephillip on 02/08/16.
@@ -12,7 +13,7 @@ public class TopPlayers {
     Long id;
     String name;
     String email;
-    int points;
+    @Index int points;
 
     public Long getId() {
         return id;
