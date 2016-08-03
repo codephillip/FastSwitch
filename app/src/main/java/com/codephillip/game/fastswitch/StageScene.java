@@ -9,8 +9,6 @@ import org.andengine.entity.scene.Scene;
 import org.andengine.entity.sprite.Sprite;
 import org.andengine.entity.text.Text;
 import org.andengine.input.touch.TouchEvent;
-import org.andengine.opengl.font.Font;
-import org.andengine.opengl.font.FontFactory;
 import org.andengine.util.adt.color.Color;
 
 /**
@@ -74,11 +72,7 @@ public class StageScene extends Scene {
             }
         };
 
-        Font titleFont = FontFactory.createFromAsset(engine.getFontManager(), engine.getTextureManager(), 256, 256, context.getAssets(),
-                "fnt/sanchez.ttf", 100, true, android.graphics.Color.YELLOW);
-        titleFont.load();
-
-        Text titleText = new Text(0, 0, titleFont, "GAME TYPE", 25, engine.getVertexBufferObjectManager());
+        Text titleText = new Text(0, 0, ResourceManager.titleFont, "GAME TYPE", 25, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
         Text speedTapText = new Text(0, 0, ResourceManager.pointsFont, "Speed Tap", 50, engine.getVertexBufferObjectManager());

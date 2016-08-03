@@ -1,7 +1,10 @@
 package com.codephillip.game.fastswitch;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
@@ -56,8 +59,23 @@ public class MainActivity extends BaseGameActivity {
         ResourceManager.getInstance().setup(this.getEngine(), this, this.getApplicationContext(), mFirebaseAnalytics, adView, WIDTH, HEIGHT);
         ResourceManager.loadGameScreenResources();
         Utils.saveEmail();
-        startService(new Intent(this, BackendService.class).putExtra(Utils.POST, true));
+        if (isConnectedToInternet())
+            startService(new Intent(this, BackendService.class).putExtra(Utils.POST, true));
         pOnCreateResourcesCallback.onCreateResourcesFinished();
+    }
+
+    private boolean isConnectedToInternet() {
+        ConnectivityManager connectivity = (ConnectivityManager) getApplicationContext().getSystemService(Context.CONNECTIVITY_SERVICE);
+        if (connectivity != null) {
+            NetworkInfo[] info = connectivity.getAllNetworkInfo();
+            if (info != null)
+                for (int i = 0; i < info.length; i++)
+                    if (info[i].getState() == NetworkInfo.State.CONNECTED) {
+                        return true;
+                    }
+
+        }
+        return false;
     }
 
     @Override
@@ -95,9 +113,9 @@ public class MainActivity extends BaseGameActivity {
 
         //TODO deactivate testDevice on release
 //        AdRequest adRequest = new AdRequest.Builder()
-//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+////                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
 //                .build();
-//
+
 //        adView.loadAd(adRequest);
 
         Log.d(TAG, "onSetContentView() returned: " + "settingup ads");

@@ -47,6 +47,7 @@ public class Utils {
     public static final float positionY = CAMERA_HEIGHT * 0.5f;
     public static final String POST = "post";
     public static List<TopPlayers> topPlayers;
+    public static String LAST_NOTIFICATION ="last_notification";
 
     public static void saveIntPref(String prefString, int value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);

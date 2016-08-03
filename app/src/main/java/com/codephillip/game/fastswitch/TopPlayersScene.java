@@ -25,7 +25,7 @@ public class TopPlayersScene extends Scene {
     private final Context context;
     private Sprite backgroundSprite;
     private Sprite exitSprite;
-    private Text instructionText;
+    private Text playerRowText;
     private Text titleText;
 
     public TopPlayersScene(Context context, Engine engine) {
@@ -68,7 +68,7 @@ public class TopPlayersScene extends Scene {
         super.attachChild(backgroundSprite);
         super.attachChild(overlaySprite);
         super.attachChild(titleText);
-        super.attachChild(instructionText);
+        super.attachChild(playerRowText);
         super.attachChild(exitSprite);
     }
 
@@ -87,8 +87,8 @@ public class TopPlayersScene extends Scene {
         titleText = new Text(0, 0, ResourceManager.titleFont, "TOP PLAYERS", 25, engine.getVertexBufferObjectManager());
         titleText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 150);
 
-        instructionText = new Text(0, 0, ResourceManager.topPlayerFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
-        instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
+        playerRowText = new Text(0, 0, ResourceManager.topPlayerFont, "Hi-Score: 1000", 500, engine.getVertexBufferObjectManager());
+        playerRowText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
         String string = "";
         try {
             for (TopPlayers topPlayer : Utils.topPlayers) {
@@ -101,12 +101,12 @@ public class TopPlayersScene extends Scene {
             try {
                 if (string.length() <= 0)
                     throw new UnsupportedOperationException("String has no elements");
-                instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 30);
-                instructionText.setText(string);
+                playerRowText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2 + 60);
+                playerRowText.setText(string);
             } catch (Exception e){
                 e.printStackTrace();
-                instructionText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
-                instructionText.setText("Please connect to the internet");
+                playerRowText.setPosition(Utils.CAMERA_WIDTH / 2, Utils.CAMERA_HEIGHT / 2);
+                playerRowText.setText("Please connect to the internet");
             }
         }
     }
