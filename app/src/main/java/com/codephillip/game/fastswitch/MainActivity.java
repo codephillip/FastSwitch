@@ -12,6 +12,7 @@ import android.view.Gravity;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
+import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdSize;
 import com.google.android.gms.ads.AdView;
 import com.google.firebase.analytics.FirebaseAnalytics;
@@ -114,11 +115,11 @@ public class MainActivity extends BaseGameActivity {
         adView.refreshDrawableState();
 
         //TODO deactivate testDevice on release
-//        AdRequest adRequest = new AdRequest.Builder()
-////                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
-//                .build();
+        AdRequest adRequest = new AdRequest.Builder()
+//                .addTestDevice(AdRequest.DEVICE_ID_EMULATOR)
+                .build();
 
-//        adView.loadAd(adRequest);
+        adView.loadAd(adRequest);
 
         Log.d(TAG, "onSetContentView() returned: " + "settingup ads");
 
