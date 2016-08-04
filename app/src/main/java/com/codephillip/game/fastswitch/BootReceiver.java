@@ -29,6 +29,8 @@ public class BootReceiver extends BroadcastReceiver {
         Calendar calendar = Calendar.getInstance();
         calendar.setTimeInMillis(System.currentTimeMillis());
         calendar.set(Calendar.HOUR_OF_DAY, 14);
+
+        alarmMgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent myIntent = new Intent(context, BackendService.class).putExtra("notification", true);
         alarmIntent = PendingIntent.getBroadcast(context, 0, myIntent, 0);
         alarmMgr.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(),
